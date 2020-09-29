@@ -1,0 +1,9 @@
+forehand (from the frame 0 to the frame 106)
+
+forehand smash (from frame 107 to frame 216)
+
+forehand strafe (from frame 217 to frame 307)
+
+powerful shot (from frame 308 to frame 414)
+
+service (from frame 415 to frame 496)
