@@ -43,13 +43,24 @@ public class ScoreManager : MonoBehaviour
                 {
                     WinGame(playerId);
                 }
-                else
+                // 40 40 to AD 40
+                else if (currentGame.y == 40)
                 {
-                    // TODO handle 40 40 and ADV
+                    currentGame = new Vector2Int(45, 40);
+                }
+                // 40 AD to 40 40
+                else if (currentGame.y == 45)
+                {
+                    currentGame = new Vector2Int(40, 40);
                 }
             }
+            // AD 40 to game
+            else if(currentGame.x == 45)
+            {
+                WinGame(playerId);
+            }
         }
-        else
+        else if(player2Id == playerId)
         {
             if (currentGame.y < 40)
             {
@@ -61,10 +72,21 @@ public class ScoreManager : MonoBehaviour
                 {
                     WinGame(playerId);
                 }
-                else
+                // 40 40 to 40 AD
+                else if (currentGame.x == 40)
                 {
-                    // TODO handle 40 40 and ADV
+                    currentGame = new Vector2Int(40, 45);
+                } 
+                // AD 40 to 40 40
+                else if (currentGame.x == 45)
+                {
+                    currentGame = new Vector2Int(40, 40);
                 }
+            }
+            // 40 AD to game
+            else if(currentGame.y == 45)
+            {
+                WinGame(playerId);
             }
         }
         
@@ -87,8 +109,6 @@ public class ScoreManager : MonoBehaviour
                 return 30;
             case 30:
                 return 40;
-            case 40:
-                return 45;
             default:
                 return 0;
         }
