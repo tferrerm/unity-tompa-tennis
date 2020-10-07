@@ -6,12 +6,18 @@ public class ScoreManager : MonoBehaviour
 {
     
     private List<Vector2Int> sets = new List<Vector2Int>();
-    private int currentSetIndex = 0;
-    private Vector2Int currentGame = new Vector2Int(0, 0);
-
+    private int _currentSetIndex = 0;
+    private Vector2Int _currentGame = new Vector2Int(0, 0);
+    
     public int player1Id;
     public int player2Id;
+    public int setsNeededToWin = 3;
 
+    private int _player1SetsWon = 0;
+    private int _player2SetsWon = 0;
+
+    private bool _matchFinished;
+        
     // Start is called before the first frame update
     void Start()
     {
@@ -22,81 +28,72 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void WinPoint(int playerId)
     {
         
         if (player1Id == playerId)
         {
-            if (currentGame.x < 40)
+            if (_currentGame.x < 40)
             {
-                currentGame = new Vector2Int(IncreaseGameScore(currentGame.x), currentGame.y);
+                _currentGame = new Vector2Int(IncreaseGameScore(_currentGame.x), _currentGame.y);
             }
-            else if (currentGame.x == 40)
+            else switch (_currentGame.x)
             {
-                if (currentGame.y < 40)
-                {
+                case 40 when _currentGame.y < 40:
                     WinGame(playerId);
-                }
-                // 40 40 to AD 40
-                else if (currentGame.y == 40)
-                {
-                    currentGame = new Vector2Int(45, 40);
-                }
-                // 40 AD to 40 40
-                else if (currentGame.y == 45)
-                {
-                    currentGame = new Vector2Int(40, 40);
-                }
-            }
-            // AD 40 to game
-            else if(currentGame.x == 45)
-            {
-                WinGame(playerId);
+                    break;
+                case 40 when _currentGame.y == 40:
+                    // 40 40 to AD 40
+                    _currentGame = new Vector2Int(45, 40);
+                    break;
+                case 40 when _currentGame.y == 45:
+                    // 40 ad to 40 40
+                    _currentGame = new Vector2Int(40, 40);
+                    break;
+                case 45:
+                    // AD 40 to game
+                    WinGame(playerId);
+                    break;
             }
         }
         else if(player2Id == playerId)
         {
-            if (currentGame.y < 40)
+            if (_currentGame.y < 40)
             {
-                currentGame = new Vector2Int(currentGame.x, IncreaseGameScore(currentGame.y));
+                _currentGame = new Vector2Int(_currentGame.x, IncreaseGameScore(_currentGame.y));
             }
-            else if (currentGame.y == 40)
+            else switch (_currentGame.y)
             {
-                if (currentGame.x < 40)
-                {
+                case 40 when _currentGame.x < 40:
                     WinGame(playerId);
-                }
-                // 40 40 to 40 AD
-                else if (currentGame.x == 40)
-                {
-                    currentGame = new Vector2Int(40, 45);
-                } 
-                // AD 40 to 40 40
-                else if (currentGame.x == 45)
-                {
-                    currentGame = new Vector2Int(40, 40);
-                }
-            }
-            // 40 AD to game
-            else if(currentGame.y == 45)
-            {
-                WinGame(playerId);
+                    break;
+                case 40 when _currentGame.x == 40:
+                    // 40 40 to 40 AD
+                    _currentGame = new Vector2Int(40, 45);
+                    break;
+                case 40 when _currentGame.x == 45:
+                    // AD 40 to 40 40
+                    _currentGame = new Vector2Int(40, 40);
+                    break;
+                case 45:
+                    WinGame(playerId);
+                    break;
             }
         }
-        
-        Vector2Int currentSet = sets[currentSetIndex];
-        
     }
 
     private void WinGame(int playerId)
     {
-        //TODO
+        var currentSet = sets[_currentSetIndex];
+        if (player1Id == playerId)
+        {
+            sets[_currentSetIndex] = new Vector2Int(sets[_currentSetIndex].x + 1, sets[_currentSetIndex].y);
+        }
+        else if (player2Id == playerId)
+        {
+            sets[_currentSetIndex] = new Vector2Int(sets[_currentSetIndex].x, sets[_currentSetIndex].y + 1);
+        }
+        CheckSetWon(sets[_currentSetIndex]);
     }
 
     private int IncreaseGameScore(int currentScore)
@@ -114,13 +111,21 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
-    private int GetCurrentGameScoreForPlayer(int playerId)
+    private void CheckSetWon(Vector2Int set)
     {
-        if (playerId == player1Id)
+        if (set.x == 6 && set.y < 5 || set.x == 7)
         {
-            return currentGame.x;
+            _player1SetsWon += 1;
+            _currentSetIndex += 1;
         }
-
-        return currentGame.y;
+        if (set.y == 6 && set.x < 5 || set.y == 7)
+        {
+            _player2SetsWon += 1;
+            _currentSetIndex += 1;
+        }
+        if (_player1SetsWon == setsNeededToWin || _player2SetsWon == setsNeededToWin)
+        {
+            _matchFinished = true;
+        }
     }
 }
