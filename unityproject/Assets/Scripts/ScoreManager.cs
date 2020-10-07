@@ -17,20 +17,25 @@ public class ScoreManager : MonoBehaviour
     private int _player2SetsWon = 0;
 
     private bool _matchFinished;
+    private bool _currentlyInTiebreak;
         
     // Start is called before the first frame update
     void Start()
     {
-        for (int i = 0; i < 3; i++)
+        var totalSets = setsNeededToWin == 3 ? 5 : 3;
+        for (int i = 0; i < totalSets; i++)
         {
             sets.Add(new Vector2Int(0, 0));
-
         }
     }
 
     public void WinPoint(int playerId)
     {
-        
+        if (_currentlyInTiebreak)
+        {
+            WinTiebreakPoint(playerId);
+            return;
+        }
         if (player1Id == playerId)
         {
             if (_currentGame.x < 40)
@@ -82,6 +87,30 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
+    private void WinTiebreakPoint(int playerId)
+    {
+        if (player1Id == playerId)
+        {
+            _currentGame = new Vector2Int(_currentGame.x + 1, _currentGame.y);
+        }
+        else if (player2Id == playerId)
+        {
+            _currentGame = new Vector2Int(_currentGame.x, _currentGame.y + 1);
+        }
+        if (_currentGame.x >= 7 && _currentGame.y < _currentGame.x - 1)
+        {
+            sets[_currentSetIndex] = new Vector2Int(sets[_currentSetIndex].x + 1, sets[_currentSetIndex].y);
+            _currentlyInTiebreak = false;
+            _currentGame = new Vector2Int(0, 0);
+        }
+        if (_currentGame.y >= 7 && _currentGame.x < _currentGame.y - 1)
+        {
+            sets[_currentSetIndex] = new Vector2Int(sets[_currentSetIndex].x, sets[_currentSetIndex].y + 1);
+            _currentlyInTiebreak = false;
+            _currentGame = new Vector2Int(0, 0);
+        }
+    }
+
     private void WinGame(int playerId)
     {
         var currentSet = sets[_currentSetIndex];
@@ -94,6 +123,11 @@ public class ScoreManager : MonoBehaviour
             sets[_currentSetIndex] = new Vector2Int(sets[_currentSetIndex].x, sets[_currentSetIndex].y + 1);
         }
         CheckSetWon(sets[_currentSetIndex]);
+        if (sets[_currentSetIndex].x == 6 && sets[_currentSetIndex].y == 6)
+        {
+            _currentlyInTiebreak = true;
+        }
+        _currentGame = new Vector2Int(0, 0);
     }
 
     private int IncreaseGameScore(int currentScore)
