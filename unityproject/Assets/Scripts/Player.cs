@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float movementSpeed;
-    
+    public Vector3 movSpeed;
+
+    public float maxMovSpeed;
+    public float movAcceleration;
+
     private CharacterController _characterController;
     void Start()
     {
@@ -19,10 +22,49 @@ public class Player : MonoBehaviour
 
     private void Move()
     {
-        float vertical = Input.GetAxis("Vertical") * movementSpeed;
-        float horizontal = Input.GetAxis("Horizontal") * movementSpeed;
+        CalculateSpeed("Vertical");
+        CalculateSpeed("Horizontal");
+        _characterController.Move(movSpeed * Time.deltaTime);
+    }
+
+    private void CalculateSpeed(string axis)
+    {
+        float input = Input.GetAxis(axis);
+        float speedChange = input * movAcceleration * Time.deltaTime;
         
-        Vector3 move = new Vector3(vertical, 0, -1 * horizontal);
-        _characterController.Move(move * Time.deltaTime);
+        switch (axis)
+        {
+            case "Vertical":
+                if (input == 0)
+                {
+                    movSpeed.x = 0;
+                }
+                else if (Math.Abs(movSpeed.x + speedChange) < maxMovSpeed)
+                {
+                    movSpeed.x += input * movAcceleration;
+                }
+                else
+                {
+                    movSpeed.x = maxMovSpeed * Math.Sign(input);
+                }
+
+                break;
+            case "Horizontal":
+                if (input == 0)
+                {
+                    movSpeed.z = 0;
+                }
+                else if (Math.Abs(movSpeed.z - speedChange) < maxMovSpeed)
+                {
+                    movSpeed.z -= input * movAcceleration;
+                }
+                else
+                {
+                    movSpeed.z = maxMovSpeed * Math.Sign(input) * -1;
+                }
+                break;
+            default:
+                throw new ArgumentException("Speed can be \"Vertical\" or \"Horizontal\"");
+        }
     }
 }
