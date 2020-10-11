@@ -10,9 +10,11 @@ public class Player : MonoBehaviour
     public float movAcceleration;
 
     private CharacterController _characterController;
+    private Animator _animator;
     void Start()
     {
         _characterController = GetComponent<CharacterController>();
+        _animator = GetComponent<Animator>();
     }
     
     void Update()
@@ -24,6 +26,14 @@ public class Player : MonoBehaviour
     {
         CalculateSpeed("Vertical");
         CalculateSpeed("Horizontal");
+        if (Math.Abs(movSpeed.x) > 0 || Math.Abs(movSpeed.z) > 0)
+        {
+            _animator.SetBool("Running", true);
+        }
+        else
+        {
+            _animator.SetBool("Running", false);
+        }
         _characterController.Move(movSpeed * Time.deltaTime);
     }
 
