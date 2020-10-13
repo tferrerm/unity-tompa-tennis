@@ -206,6 +206,6 @@ public class ScoreManager : MonoBehaviour
 
     public int GetReceivingPlayerId()
     {
-        return player1Id == _servingPlayerId ? player2Id : player1Id
+        return player1Id == _servingPlayerId ? player2Id : player1Id;
     }
 }
