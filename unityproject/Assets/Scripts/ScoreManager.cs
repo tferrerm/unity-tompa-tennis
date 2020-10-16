@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
 {
+    public enum ServingSide
+    {
+        Even = 0,
+        Odd = 1,
+    }
     
     private List<Vector2Int> sets = new List<Vector2Int>();
     private int _currentSetIndex = 0;
@@ -18,10 +23,13 @@ public class ScoreManager : MonoBehaviour
 
     private bool _matchFinished;
     private bool _currentlyInTiebreak;
+    private ServingSide _currentServingSide = ServingSide.Even;
+    private int _servingPlayerId;
         
     // Start is called before the first frame update
     void Start()
     {
+        _servingPlayerId = player1Id;
         var totalSets = setsNeededToWin == 3 ? 5 : 3;
         for (int i = 0; i < totalSets; i++)
         {
@@ -161,5 +169,43 @@ public class ScoreManager : MonoBehaviour
         {
             _matchFinished = true;
         }
+    }
+
+    public ServingSide GetServingSide()
+    {
+        if (_currentlyInTiebreak)
+        {
+            return (_currentGame.x + _currentGame.y) % 2 == 0 ? ServingSide.Even : ServingSide.Odd;
+        }
+        switch (_currentGame.x) 
+            {
+                case 0:
+                case 30:
+                    if (_currentGame.y == 0 || _currentGame.y == 30)
+                    {
+                        return ServingSide.Even;
+                    }
+                    return ServingSide.Odd;
+                case 15:
+                case 40:
+                    if (_currentGame.y == 15 || _currentGame.y == 40)
+                    {
+                        return ServingSide.Even;
+                    }
+                    return ServingSide.Odd;
+                case 45:
+                    return ServingSide.Odd;
+            }
+        return ServingSide.Even;
+    }
+
+    public int GetServingPlayerId()
+    {
+        return _servingPlayerId;
+    }
+
+    public int GetReceivingPlayerId()
+    {
+        return player1Id == _servingPlayerId ? player2Id : player1Id;
     }
 }
