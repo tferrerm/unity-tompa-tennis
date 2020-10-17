@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -15,6 +16,9 @@ public class UIManager : MonoBehaviour
     private TMP_Text _player2CurrentGameScore;
     private int _setCount = 1;
     private float _scoreSeparator = 2.5f;
+    
+    public Image player1ServingBall;
+    public Image player2ServingBall;
 
     private ScoreManager _scoreManager;
     
@@ -29,7 +33,7 @@ public class UIManager : MonoBehaviour
         _scoreManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<ScoreManager>();
     }
 
-    public void SetPlayerGameScore(List<Vector2Int> setsScores, Vector2Int gameScores, int setCount)
+    public void SetPlayerGameScore(List<Vector2Int> setsScores, Vector2Int gameScores, int setCount, bool player1Serving)
     {
         if (setCount > _setCount)
         {
@@ -41,6 +45,9 @@ public class UIManager : MonoBehaviour
         {
             UpdateCurrentScores(setsScores[setCount - 1], gameScores);
         }
+
+        player1ServingBall.enabled = player1Serving;
+        player2ServingBall.enabled = !player1Serving;
     }
 
     private void InstantiatePastSet(Vector2Int pastSetScore)

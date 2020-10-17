@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -39,6 +40,16 @@ public class ScoreManager : MonoBehaviour
         {
             sets.Add(new Vector2Int(0, 0));
         }
+        StartCoroutine(ExampleCoroutine());
+    }
+
+    IEnumerator ExampleCoroutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(0.5f);
+            WinPoint(Random.Range(0,2) == 0? player1Id : player2Id);
+        }
     }
 
     public void WinPoint(int playerId)
@@ -46,7 +57,7 @@ public class ScoreManager : MonoBehaviour
         if (currentlyInTiebreak)
         {
             WinTiebreakPoint(playerId);
-            uiManager.SetPlayerGameScore(sets, _currentGame, _currentSetIndex + 1);
+            uiManager.SetPlayerGameScore(sets, _currentGame, _currentSetIndex + 1, _servingPlayerId == player1Id);
             return;
         }
         if (player1Id == playerId)
@@ -98,7 +109,7 @@ public class ScoreManager : MonoBehaviour
                     break;
             }
         }
-        uiManager.SetPlayerGameScore(sets, _currentGame, _currentSetIndex + 1);
+        uiManager.SetPlayerGameScore(sets, _currentGame, _currentSetIndex + 1, _servingPlayerId == player1Id);
     }
 
     private void WinTiebreakPoint(int playerId)
