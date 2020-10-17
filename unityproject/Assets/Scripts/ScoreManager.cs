@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -25,7 +26,7 @@ public class ScoreManager : MonoBehaviour
     private int _player2SetsWon = 0;
 
     private bool _matchFinished;
-    private bool _currentlyInTiebreak;
+    [HideInInspector] public bool currentlyInTiebreak;
     private ServingSide _currentServingSide = ServingSide.Even;
     private int _servingPlayerId;
 
@@ -42,7 +43,7 @@ public class ScoreManager : MonoBehaviour
 
     public void WinPoint(int playerId)
     {
-        if (_currentlyInTiebreak)
+        if (currentlyInTiebreak)
         {
             WinTiebreakPoint(playerId);
             uiManager.SetPlayerGameScore(sets, _currentGame, _currentSetIndex + 1);
@@ -113,15 +114,16 @@ public class ScoreManager : MonoBehaviour
         if (_currentGame.x >= 7 && _currentGame.y < _currentGame.x - 1)
         {
             sets[_currentSetIndex] = new Vector2Int(sets[_currentSetIndex].x + 1, sets[_currentSetIndex].y);
-            _currentlyInTiebreak = false;
+            currentlyInTiebreak = false;
             _currentGame = new Vector2Int(0, 0);
         }
         if (_currentGame.y >= 7 && _currentGame.x < _currentGame.y - 1)
         {
             sets[_currentSetIndex] = new Vector2Int(sets[_currentSetIndex].x, sets[_currentSetIndex].y + 1);
-            _currentlyInTiebreak = false;
+            currentlyInTiebreak = false;
             _currentGame = new Vector2Int(0, 0);
         }
+        CheckSetWon(sets[_currentSetIndex]);
     }
 
     private void WinGame(int playerId)
@@ -138,7 +140,7 @@ public class ScoreManager : MonoBehaviour
         CheckSetWon(sets[_currentSetIndex]);
         if (sets[_currentSetIndex].x == 6 && sets[_currentSetIndex].y == 6)
         {
-            _currentlyInTiebreak = true;
+            currentlyInTiebreak = true;
         }
         _currentGame = new Vector2Int(0, 0);
     }
@@ -178,7 +180,7 @@ public class ScoreManager : MonoBehaviour
 
     public ServingSide GetServingSide()
     {
-        if (_currentlyInTiebreak)
+        if (currentlyInTiebreak)
         {
             return (_currentGame.x + _currentGame.y) % 2 == 0 ? ServingSide.Even : ServingSide.Odd;
         }

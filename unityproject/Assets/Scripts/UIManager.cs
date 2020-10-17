@@ -15,6 +15,8 @@ public class UIManager : MonoBehaviour
     private TMP_Text _player2CurrentGameScore;
     private int _setCount = 1;
     private float _scoreSeparator = 2.5f;
+
+    private ScoreManager _scoreManager;
     
     // Start is called before the first frame update
     private void Start()
@@ -23,6 +25,8 @@ public class UIManager : MonoBehaviour
         _player2CurrentSetScore = currentSetContainer.Find("Player 2/Player 2 Score").GetComponent<TMP_Text>();
         _player1CurrentGameScore = currentGameContainer.Find("Player 1/Player 1 Score").GetComponent<TMP_Text>();
         _player2CurrentGameScore = currentGameContainer.Find("Player 2/Player 2 Score").GetComponent<TMP_Text>();
+
+        _scoreManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<ScoreManager>();
     }
 
     public void SetPlayerGameScore(List<Vector2Int> setsScores, Vector2Int gameScores, int setCount)
@@ -47,11 +51,11 @@ public class UIManager : MonoBehaviour
 
         // Shift current game and set transform positions
         var currentSetPosition = currentSetContainer.position;
-        currentSetContainer.position = new Vector3(_scoreSeparator + ((RectTransform) pastSet).rect.width,
+        currentSetContainer.position = new Vector3(currentSetPosition.x + _scoreSeparator + ((RectTransform) pastSet).rect.width,
             currentSetPosition.y, currentSetPosition.z);
             
         var currentGamePosition = currentGameContainer.position;
-        currentGameContainer.position = new Vector3(_scoreSeparator + ((RectTransform) pastSet).rect.width,
+        currentGameContainer.position = new Vector3(currentGamePosition.x + _scoreSeparator + ((RectTransform) pastSet).rect.width,
             currentGamePosition.y, currentGamePosition.z);
     }
     
@@ -67,7 +71,12 @@ public class UIManager : MonoBehaviour
     {
         _player1CurrentSetScore.text = currentSetScores[0].ToString();
         _player2CurrentSetScore.text = currentSetScores[1].ToString();
-        _player1CurrentGameScore.text = currentGameScores[0].ToString();
-        _player2CurrentGameScore.text = currentGameScores[1].ToString();
+        _player1CurrentGameScore.text = GetScoreString(currentGameScores[0]);
+        _player2CurrentGameScore.text = GetScoreString(currentGameScores[1]);
+    }
+
+    private string GetScoreString(int score)
+    {
+        return score == 45 && !_scoreManager.currentlyInTiebreak ? "AD" : score.ToString();
     }
 }
