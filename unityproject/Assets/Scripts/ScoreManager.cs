@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
@@ -25,7 +26,7 @@ public class ScoreManager : MonoBehaviour
     private bool _currentlyInTiebreak;
     private ServingSide _currentServingSide = ServingSide.Even;
     private int _servingPlayerId;
-        
+
     // Start is called before the first frame update
     void Start()
     {
