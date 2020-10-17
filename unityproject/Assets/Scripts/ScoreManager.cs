@@ -62,20 +62,20 @@ public class ScoreManager : MonoBehaviour
         }
         if (player1Id == playerId)
         {
-            if (_currentGame.x < 40)
+            if (_currentGame[0] < 40)
             {
-                _currentGame = new Vector2Int(IncreaseGameScore(_currentGame.x), _currentGame.y);
+                _currentGame = new Vector2Int(IncreaseGameScore(_currentGame[0]), _currentGame[1]);
             }
-            else switch (_currentGame.x)
+            else switch (_currentGame[0])
             {
-                case 40 when _currentGame.y < 40:
+                case 40 when _currentGame[1] < 40:
                     WinGame(playerId);
                     break;
-                case 40 when _currentGame.y == 40:
+                case 40 when _currentGame[1] == 40:
                     // 40 40 to AD 40
                     _currentGame = new Vector2Int(45, 40);
                     break;
-                case 40 when _currentGame.y == 45:
+                case 40 when _currentGame[1] == 45:
                     // 40 ad to 40 40
                     _currentGame = new Vector2Int(40, 40);
                     break;
@@ -87,20 +87,20 @@ public class ScoreManager : MonoBehaviour
         }
         else if(player2Id == playerId)
         {
-            if (_currentGame.y < 40)
+            if (_currentGame[1] < 40)
             {
-                _currentGame = new Vector2Int(_currentGame.x, IncreaseGameScore(_currentGame.y));
+                _currentGame = new Vector2Int(_currentGame[0], IncreaseGameScore(_currentGame[1]));
             }
-            else switch (_currentGame.y)
+            else switch (_currentGame[1])
             {
-                case 40 when _currentGame.x < 40:
+                case 40 when _currentGame[0] < 40:
                     WinGame(playerId);
                     break;
-                case 40 when _currentGame.x == 40:
+                case 40 when _currentGame[0] == 40:
                     // 40 40 to 40 AD
                     _currentGame = new Vector2Int(40, 45);
                     break;
-                case 40 when _currentGame.x == 45:
+                case 40 when _currentGame[0] == 45:
                     // AD 40 to 40 40
                     _currentGame = new Vector2Int(40, 40);
                     break;
@@ -116,25 +116,29 @@ public class ScoreManager : MonoBehaviour
     {
         if (player1Id == playerId)
         {
-            _currentGame = new Vector2Int(_currentGame.x + 1, _currentGame.y);
+            _currentGame = new Vector2Int(_currentGame[0] + 1, _currentGame[1]);
         }
         else if (player2Id == playerId)
         {
-            _currentGame = new Vector2Int(_currentGame.x, _currentGame.y + 1);
+            _currentGame = new Vector2Int(_currentGame[0], _currentGame[1] + 1);
         }
-        if (_currentGame.x >= 7 && _currentGame.y < _currentGame.x - 1)
+        if (_currentGame[0] >= 7 && _currentGame[1] < _currentGame[0] - 1)
         {
-            sets[_currentSetIndex] = new Vector2Int(sets[_currentSetIndex].x + 1, sets[_currentSetIndex].y);
+            sets[_currentSetIndex] = new Vector2Int(sets[_currentSetIndex][0] + 1, sets[_currentSetIndex][1]);
             currentlyInTiebreak = false;
             _currentGame = new Vector2Int(0, 0);
         }
-        if (_currentGame.y >= 7 && _currentGame.x < _currentGame.y - 1)
+        if (_currentGame[1] >= 7 && _currentGame[0] < _currentGame[1] - 1)
         {
-            sets[_currentSetIndex] = new Vector2Int(sets[_currentSetIndex].x, sets[_currentSetIndex].y + 1);
+            sets[_currentSetIndex] = new Vector2Int(sets[_currentSetIndex][0], sets[_currentSetIndex][1] + 1);
             currentlyInTiebreak = false;
             _currentGame = new Vector2Int(0, 0);
         }
         CheckSetWon(sets[_currentSetIndex]);
+        if ((_currentGame[1] + _currentGame[0]) % 2 == 1)
+        {
+            SwitchServingPlayer();
+        }
     }
 
     private void WinGame(int playerId)
@@ -142,18 +146,19 @@ public class ScoreManager : MonoBehaviour
         var currentSet = sets[_currentSetIndex];
         if (player1Id == playerId)
         {
-            sets[_currentSetIndex] = new Vector2Int(sets[_currentSetIndex].x + 1, sets[_currentSetIndex].y);
+            sets[_currentSetIndex] = new Vector2Int(sets[_currentSetIndex][0] + 1, sets[_currentSetIndex][1]);
         }
         else if (player2Id == playerId)
         {
-            sets[_currentSetIndex] = new Vector2Int(sets[_currentSetIndex].x, sets[_currentSetIndex].y + 1);
+            sets[_currentSetIndex] = new Vector2Int(sets[_currentSetIndex][0], sets[_currentSetIndex][1] + 1);
         }
         CheckSetWon(sets[_currentSetIndex]);
-        if (sets[_currentSetIndex].x == 6 && sets[_currentSetIndex].y == 6)
+        if (sets[_currentSetIndex][0] == 6 && sets[_currentSetIndex][1] == 6)
         {
             currentlyInTiebreak = true;
         }
         _currentGame = new Vector2Int(0, 0);
+        SwitchServingPlayer();
     }
 
     private int IncreaseGameScore(int currentScore)
@@ -173,12 +178,12 @@ public class ScoreManager : MonoBehaviour
 
     private void CheckSetWon(Vector2Int set)
     {
-        if (set.x == 6 && set.y < 5 || set.x == 7)
+        if (set[0] == 6 && set[1] < 5 || set[0] == 7)
         {
             _player1SetsWon += 1;
             _currentSetIndex += 1;
         }
-        if (set.y == 6 && set.x < 5 || set.y == 7)
+        if (set[1] == 6 && set[0] < 5 || set[1] == 7)
         {
             _player2SetsWon += 1;
             _currentSetIndex += 1;
@@ -193,20 +198,20 @@ public class ScoreManager : MonoBehaviour
     {
         if (currentlyInTiebreak)
         {
-            return (_currentGame.x + _currentGame.y) % 2 == 0 ? ServingSide.Even : ServingSide.Odd;
+            return (_currentGame[0] + _currentGame[1]) % 2 == 0 ? ServingSide.Even : ServingSide.Odd;
         }
-        switch (_currentGame.x) 
+        switch (_currentGame[0]) 
             {
                 case 0:
                 case 30:
-                    if (_currentGame.y == 0 || _currentGame.y == 30)
+                    if (_currentGame[1] == 0 || _currentGame[1] == 30)
                     {
                         return ServingSide.Even;
                     }
                     return ServingSide.Odd;
                 case 15:
                 case 40:
-                    if (_currentGame.y == 15 || _currentGame.y == 40)
+                    if (_currentGame[1] == 15 || _currentGame[1] == 40)
                     {
                         return ServingSide.Even;
                     }
@@ -225,5 +230,17 @@ public class ScoreManager : MonoBehaviour
     public int GetReceivingPlayerId()
     {
         return player1Id == _servingPlayerId ? player2Id : player1Id;
+    }
+
+    private void SwitchServingPlayer()
+    {
+        if (player1Id == _servingPlayerId)
+        {
+            _servingPlayerId = player2Id;
+        }
+        else
+        {
+            _servingPlayerId = player1Id;
+        }  
     }
 }
