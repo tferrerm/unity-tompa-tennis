@@ -9,6 +9,8 @@ public class ScoreManager : MonoBehaviour
         Even = 0,
         Odd = 1,
     }
+
+    public UIManager uiManager;
     
     private List<Vector2Int> sets = new List<Vector2Int>();
     private int _currentSetIndex = 0;
@@ -42,6 +44,7 @@ public class ScoreManager : MonoBehaviour
         if (_currentlyInTiebreak)
         {
             WinTiebreakPoint(playerId);
+            uiManager.SetPlayerGameScore(sets, _currentGame, _currentSetIndex + 1);
             return;
         }
         if (player1Id == playerId)
@@ -93,6 +96,7 @@ public class ScoreManager : MonoBehaviour
                     break;
             }
         }
+        uiManager.SetPlayerGameScore(sets, _currentGame, _currentSetIndex + 1);
     }
 
     private void WinTiebreakPoint(int playerId)
