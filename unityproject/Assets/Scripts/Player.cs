@@ -4,77 +4,56 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public Vector3 movSpeed;
+    public float runSpeed;
+    public float sprintSpeed;
 
     public float maxMovSpeed;
     public float movAcceleration;
 
     private CharacterController _characterController;
     private Animator _animator;
+
+    private float _moveLeftRightValue;
+    private float _moveUpDownValue;
+
+    private const float Epsilon = 0.001f;
+    
     void Start()
     {
+        _moveLeftRightValue = 0;
+        _moveUpDownValue = 0;
         _characterController = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
     }
     
     void Update()
     {
+        ReadInput();
         Move();
     }
 
     private void Move()
     {
-        CalculateSpeed("Vertical");
-        CalculateSpeed("Horizontal");
-        if (Math.Abs(movSpeed.x) > 0 || Math.Abs(movSpeed.z) > 0)
-        {
-            _animator.SetBool("Running", true);
-        }
-        else
-        {
-            _animator.SetBool("Running", false);
-        }
-        _characterController.Move(movSpeed * Time.deltaTime);
-    }
-
-    private void CalculateSpeed(string axis)
-    {
-        float input = Input.GetAxis(axis);
-        float speedChange = input * movAcceleration * Time.deltaTime;
+        float dt = Time.deltaTime;
+        Vector2 movingDir = new Vector2(_moveLeftRightValue, _moveUpDownValue);
+        float spd = ActionMapper.IsSprinting() ? sprintSpeed : runSpeed * movingDir.magnitude;
+        /*_animator.SetFloat("moveSpeed", spd / sprintSpeed);*/
+        float dx = dt * spd * _moveLeftRightValue;
+        float dz = dt * spd * _moveUpDownValue;
+        _characterController.Move(new Vector3(dx, 0, dz));
         
-        switch (axis)
+        if (Mathf.Abs(_moveLeftRightValue) > Epsilon || Mathf.Abs(_moveUpDownValue) > Epsilon)
         {
-            case "Vertical":
-                if (input == 0)
-                {
-                    movSpeed.x = 0;
-                }
-                else if (Math.Abs(movSpeed.x + speedChange) < maxMovSpeed)
-                {
-                    movSpeed.x += input * movAcceleration;
-                }
-                else
-                {
-                    movSpeed.x = maxMovSpeed * Math.Sign(input);
-                }
-
-                break;
-            case "Horizontal":
-                if (input == 0)
-                {
-                    movSpeed.z = 0;
-                }
-                else if (Math.Abs(movSpeed.z - speedChange) < maxMovSpeed)
-                {
-                    movSpeed.z -= input * movAcceleration;
-                }
-                else
-                {
-                    movSpeed.z = maxMovSpeed * Math.Sign(input) * -1;
-                }
-                break;
-            default:
-                throw new ArgumentException("Speed can be \"Vertical\" or \"Horizontal\"");
+            transform.forward = new Vector3(dx, 0f, dz);
         }
     }
+
+    void ReadInput()
+    {
+        _moveLeftRightValue = ActionMapper.GetMoveHorizontal(); 
+        _moveUpDownValue = ActionMapper.GetMoveVertical();
+
+        _animator.SetBool("isMoving", Math.Abs(_moveLeftRightValue) > Epsilon || Math.Abs(_moveUpDownValue) > Epsilon);
+    }
+
 }
