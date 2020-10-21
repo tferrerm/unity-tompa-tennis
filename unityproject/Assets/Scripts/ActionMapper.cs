@@ -6,7 +6,7 @@ public class ActionMapper
     public static float GetMoveHorizontal(int playerNum = 0)
     {
         float keyb = (Input.GetKey(KeyCode.LeftArrow) ? -1f : 0f) + (Input.GetKey(KeyCode.RightArrow) ? 1f : 0f);
-        return Input.GetAxis("Horizontal") + keyb;
+        return -1 * (Input.GetAxis("Horizontal") + keyb);
     }
     
     public static float GetMoveVertical(int playerNum = 0)
