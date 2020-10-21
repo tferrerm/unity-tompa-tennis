@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     private float _moveUpDownValue;
 
     private const float Epsilon = 0.001f;
+    private const float RotationEpsilon = 1e-4f;
     
     void Start()
     {
@@ -42,9 +43,11 @@ public class Player : MonoBehaviour
         float dz = dt * spd * _moveUpDownValue;
         _characterController.Move(new Vector3(dx, 0, dz));
         
-        if (Mathf.Abs(_moveLeftRightValue) > Epsilon || Mathf.Abs(_moveUpDownValue) > Epsilon)
+        var rotation = new Vector3(dx, 0f, dz);
+        
+        if (rotation.sqrMagnitude > RotationEpsilon)
         {
-            transform.forward = new Vector3(dx, 0f, dz);
+            transform.forward = rotation;
         }
     }
 
