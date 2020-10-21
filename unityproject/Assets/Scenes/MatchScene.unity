@@ -4375,6 +4375,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 11795bec4986044d6a6234059283df44, type: 2}
+    - target: {fileID: 9500000, guid: d19c2305f29125b45a9e313d77bb6eb8, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d19c2305f29125b45a9e313d77bb6eb8, type: 3}
 --- !u!1 &575232412
@@ -6253,7 +6257,7 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 11795bec4986044d6a6234059283df44, type: 2}
     - target: {fileID: 9500000, guid: 67192dfd4237c7a40a42c90c49729762, type: 3}
       propertyPath: m_ApplyRootMotion
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 67192dfd4237c7a40a42c90c49729762, type: 3}
@@ -8227,8 +8231,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   runSpeed: 5
   sprintSpeed: 8
-  maxMovSpeed: 20
-  movAcceleration: 1
 --- !u!1 &1022254774
 GameObject:
   m_ObjectHideFlags: 0
@@ -10014,8 +10016,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   runSpeed: 5
   sprintSpeed: 0
-  maxMovSpeed: 20
-  movAcceleration: 1
 --- !u!143 &1194991529
 CharacterController:
   m_ObjectHideFlags: 0
@@ -13000,6 +13000,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 11795bec4986044d6a6234059283df44, type: 2}
+    - target: {fileID: 9500000, guid: bf257be2f0b414447950882a85082437, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bf257be2f0b414447950882a85082437, type: 3}
 --- !u!1 &1510746308
@@ -18331,10 +18335,10 @@ PrefabInstance:
     - target: {fileID: 9500000, guid: c30a39d413d2e0d4fb9a550f355d3adf, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 9100000, guid: 11795bec4986044d6a6234059283df44, type: 2}
     - target: {fileID: 9500000, guid: c30a39d413d2e0d4fb9a550f355d3adf, type: 3}
       propertyPath: m_ApplyRootMotion
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c30a39d413d2e0d4fb9a550f355d3adf, type: 3}
