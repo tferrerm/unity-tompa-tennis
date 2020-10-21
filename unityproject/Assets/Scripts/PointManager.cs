@@ -6,7 +6,9 @@ using UnityEngine;
 public class PointManager : MonoBehaviour
 {
     public ScoreManager scoreManager;
-    public enum PointState
+    public CourtSectionMapper courtSectionMapper;
+
+    private enum PointState
     {
         FirstServe = 0,
         SecondServe = 1,
@@ -15,7 +17,12 @@ public class PointManager : MonoBehaviour
         ServerTurn = 4,
         ServerHit = 5,
     }
-    
+
+    public enum CourtTarget
+    {
+        Receiver = 0,
+        Server = 1,
+    }
 
     private PointState _pointState = PointState.FirstServe;
     // Start is called before the first frame update
@@ -32,34 +39,46 @@ public class PointManager : MonoBehaviour
 
     private void HandleBallBounce()
     {
+        bool ballCollidedWithCourt;
+        bool ballCollidedWithServerRacket;
+        bool ballCollidedWithReceiverRacket;
+        var bounceCoordinates = new Vector2Int();
+        
+        if (ballCollidedWithCourt)
+        {
+            /*
+             * Set collision coordinates
+             */
+            bounceCoordinates = new Vector2Int();
+        }
+        
         switch (_pointState)
         {
             case PointState.FirstServe:
             case PointState.SecondServe:
-                if ( scoreManager.GetServingSide() == ScoreManager.ServingSide.Even  /* REPLACE && el colide fue en el cuadrado de la IZQUIERDA DEL RECEPTOR*/ ||
-                     scoreManager.GetServingSide() == ScoreManager.ServingSide.Odd  /* REPLACE && el colide fue en el cuadrado de la DERECHA DEL RECEPTOR*/)
+                if ( ballCollidedWithCourt && courtSectionMapper.ServiceIsIn(bounceCoordinates))
+                {
+                    // Service is in
+                    _pointState = PointState.ReceiverTurn;
+                }
+                else
+                {
+                    // Service is out
+                    if (_pointState == PointState.FirstServe)
                     {
-                        // Service is in
-                        _pointState = PointState.ReceiverTurn;
+                        _pointState = PointState.SecondServe;
                     }
                     else
                     {
-                        // Service is out
-                        if (_pointState == PointState.FirstServe)
-                        {
-                            _pointState = PointState.SecondServe;
-                        }
-                        else
-                        {
-                            //Double fault
-                            _pointState = PointState.FirstServe;
-                            scoreManager.WinPoint(scoreManager.GetReceivingPlayerId());
-                            ResetPoint();
-                        }
+                        //Double fault
+                        _pointState = PointState.FirstServe;
+                        scoreManager.WinPoint(scoreManager.GetReceivingPlayerId());
+                        ResetPoint();
                     }
+                }
                 break;
             case PointState.ReceiverTurn:
-                if (false /* REPLACE el colide fue en la RAQUETA DEL RECEIVER */)
+                if (ballCollidedWithReceiverRacket)
                 {
                     _pointState = PointState.ReceiverHit;
                 }
@@ -70,11 +89,11 @@ public class PointManager : MonoBehaviour
                 }
                 break;
             case PointState.ReceiverHit:
-                if (false /* REPLACE el collide fue en la RAQUETA DEL SERVER */)
+                if (ballCollidedWithServerRacket)
                 {
                     _pointState = PointState.ServerHit;
                 }
-                else if(false /*REPLACE el collide fue en la CANCHA DEL SERVER */)
+                else if(ballCollidedWithCourt && courtSectionMapper.BallIsIn(bounceCoordinates, CourtTarget.Server))
                 {
                     _pointState = PointState.ServerTurn;
                 }
@@ -86,7 +105,7 @@ public class PointManager : MonoBehaviour
                 }
                 break;
             case PointState.ServerTurn:
-                if (false /* REPLACE el colide fue en la RAQUETA DEL SERVER */)
+                if (ballCollidedWithServerRacket)
                 {
                     _pointState = PointState.ServerHit;
                 }
@@ -98,11 +117,11 @@ public class PointManager : MonoBehaviour
                 }
                 break;
             case PointState.ServerHit:
-                if (false /* REPLACE el collide fue en la RAQUETA DEL RECEIVER */)
+                if (ballCollidedWithReceiverRacket)
                 {
                     _pointState = PointState.ReceiverHit;
                 }
-                else if(false /* REPLACE el collide fue en la CANCHA DEL RECEIVER */)
+                else if(courtSectionMapper.BallIsIn(bounceCoordinates, CourtTarget.Receiver))
                 {
                     _pointState = PointState.ReceiverTurn;
                 }
