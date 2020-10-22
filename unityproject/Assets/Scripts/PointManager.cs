@@ -39,9 +39,9 @@ public class PointManager : MonoBehaviour
 
     private void HandleBallBounce()
     {
-        bool ballCollidedWithCourt;
-        bool ballCollidedWithServerRacket;
-        bool ballCollidedWithReceiverRacket;
+        bool ballCollidedWithCourt = false;
+        bool ballCollidedWithServerRacket = false;
+        bool ballCollidedWithReceiverRacket = false;
         var bounceCoordinates = new Vector2Int();
         
         if (ballCollidedWithCourt)
