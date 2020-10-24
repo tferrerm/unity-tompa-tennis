@@ -99,57 +99,57 @@ public class CourtSectionMapper
             {
                 //COORDINATES FOR FRONT FULL COURT
                 area.DepthLimit = 0;
-                area.DepthStart = 0;
-                area.HorizontalLimit = 0;
-                area.HorizontalStart = 0;
+                area.DepthStart = -39.155f;
+                area.HorizontalLimit = 14f;
+                area.HorizontalStart = -13.82f;
             }
-            else
+            else if(type == AreaType.ServingSquare)
             {
                 if (horizontal == Horizontal.Left)
                 {
                     //COORDINATES FOR FRONT LEFT SERVING SQUARE
                     area.DepthLimit = 0;
-                    area.DepthStart = 0;
-                    area.HorizontalLimit = 0;
-                    area.HorizontalStart = 0;
+                    area.DepthStart = -21.38f;
+                    area.HorizontalLimit = 14f;
+                    area.HorizontalStart = -0.21f;
                 }
-                else
+                else if(horizontal == Horizontal.Right)
                 {
                     //COORDINATES FOR FRONT RIGHT SERVING SQUARE
                     area.DepthLimit = 0;
-                    area.DepthStart = 0;
-                    area.HorizontalLimit = 0;
-                    area.HorizontalStart = 0;
+                    area.DepthStart = -21.38f;
+                    area.HorizontalLimit = 0.145f;
+                    area.HorizontalStart = -13.82f;
                 }
             }
         }
-        else
+        else if(depth == Depth.Back)
         {
             if (type == AreaType.Full)
             {
                 //COORDINATES FOR BACK FULL COURT
-                area.DepthLimit = 0;
-                area.DepthStart = 0;
-                area.HorizontalLimit = 0;
-                area.HorizontalStart = 0;
+                area.DepthLimit = 39.015f;
+                area.DepthStart = 0.044f;
+                area.HorizontalLimit = 14f;
+                area.HorizontalStart = -13.82f;
             }
-            else
+            else if(type == AreaType.ServingSquare)
             {
                 if (horizontal == Horizontal.Left)
                 {
                     //COORDINATES FOR BACK LEFT SERVING SQUARE
-                    area.DepthLimit = 0;
-                    area.DepthStart = 0;
-                    area.HorizontalLimit = 0;
-                    area.HorizontalStart = 0;
+                    area.DepthLimit = 21.176f;
+                    area.DepthStart = 0.044f;
+                    area.HorizontalLimit = 14f;
+                    area.HorizontalStart = -0.21f;
                 }
-                else
+                else if(horizontal == Horizontal.Right)
                 {
                     //COORDINATES FOR BACK RIGHT SERVING SQUARE
-                    area.DepthLimit = 0;
-                    area.DepthStart = 0;
-                    area.HorizontalLimit = 0;
-                    area.HorizontalStart = 0;
+                    area.DepthLimit = 21.176f;
+                    area.DepthStart = 0.044f;
+                    area.HorizontalLimit = 0.145f;
+                    area.HorizontalStart = -13.82f;
                 }
             }
         }
