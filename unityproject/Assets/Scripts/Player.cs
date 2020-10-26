@@ -18,7 +18,9 @@ public class Player : MonoBehaviour
 
     private const float Epsilon = 0.001f;
     private const float RotationEpsilon = 1e-4f;
-    
+
+    public Rigidbody ball;
+
     void Start()
     {
         _characterController = GetComponent<CharacterController>();

@@ -11628,6 +11628,12 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!1 &1411525245 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7372489401241218092, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+    type: 3}
+  m_PrefabInstance: {fileID: 7372489402327860111}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1421632865
 GameObject:
   m_ObjectHideFlags: 0
@@ -18193,5 +18199,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: ball
+      value: 
+      objectReference: {fileID: 891900774}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: neck
+      value: 
+      objectReference: {fileID: 1411525245}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1accc87c261a23f4cb5b0ef26871e32b, type: 3}
