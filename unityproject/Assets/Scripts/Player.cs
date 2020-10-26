@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections;
+using System.Numerics;
 using UnityEngine;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 public class Player : MonoBehaviour
 {
@@ -44,6 +47,9 @@ public class Player : MonoBehaviour
         float spd = ActionMapper.IsSprinting() ? sprintSpeed : runSpeed * movingDir.magnitude;
         float dx = dt * spd * _moveUpDownValue;
         float dz = dt * spd * _moveLeftRightValue;
+
+        _characterController.SimpleMove(Vector3.zero);
+        
         Vector3 move = new Vector3(dx, 0, dz);
         _animator.SetFloat(_speedHash, spd / sprintSpeed);
         _animator.SetInteger(_directionHash, CurrentDirection(move));
