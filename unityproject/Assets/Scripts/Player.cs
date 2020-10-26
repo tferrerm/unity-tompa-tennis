@@ -54,25 +54,28 @@ public class Player : MonoBehaviour
         _animator.SetFloat(_speedHash, spd / sprintSpeed);
         _animator.SetInteger(_directionHash, CurrentDirection(move));
         _characterController.Move(move);
-        
-        /*var rotation = move;
-        
-        if (rotation.sqrMagnitude > RotationEpsilon)
-        {
-            transform.forward = rotation;
-        }*/
     }
 
     private int CurrentDirection(Vector3 move)
     {
-        if (move.z > 0)
-            return (int)Direction.Left;
-        if (move.z < 0)
-            return (int)Direction.Right;
-        if (move.x < 0)
-            return (int)Direction.Back;
-
-        return (int)Direction.Forward;
+        if (move.z > 0 && move.x == 0)
+            return (int) Direction.Left;
+        if (move.z < 0 && move.x == 0)
+            return (int) Direction.Right;
+        if (move.x < 0 && move.z == 0)
+            return (int) Direction.Back;
+        if (move.x > 0 && move.z == 0)
+            return (int) Direction.Forward;
+        if (move.z > 0 && move.x > 0)
+            return (int) Direction.ForwardLeft;
+        if (move.z < 0 && move.x > 0)
+            return (int) Direction.ForwardRight;
+        if (move.z > 0 && move.x < 0)
+            return (int) Direction.BackLeft;
+        if (move.z < 0 && move.x < 0)
+            return (int) Direction.BackRight;
+        
+        return (int) Direction.Forward;
     }
 
     void ReadInput()
