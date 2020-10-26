@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     private Animator _animator;
     private int _isMovingHash;
     private int _speedHash;
+    private int _directionHash;
 
     private float _moveLeftRightValue;
     private float _moveUpDownValue;
@@ -27,6 +28,7 @@ public class Player : MonoBehaviour
         _animator = GetComponent<Animator>();
         _isMovingHash = Animator.StringToHash("IsMoving");
         _speedHash = Animator.StringToHash("Speed");
+        _directionHash = Animator.StringToHash("Direction");
     }
     
     void Update()
@@ -40,23 +42,37 @@ public class Player : MonoBehaviour
         float dt = Time.deltaTime;
         Vector2 movingDir = new Vector2(_moveLeftRightValue, _moveUpDownValue);
         float spd = ActionMapper.IsSprinting() ? sprintSpeed : runSpeed * movingDir.magnitude;
+        float dx = dt * spd * _moveUpDownValue;
+        float dz = dt * spd * _moveLeftRightValue;
+        Vector3 move = new Vector3(dx, 0, dz);
         _animator.SetFloat(_speedHash, spd / sprintSpeed);
-        float dx = dt * spd * _moveLeftRightValue;
-        float dz = dt * spd * _moveUpDownValue;
-        _characterController.Move(new Vector3(dx, 0, dz));
+        _animator.SetInteger(_directionHash, CurrentDirection(move));
+        _characterController.Move(move);
         
-        var rotation = new Vector3(dx, 0f, dz);
+        /*var rotation = move;
         
         if (rotation.sqrMagnitude > RotationEpsilon)
         {
             transform.forward = rotation;
-        }
+        }*/
+    }
+
+    private int CurrentDirection(Vector3 move)
+    {
+        if (move.z > 0)
+            return (int)Direction.Left;
+        if (move.z < 0)
+            return (int)Direction.Right;
+        if (move.x < 0)
+            return (int)Direction.Back;
+
+        return (int)Direction.Forward;
     }
 
     void ReadInput()
     {
-        _moveLeftRightValue = ActionMapper.GetMoveVertical(); 
-        _moveUpDownValue = ActionMapper.GetMoveHorizontal();
+        _moveLeftRightValue = ActionMapper.GetMoveHorizontal(); 
+        _moveUpDownValue = ActionMapper.GetMoveVertical();
 
         _animator.SetBool(_isMovingHash, Math.Abs(_moveLeftRightValue) > Epsilon || Math.Abs(_moveUpDownValue) > Epsilon);
     }
