@@ -15,7 +15,8 @@ public class Player : MonoBehaviour
     private Animator _animator;
     private int _isMovingHash;
     private int _speedHash;
-    private int _directionHash;
+    private int _strafeHash;
+    private int _forwardHash;
 
     private float _moveLeftRightValue;
     private float _moveUpDownValue;
@@ -31,7 +32,8 @@ public class Player : MonoBehaviour
         _animator = GetComponent<Animator>();
         _isMovingHash = Animator.StringToHash("IsMoving");
         _speedHash = Animator.StringToHash("Speed");
-        _directionHash = Animator.StringToHash("Direction");
+        _strafeHash = Animator.StringToHash("Strafe");
+        _forwardHash = Animator.StringToHash("Forward");
     }
     
     void Update()
@@ -52,30 +54,26 @@ public class Player : MonoBehaviour
         
         Vector3 move = new Vector3(dx, 0, dz);
         _animator.SetFloat(_speedHash, spd / sprintSpeed);
-        _animator.SetInteger(_directionHash, CurrentDirection(move));
+        Vector2 animatorDirections = CurrentDirection(move);
+        _animator.SetFloat(_strafeHash, animatorDirections[0]);
+        _animator.SetFloat(_forwardHash, animatorDirections[1]);
         _characterController.Move(move);
     }
 
-    private int CurrentDirection(Vector3 move)
+    private Vector2 CurrentDirection(Vector3 move)
     {
-        if (move.z > 0 && move.x == 0)
-            return (int) Direction.Left;
-        if (move.z < 0 && move.x == 0)
-            return (int) Direction.Right;
-        if (move.x < 0 && move.z == 0)
-            return (int) Direction.Back;
-        if (move.x > 0 && move.z == 0)
-            return (int) Direction.Forward;
-        if (move.z > 0 && move.x > 0)
-            return (int) Direction.ForwardLeft;
-        if (move.z < 0 && move.x > 0)
-            return (int) Direction.ForwardRight;
-        if (move.z > 0 && move.x < 0)
-            return (int) Direction.BackLeft;
-        if (move.z < 0 && move.x < 0)
-            return (int) Direction.BackRight;
-        
-        return (int) Direction.Forward;
+        Vector2 response = new Vector2((float) StrafeDirection.Idle, 
+            (float) VerticalDirection.Idle);
+        if (move.z > 0)
+            response[0] = (float) StrafeDirection.Left;
+        else if (move.z < 0)
+            response[0] = (float) StrafeDirection.Right;
+        if (move.x > 0)
+            response[1] = (float) VerticalDirection.Forward;
+        else if (move.x < 0)
+            response[1] = (float) VerticalDirection.Backward;
+
+        return response;
     }
 
     void ReadInput()

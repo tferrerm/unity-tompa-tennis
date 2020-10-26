@@ -1,11 +1,13 @@
-﻿public enum Direction
+﻿public enum VerticalDirection
 {
-    Forward = 0,
-    Back = 1,
-    Left = 2,
-    Right = 3,
-    ForwardLeft = 4,
-    ForwardRight = 5,
-    BackLeft = 6,
-    BackRight = 7
+    Idle = 0,
+    Forward = 1,
+    Backward = -1
+}
+
+public enum StrafeDirection
+{
+    Idle = 0,
+    Left = 1,
+    Right = -1
 }
