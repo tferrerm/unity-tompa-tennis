@@ -18,7 +18,9 @@ public class Player : MonoBehaviour
 
     private const float Epsilon = 0.001f;
     private const float RotationEpsilon = 1e-4f;
-    
+
+    public Rigidbody ball;
+
     void Start()
     {
         _characterController = GetComponent<CharacterController>();
@@ -38,7 +40,7 @@ public class Player : MonoBehaviour
         float dt = Time.deltaTime;
         Vector2 movingDir = new Vector2(_moveLeftRightValue, _moveUpDownValue);
         float spd = ActionMapper.IsSprinting() ? sprintSpeed : runSpeed * movingDir.magnitude;
-        // _animator.SetFloat(_speedHash, spd / sprintSpeed);
+        _animator.SetFloat(_speedHash, spd / sprintSpeed);
         float dx = dt * spd * _moveLeftRightValue;
         float dz = dt * spd * _moveUpDownValue;
         _characterController.Move(new Vector3(dx, 0, dz));
@@ -56,7 +58,7 @@ public class Player : MonoBehaviour
         _moveLeftRightValue = ActionMapper.GetMoveVertical(); 
         _moveUpDownValue = ActionMapper.GetMoveHorizontal();
 
-        // _animator.SetBool(_isMovingHash, Math.Abs(_moveLeftRightValue) > Epsilon || Math.Abs(_moveUpDownValue) > Epsilon);
+        _animator.SetBool(_isMovingHash, Math.Abs(_moveLeftRightValue) > Epsilon || Math.Abs(_moveUpDownValue) > Epsilon);
     }
 
 }
