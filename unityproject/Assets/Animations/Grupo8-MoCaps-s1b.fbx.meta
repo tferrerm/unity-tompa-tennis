@@ -6,6 +6,51 @@ ModelImporter:
   - first:
       74: -4924139177129017406
     second: guido1final
+  - first:
+      74: -1808742446471734891
+    second: ball_bounce
+  - first:
+      74: -6974432800914558805
+    second: drive_1
+  - first:
+      74: 8944713881643366394
+    second: smash
+  - first:
+      74: 6110830576954560855
+    second: service
+  - first:
+      74: -2509479080152051366
+    second: backhand
+  - first:
+      74: -71217616558288880
+    second: backhand_2
+  - first:
+      74: -2711327970621185956
+    second: drive_difficult
+  - first:
+      74: -8640567360565670975
+    second: drive_2
+  - first:
+      74: -5252816984213320552
+    second: idle
+  - first:
+      74: -3135740509757703075
+    second: celebration
+  - first:
+      74: 3762052589419716101
+    second: drive_difficult_2
+  - first:
+      74: 8572273613251605096
+    second: drive_difficult_3
+  - first:
+      74: 5008869839457127963
+    second: walk_backwards
+  - first:
+      74: 6247073930521947497
+    second: walk_short_forward
+  - first:
+      74: 3377290265148058090
+    second: idle_2
   externalObjects: {}
   materials:
     materialImportMode: 1
@@ -21,7 +66,12 @@ ModelImporter:
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: 
+    animationImportWarnings: "\nClip 'guido1final' has import animation warnings
+      that might lower retargeting quality:\nNote: Activate translation DOF on avatar
+      to improve retargeting quality.\n\t'GuidoP_Spine1' has translation animation
+      that will be discarded.\n\t'GuidoP_Head' has translation animation that will
+      be discarded.\n\t'GuidoP_LeftHand' has translation animation that will be discarded.\n\t'GuidoP_RightHand'
+      has translation animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -33,7 +83,471 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: guido1final
+      takeName: guido1final
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 6782
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: ball_bounce
+      takeName: guido1final
+      internalID: 0
+      firstFrame: 280
+      lastFrame: 500
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: drive_1
+      takeName: guido1final
+      internalID: 0
+      firstFrame: 550
+      lastFrame: 725
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: smash
+      takeName: guido1final
+      internalID: 0
+      firstFrame: 1050
+      lastFrame: 1200
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: service
+      takeName: guido1final
+      internalID: 0
+      firstFrame: 1450
+      lastFrame: 1650
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: backhand
+      takeName: guido1final
+      internalID: 0
+      firstFrame: 1750
+      lastFrame: 1880
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: backhand_2
+      takeName: guido1final
+      internalID: 0
+      firstFrame: 2025
+      lastFrame: 2150
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: drive_difficult
+      takeName: guido1final
+      internalID: 0
+      firstFrame: 4085.0002
+      lastFrame: 4220
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: drive_2
+      takeName: guido1final
+      internalID: 0
+      firstFrame: 4610
+      lastFrame: 4770
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: idle
+      takeName: guido1final
+      internalID: 0
+      firstFrame: 5020
+      lastFrame: 5165
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: celebration
+      takeName: guido1final
+      internalID: 0
+      firstFrame: 5165
+      lastFrame: 5280
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: drive_difficult_2
+      takeName: guido1final
+      internalID: 0
+      firstFrame: 5560
+      lastFrame: 5685
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: drive_difficult_3
+      takeName: guido1final
+      internalID: 0
+      firstFrame: 5860
+      lastFrame: 6005
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: walk_backwards
+      takeName: guido1final
+      internalID: 0
+      firstFrame: 6085
+      lastFrame: 6225
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: walk_short_forward
+      takeName: guido1final
+      internalID: 0
+      firstFrame: 6240
+      lastFrame: 6425
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: idle_2
+      takeName: guido1final
+      internalID: 0
+      firstFrame: 6485
+      lastFrame: 6535
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 0
   meshes:
     lODScreenPercentages: []
@@ -79,8 +593,286 @@ ModelImporter:
   importAnimation: 1
   humanDescription:
     serializedVersion: 3
-    human: []
-    skeleton: []
+    human:
+    - boneName: GuidoP_Hips
+      humanName: Hips
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: GuidoP_LeftUpLeg
+      humanName: LeftUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: GuidoP_RightUpLeg
+      humanName: RightUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: GuidoP_LeftLeg
+      humanName: LeftLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: GuidoP_RightLeg
+      humanName: RightLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: GuidoP_LeftFoot
+      humanName: LeftFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: GuidoP_RightFoot
+      humanName: RightFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: GuidoP_Spine
+      humanName: Spine
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: GuidoP_Spine1
+      humanName: Chest
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: GuidoP_Neck
+      humanName: Neck
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: GuidoP_Head
+      humanName: Head
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: GuidoP_LeftShoulder
+      humanName: LeftShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: GuidoP_RightShoulder
+      humanName: RightShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: GuidoP_LeftArm
+      humanName: LeftUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: GuidoP_RightArm
+      humanName: RightUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: GuidoP_LeftForeArm
+      humanName: LeftLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: GuidoP_RightForeArm
+      humanName: RightLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: GuidoP_LeftHand
+      humanName: LeftHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: GuidoP_RightHand
+      humanName: RightHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: GuidoP_LeftToeBase
+      humanName: LeftToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: GuidoP_RightToeBase
+      humanName: RightToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    skeleton:
+    - name: Grupo8-MoCaps-s1b(Clone)
+      parentName: 
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GuidoP_Hips
+      parentName: Grupo8-MoCaps-s1b(Clone)
+      position: {x: 0, y: 0.8968493, z: 0.06392961}
+      rotation: {x: 0.005301517, y: -0.005347123, z: -0.0061270837, w: 0.9999529}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GuidoP_Spine
+      parentName: GuidoP_Hips
+      position: {x: -0, y: 0.07431266, z: 0}
+      rotation: {x: 0.00994629, y: -0.0020271153, z: 0.0011755703, w: 0.9999478}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GuidoP_Spine1
+      parentName: GuidoP_Spine
+      position: {x: 0.00002360344, y: 0.18947732, z: 0.0000059232116}
+      rotation: {x: -0.014144787, y: -0.0006596681, z: 0.009837308, w: 0.99985135}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GuidoP_Neck
+      parentName: GuidoP_Spine1
+      position: {x: -0, y: 0.2065956, z: 0}
+      rotation: {x: 0.16843021, y: -0.06509958, z: -0.07986568, w: 0.98031366}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GuidoP_Head
+      parentName: GuidoP_Neck
+      position: {x: -0, y: 0.14046904, z: 0.018125037}
+      rotation: {x: -0.2967796, y: -0.07923215, z: 0.058043554, w: 0.9498816}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GuidoP_LeftShoulder
+      parentName: GuidoP_Spine1
+      position: {x: -0.036760658, y: 0.16451836, z: -0.000013142824}
+      rotation: {x: -0.0011015821, y: -0.010740788, z: -0.16900955, w: 0.9855553}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GuidoP_LeftArm
+      parentName: GuidoP_LeftShoulder
+      position: {x: -0.12739731, y: 0, z: 0}
+      rotation: {x: 0.013516518, y: 0.045025513, z: 0.15679812, w: 0.98651123}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GuidoP_LeftForeArm
+      parentName: GuidoP_LeftArm
+      position: {x: -0.28089207, y: 0, z: 0}
+      rotation: {x: 0.048123833, y: -0.013627777, z: 0.016238822, w: 0.9986164}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GuidoP_LeftHand
+      parentName: GuidoP_LeftForeArm
+      position: {x: -0.21678284, y: 0.000011563301, z: 0.000026345253}
+      rotation: {x: 0.048078194, y: 0.036036164, z: 0.03159063, w: 0.9976933}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GuidoP_RightShoulder
+      parentName: GuidoP_Spine1
+      position: {x: 0.035670064, y: 0.16451836, z: -0.000013142824}
+      rotation: {x: 0.00833502, y: 0.04294683, z: 0.15626316, w: 0.9867462}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GuidoP_RightArm
+      parentName: GuidoP_RightShoulder
+      position: {x: 0.12739731, y: 0, z: 0}
+      rotation: {x: -0.040160786, y: -0.019426344, z: -0.18029742, w: 0.9825999}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GuidoP_RightForeArm
+      parentName: GuidoP_RightArm
+      position: {x: 0.28089207, y: 0, z: 0}
+      rotation: {x: -0.017452085, y: -0.013740924, z: -0.0053746486, w: 0.9997389}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GuidoP_RightHand
+      parentName: GuidoP_RightForeArm
+      position: {x: 0.21682422, y: -0.000007748604, z: -0.000049952418}
+      rotation: {x: -0.01733882, y: 0.073994905, z: -0.086673185, w: 0.9933337}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GuidoP_LeftUpLeg
+      parentName: GuidoP_Hips
+      position: {x: -0.09062519, y: 0, z: 0}
+      rotation: {x: -0.026190497, y: -0.053151146, z: -0.02133283, w: 0.998015}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GuidoP_LeftLeg
+      parentName: GuidoP_LeftUpLeg
+      position: {x: -0, y: -0.41873935, z: 0}
+      rotation: {x: 0.10862826, y: -0.120057516, z: -0.07898529, w: 0.9836399}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GuidoP_LeftFoot
+      parentName: GuidoP_LeftLeg
+      position: {x: -0, y: -0.36095747, z: 0}
+      rotation: {x: -0.09869982, y: 0.06406994, z: 0.08564972, w: 0.9893521}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GuidoP_LeftToeBase
+      parentName: GuidoP_LeftFoot
+      position: {x: -0, y: -0.05890637, z: 0.13593778}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GuidoP_RightUpLeg
+      parentName: GuidoP_Hips
+      position: {x: 0.09062519, y: 0, z: 0}
+      rotation: {x: 0.0137444185, y: -0.013655253, z: 0.028386181, w: 0.99940926}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GuidoP_RightLeg
+      parentName: GuidoP_RightUpLeg
+      position: {x: -0, y: -0.41873935, z: 0}
+      rotation: {x: 0.058546312, y: 0.056702144, z: -0.011800164, w: 0.9966032}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GuidoP_RightFoot
+      parentName: GuidoP_RightLeg
+      position: {x: -0, y: -0.36095747, z: 0}
+      rotation: {x: -0.023075689, y: 0.119721435, z: -0.046374172, w: 0.9914554}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GuidoP_RightToeBase
+      parentName: GuidoP_RightFoot
+      position: {x: -0, y: -0.05890637, z: 0.13593778}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
     armTwist: 0.5
     foreArmTwist: 0.5
     upperLegTwist: 0.5
