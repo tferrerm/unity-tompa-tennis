@@ -54,26 +54,10 @@ public class Player : MonoBehaviour
         
         Vector3 move = new Vector3(dx, 0, dz);
         _animator.SetFloat(_speedHash, spd / sprintSpeed);
-        Vector2 animatorDirections = CurrentDirection(move);
-        _animator.SetFloat(_strafeHash, animatorDirections[0]);
-        _animator.SetFloat(_forwardHash, animatorDirections[1]);
+        
+        _animator.SetFloat(_strafeHash, _moveLeftRightValue);
+        _animator.SetFloat(_forwardHash, _moveUpDownValue);
         _characterController.Move(move);
-    }
-
-    private Vector2 CurrentDirection(Vector3 move)
-    {
-        Vector2 response = new Vector2((float) StrafeDirection.Idle, 
-            (float) VerticalDirection.Idle);
-        if (move.z > 0)
-            response[0] = (float) StrafeDirection.Left;
-        else if (move.z < 0)
-            response[0] = (float) StrafeDirection.Right;
-        if (move.x > 0)
-            response[1] = (float) VerticalDirection.Forward;
-        else if (move.x < 0)
-            response[1] = (float) VerticalDirection.Backward;
-
-        return response;
     }
 
     void ReadInput()
