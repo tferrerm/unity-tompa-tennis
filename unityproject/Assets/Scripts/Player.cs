@@ -66,6 +66,8 @@ public class Player : MonoBehaviour
         float dt = Time.deltaTime;
         Vector2 movingDir = new Vector2(_moveLeftRightValue, _moveUpDownValue);
         float manhattanNorm = Math.Abs(movingDir[0]) + Math.Abs(movingDir[1]);
+        if (manhattanNorm == 0)
+            manhattanNorm = 1;
         float spd = ActionMapper.IsSprinting() ? sprintSpeed : runSpeed * movingDir.magnitude;
         float dx = dt * (_moveUpDownValue < 0 ? backSpeed : spd) * _moveUpDownValue / manhattanNorm;
         float dz = dt * spd * _moveLeftRightValue / manhattanNorm;

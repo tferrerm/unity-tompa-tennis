@@ -18175,6 +18175,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1202848114, guid: 1accc87c261a23f4cb5b0ef26871e32b, type: 3}
+      propertyPath: m_Name
+      value: attachedBall
+      objectReference: {fileID: 0}
     - target: {fileID: 7372489401241218498, guid: 1accc87c261a23f4cb5b0ef26871e32b,
         type: 3}
       propertyPath: m_Name
@@ -18249,6 +18253,6 @@ PrefabInstance:
         type: 3}
       propertyPath: attachedBall
       value: 
-      objectReference: {fileID: 1202848114}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1accc87c261a23f4cb5b0ef26871e32b, type: 3}
