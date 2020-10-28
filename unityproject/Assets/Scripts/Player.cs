@@ -32,9 +32,13 @@ public class Player : MonoBehaviour
     private const float RotationEpsilon = 1e-4f;
 
     public Rigidbody ball;
+    //public GameObject attachedBall;
 
     public GameManager gameManager;
     private PointManager _pointManager;
+    //
+    // private bool _serveBallReleased = false;
+    // private Vector3 _tossForce = new Vector3(0, 4, 0);
 
     void Start()
     {
@@ -52,6 +56,7 @@ public class Player : MonoBehaviour
     
     void Update()
     {
+        //CheckServiceStatus();
         ReadInput();
         Move();
     }
@@ -80,6 +85,7 @@ public class Player : MonoBehaviour
         if (ActionMapper.IsServing() && _pointManager.IsServing(playerId))
         {
             _animator.SetTrigger(_serviceTriggerHash);
+           //SwitchBallType(true);
         }
 
         var currentStateHash = _animator.GetCurrentAnimatorStateInfo(0).shortNameHash;
@@ -91,5 +97,25 @@ public class Player : MonoBehaviour
 
         _animator.SetBool(_isMovingHash, Math.Abs(_moveLeftRightValue) > Epsilon || Math.Abs(_moveUpDownValue) > Epsilon);
     }
+
+    // void CheckServiceStatus()
+    // {
+    //     var currentStateHash = _animator.GetCurrentAnimatorStateInfo(0).shortNameHash;
+    //     if (currentStateHash == _serviceEndHash && !_serveBallReleased)
+    //     {
+    //         Debug.Log(attachedBall.transform.position);
+    //         ball.transform.position = attachedBall.transform.position;
+    //         Debug.Log(ball.transform.position);
+    //         SwitchBallType(false);
+    //         ball.AddForce(_tossForce, ForceMode.Impulse);
+    //     }
+    // }
+
+    // void SwitchBallType(bool attachBall) 
+    // {
+    //     _serveBallReleased = !attachBall;
+    //     attachedBall.SetActive(attachBall);
+    //     ball.gameObject.SetActive(!attachBall);
+    // }
 
 }
