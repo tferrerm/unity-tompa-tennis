@@ -18,9 +18,11 @@ public class ScoreManager : MonoBehaviour
     private List<Vector2Int> sets = new List<Vector2Int>();
     private int _currentSetIndex = 0;
     private Vector2Int _currentGame = new Vector2Int(0, 0);
-    
-    public int player1Id;
-    public int player2Id;
+
+    public Player player1;
+    public AIPlayer player2;
+    [HideInInspector] public int player1Id;
+    [HideInInspector] public int player2Id;
     public int setsNeededToWin = 3;
 
     private int _player1SetsWon = 0;
@@ -34,13 +36,16 @@ public class ScoreManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        player1Id = player1.playerId;
+        player2Id = player2.playerId;
+        
         _servingPlayerId = player1Id;
         var totalSets = setsNeededToWin == 3 ? 5 : 3;
         for (int i = 0; i < totalSets; i++)
         {
             sets.Add(new Vector2Int(0, 0));
         }
-        StartCoroutine(ExampleCoroutine());
+        //StartCoroutine(ExampleCoroutine());
     }
 
     IEnumerator ExampleCoroutine()

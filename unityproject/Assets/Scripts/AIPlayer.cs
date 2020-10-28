@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class AIPlayer : MonoBehaviour
 {
+    public int playerId;
+    
     // Start is called before the first frame update
     void Start()
     {

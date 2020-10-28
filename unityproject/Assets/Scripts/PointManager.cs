@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PointManager : MonoBehaviour
 {
-    public ScoreManager scoreManager;
+    private ScoreManager _scoreManager;
     public CourtSectionMapper courtSectionMapper;
 
     private enum PointState
@@ -28,7 +28,7 @@ public class PointManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        _scoreManager = GetComponent<ScoreManager>();
     }
 
     // Update is called once per frame
@@ -72,7 +72,7 @@ public class PointManager : MonoBehaviour
                     {
                         //Double fault
                         _pointState = PointState.FirstServe;
-                        scoreManager.WinPoint(scoreManager.GetReceivingPlayerId());
+                        _scoreManager.WinPoint(_scoreManager.GetReceivingPlayerId());
                         ResetPoint();
                     }
                 }
@@ -85,7 +85,7 @@ public class PointManager : MonoBehaviour
                 else
                 {
                     // Collide was anywhere else, receiver didn't reach the ball before second bounce
-                    scoreManager.WinPoint(scoreManager.GetServingPlayerId());
+                    _scoreManager.WinPoint(_scoreManager.GetServingPlayerId());
                 }
                 break;
             case PointState.ReceiverHit:
@@ -100,7 +100,7 @@ public class PointManager : MonoBehaviour
                 else
                 {
                     // Receiver hit was out
-                    scoreManager.WinPoint(scoreManager.GetServingPlayerId());
+                    _scoreManager.WinPoint(_scoreManager.GetServingPlayerId());
                     ResetPoint();
                 }
                 break;
@@ -112,7 +112,7 @@ public class PointManager : MonoBehaviour
                 else
                 {
                     // Collide was anywhere else, server didn't reach the ball before second bounce
-                    scoreManager.WinPoint(scoreManager.GetReceivingPlayerId());
+                    _scoreManager.WinPoint(_scoreManager.GetReceivingPlayerId());
                     ResetPoint();
                 }
                 break;
@@ -128,7 +128,7 @@ public class PointManager : MonoBehaviour
                 else
                 {
                     // Server hit was out
-                    scoreManager.WinPoint(scoreManager.GetReceivingPlayerId());
+                    _scoreManager.WinPoint(_scoreManager.GetReceivingPlayerId());
                     ResetPoint();
                 }
                 break;
@@ -140,5 +140,11 @@ public class PointManager : MonoBehaviour
     private void ResetPoint()
     {
         _pointState = PointState.FirstServe;
+    }
+
+    public bool IsServing(int playerId)
+    {
+        return (_pointState == PointState.FirstServe || _pointState == PointState.SecondServe) 
+               && _scoreManager.GetServingPlayerId() == playerId;
     }
 }
