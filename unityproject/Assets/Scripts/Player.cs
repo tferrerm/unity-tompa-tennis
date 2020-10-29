@@ -33,12 +33,13 @@ public class Player : MonoBehaviour
 
     public Rigidbody ball;
     public GameObject attachedBall;
+    public Transform attachedBallParent;
 
     public GameManager gameManager;
     private PointManager _pointManager;
     
     private bool _serveBallReleased = false;
-    private Vector3 _tossForce = new Vector3(0.2f, 0.5f, 0);
+    public Vector3 _tossForce = new Vector3(0f, 0.1f, 0f);
 
     void Start()
     {
@@ -105,7 +106,7 @@ public class Player : MonoBehaviour
         var currentStateHash = _animator.GetCurrentAnimatorStateInfo(0).shortNameHash;
         if (currentStateHash == _serviceEndHash && !_serveBallReleased)
         {
-            ball.transform.position = transform.position + attachedBall.transform.localPosition + new Vector3(-1.3f,5.5f, 0);
+            ball.transform.position = attachedBallParent.transform.position;
             SwitchBallType(false);
             ball.AddForce(_tossForce, ForceMode.Impulse);
         }
