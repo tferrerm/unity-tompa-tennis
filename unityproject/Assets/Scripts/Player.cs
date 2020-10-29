@@ -24,6 +24,8 @@ public class Player : MonoBehaviour
     private int _serviceTriggerHash;
     private int _serviceStartHash;
     private int _serviceEndHash;
+    private int _driveHash;
+    private int _backhandHash;
 
     private float _moveLeftRightValue;
     private float _moveUpDownValue;
@@ -46,6 +48,11 @@ public class Player : MonoBehaviour
         _pointManager = gameManager.pointManager;
         _characterController = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
+        CalculateAnimatorHashes();
+    }
+
+    private void CalculateAnimatorHashes()
+    {
         _isMovingHash = Animator.StringToHash("IsMoving");
         _speedHash = Animator.StringToHash("Speed");
         _strafeHash = Animator.StringToHash("Strafe");
@@ -53,6 +60,8 @@ public class Player : MonoBehaviour
         _serviceTriggerHash = Animator.StringToHash("Service Trigger");
         _serviceStartHash = Animator.StringToHash("Service Start");
         _serviceEndHash = Animator.StringToHash("Service End");
+        _driveHash = Animator.StringToHash("Drive Trigger");
+        _backhandHash = Animator.StringToHash("Backhand Trigger");   
     }
     
     void Update()
@@ -89,7 +98,10 @@ public class Player : MonoBehaviour
         {
             _animator.SetTrigger(_serviceTriggerHash);
             SwitchBallType(true);
-        }
+        } else if (ActionMapper.Drive())
+            _animator.SetTrigger(_driveHash);
+        else if (ActionMapper.Backhand())
+            _animator.SetTrigger(_backhandHash);
 
         var currentStateHash = _animator.GetCurrentAnimatorStateInfo(0).shortNameHash;
         if (currentStateHash == _serviceStartHash || currentStateHash == _serviceEndHash)

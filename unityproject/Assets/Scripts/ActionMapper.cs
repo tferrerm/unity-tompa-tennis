@@ -24,4 +24,14 @@ public class ActionMapper
     {
         return Input.GetKeyDown(KeyCode.Space);
     }
+
+    public static bool Drive()
+    {
+        return Input.GetKeyDown(KeyCode.D);
+    }
+
+    public static bool Backhand()
+    {
+        return Input.GetKeyDown(KeyCode.A);
+    }
 }
