@@ -7529,7 +7529,7 @@ GameObject:
   - component: {fileID: 891900770}
   - component: {fileID: 891900774}
   m_Layer: 9
-  m_Name: Ball
+  m_Name: Tennis Ball
   m_TagString: Ball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7606,7 +7606,7 @@ Transform:
   m_GameObject: {fileID: 891900769}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -36.51, y: -2.79, z: -7.17}
-  m_LocalScale: {x: 0.175, y: 0.175, z: 0.175}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 11
@@ -18559,6 +18559,30 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 453771572, guid: 1accc87c261a23f4cb5b0ef26871e32b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 453771572, guid: 1accc87c261a23f4cb5b0ef26871e32b, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 453771572, guid: 1accc87c261a23f4cb5b0ef26871e32b, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 453771572, guid: 1accc87c261a23f4cb5b0ef26871e32b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.232
+      objectReference: {fileID: 0}
+    - target: {fileID: 453771572, guid: 1accc87c261a23f4cb5b0ef26871e32b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.006
+      objectReference: {fileID: 0}
+    - target: {fileID: 453771572, guid: 1accc87c261a23f4cb5b0ef26871e32b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.103
+      objectReference: {fileID: 0}
     - target: {fileID: 1202848114, guid: 1accc87c261a23f4cb5b0ef26871e32b, type: 3}
       propertyPath: m_Name
       value: attachedBall
@@ -18567,6 +18591,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 1202848116, guid: 1accc87c261a23f4cb5b0ef26871e32b, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 8cbabebf78c9e4eae8d221a41d0e0140, type: 2}
     - target: {fileID: 7372489401241218048, guid: 1accc87c261a23f4cb5b0ef26871e32b,
         type: 3}
       propertyPath: m_Layer
