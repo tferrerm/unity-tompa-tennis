@@ -23,4 +23,9 @@ public class Ball : MonoBehaviour
         if (other.gameObject == tennisBatPlayer1)
             _rigidBody.AddForce(new Vector3(1, 1, 0.5f), ForceMode.Impulse);
     }
+
+    public bool IsInPlayer2Side()
+    {
+        return transform.position.x > 0;
+    }
 }

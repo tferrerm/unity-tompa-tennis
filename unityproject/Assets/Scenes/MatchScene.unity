@@ -10064,6 +10064,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerId: 1
+  playerName: 
+  runSpeed: 8
+  sprintSpeed: 10
+  backSpeed: 5.5
+  ball: {fileID: 891900774}
+  attachedBall: {fileID: 0}
+  attachedBallParent: {fileID: 0}
+  gameManager: {fileID: 1688545063}
+  _tossForce: {x: 0, y: 0.1, z: 0}
 --- !u!143 &1168141962
 CharacterController:
   m_ObjectHideFlags: 0
