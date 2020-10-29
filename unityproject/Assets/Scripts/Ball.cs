@@ -21,6 +21,6 @@ public class Ball : MonoBehaviour
     private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject == tennisBatPlayer1)
-            _rigidBody.AddForce(new Vector3(1, 1, 1), ForceMode.Impulse);
+            _rigidBody.AddForce(new Vector3(1, 1, 0.5f), ForceMode.Impulse);
     }
 }
