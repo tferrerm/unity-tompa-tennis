@@ -85,8 +85,7 @@ public class Player : MonoBehaviour
         _characterController.SimpleMove(Vector3.zero);
         
         Vector3 move = new Vector3(dx, 0, dz);
-        _animator.SetFloat(_speedHash, spd / sprintSpeed);
-        
+
         _animator.SetFloat(_strafeHash, _moveLeftRightValue);
         _animator.SetFloat(_forwardHash, _moveUpDownValue);
         _characterController.Move(move);
@@ -105,12 +104,13 @@ public class Player : MonoBehaviour
 
         var currentStateHash = _animator.GetCurrentAnimatorStateInfo(0).shortNameHash;
         if (currentStateHash == _serviceStartHash || currentStateHash == _serviceEndHash)
+        {
+            _moveLeftRightValue = _moveUpDownValue = 0;
             return;
-        
+        }
+
         _moveLeftRightValue = ActionMapper.GetMoveHorizontal(); 
         _moveUpDownValue = ActionMapper.GetMoveVertical();
-
-        _animator.SetBool(_isMovingHash, Math.Abs(_moveLeftRightValue) > Epsilon || Math.Abs(_moveUpDownValue) > Epsilon);
     }
 
     void CheckServiceStatus()
