@@ -17,7 +17,7 @@ public class ActionMapper
     
     public static bool IsSprinting(int playerNum = 0)
     {
-        return Input.GetKeyDown(KeyCode.LeftShift); //Input.GetKey(KeyCode.LeftShift) || Input.GetAxis("RT") > 0.1f || Input.GetAxis("LT") > 0.1f;
+        return Input.GetKey(KeyCode.LeftShift); //Input.GetKey(KeyCode.LeftShift) || Input.GetAxis("RT") > 0.1f || Input.GetAxis("LT") > 0.1f;
     }
 
     public static bool IsServing(int playerNum = 0)

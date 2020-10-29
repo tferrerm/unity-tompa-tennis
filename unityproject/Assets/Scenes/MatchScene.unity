@@ -19130,15 +19130,30 @@ PrefabInstance:
       propertyPath: _tossForce.z
       value: -0.025
       objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: sprintSpeed
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: runSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: backSpeed
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 7372489402264249969, guid: 1accc87c261a23f4cb5b0ef26871e32b,
         type: 3}
       propertyPath: m_Radius
-      value: 0.2
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7372489402264249969, guid: 1accc87c261a23f4cb5b0ef26871e32b,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9173125600090587462, guid: 1accc87c261a23f4cb5b0ef26871e32b,
         type: 3}
