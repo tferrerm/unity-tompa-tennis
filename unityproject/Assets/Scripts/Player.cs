@@ -136,9 +136,10 @@ public class Player : MonoBehaviour
         ball.gameObject.SetActive(!attachBall);
     }
 
-    private void Step()
+    private void Step(AnimationEvent animationEvent)
     {
-        _soundManager.PlayFootstep(_audioSource);
+        if (animationEvent.animatorClipInfo.weight > 0.5)
+            _soundManager.PlayFootstep(_audioSource);
     }
 
 }

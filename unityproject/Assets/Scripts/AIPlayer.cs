@@ -142,8 +142,10 @@ public class AIPlayer : MonoBehaviour
         return transform.position - ball.transform.position;
     }
 
-    private void Step()
+    private void Step(AnimationEvent animationEvent)
     {
-        // _soundManager.PlayFootstep(_audioSource);
+        return;
+        if (animationEvent.animatorClipInfo.weight > 0.5)
+            _soundManager.PlayFootstep(_audioSource);
     }
 }
