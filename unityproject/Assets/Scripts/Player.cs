@@ -15,6 +15,8 @@ public class Player : MonoBehaviour
     public float backSpeed = 5.5f;
 
     private CharacterController _characterController;
+
+    private AudioSource _audioSource;
     
     private Animator _animator;
     private int _isMovingHash;
@@ -39,6 +41,7 @@ public class Player : MonoBehaviour
 
     public GameManager gameManager;
     private PointManager _pointManager;
+    private SoundManager _soundManager;
     
     private bool _serveBallReleased = false;
     public Vector3 _tossForce = new Vector3(0f, 0.1f, 0f);
@@ -46,7 +49,9 @@ public class Player : MonoBehaviour
     void Start()
     {
         _pointManager = gameManager.pointManager;
+        _soundManager = gameManager.soundManager;
         _characterController = GetComponent<CharacterController>();
+        _audioSource = GetComponent<AudioSource>();
         _animator = GetComponent<Animator>();
         CalculateAnimatorHashes();
     }
@@ -129,6 +134,11 @@ public class Player : MonoBehaviour
         _serveBallReleased = !attachBall;
         attachedBall.SetActive(attachBall);
         ball.gameObject.SetActive(!attachBall);
+    }
+
+    private void Step()
+    {
+        _soundManager.PlayFootstep(_audioSource);
     }
 
 }

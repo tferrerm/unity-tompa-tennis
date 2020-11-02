@@ -6,10 +6,12 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [HideInInspector] public PointManager pointManager;
+    [HideInInspector] public SoundManager soundManager;
 
     private void Awake()
     {
         pointManager = GetComponent<PointManager>();
+        soundManager = GetComponent<SoundManager>();
     }
 
     // Start is called before the first frame update
