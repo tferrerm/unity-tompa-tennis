@@ -73,6 +73,7 @@ public class AIPlayer : MonoBehaviour
     {
         if (!ball.gameObject.activeSelf)
             return;
+        Debug.Log($"DISTANCE {DistanceToBall()}");
         var position = transform.position;
         if (position.x <= desiredDistance)
             StayInNet();
@@ -117,10 +118,14 @@ public class AIPlayer : MonoBehaviour
         float spd = (distance.magnitude > 5 ? sprintSpeed : runSpeed);
         float dx = dt * (distance.x < 0 ? backSpeed : spd) * Math.Sign(distance.x * -1);
         float dz = dt * spd * Math.Sign(distance.z * -1);
+        if (Math.Abs(distance.z) < 0.25f)
+            dz = 0;
 
         _characterController.SimpleMove(Vector3.zero);
         
         Vector3 move = new Vector3(dx, 0, dz);
+        
+        Debug.Log($"MOVE {move}");
 
         _animator.SetFloat(_strafeHash, dx);
         _animator.SetFloat(_forwardHash, dz);
