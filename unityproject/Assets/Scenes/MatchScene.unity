@@ -15188,6 +15188,21 @@ MonoBehaviour:
   playerServices:
   - {fileID: 8300000, guid: 91609e2fe77fb4c7eb3a619e2f7e9da3, type: 3}
   - {fileID: 8300000, guid: d51a2aeadce5a4ca7b42a53d5627b9ae, type: 3}
+  footsteps:
+  - {fileID: 8300000, guid: 2ecc2816a6e5f407bbf15a8594997a25, type: 3}
+  - {fileID: 8300000, guid: 1e541eb8dc9544a0194948d9fcacc451, type: 3}
+  - {fileID: 8300000, guid: 1731c266535984c1b974f6be21f55975, type: 3}
+  - {fileID: 8300000, guid: 01544565cd1b84aefa84107cb0e5beb6, type: 3}
+  - {fileID: 8300000, guid: 3b9deb12fbc7948c495b86d21d264cee, type: 3}
+  - {fileID: 8300000, guid: 25f8ec17f21ee4b5ca27ffaa46a8c399, type: 3}
+  - {fileID: 8300000, guid: 458a8cd3d209e46618dc8dabc1b3b556, type: 3}
+  - {fileID: 8300000, guid: a75c060e3db684f318ecf26a13d912f2, type: 3}
+  - {fileID: 8300000, guid: 871a57dda98af465eb16f7fcbb1a1c3a, type: 3}
+  - {fileID: 8300000, guid: f6d3e10f3b1f34075966b3bfbf740f81, type: 3}
+  - {fileID: 8300000, guid: c8db3fcbd498a49ddbc351aeba3f93db, type: 3}
+  - {fileID: 8300000, guid: 2854c0e0075614f2aa2b7329b8f6c406, type: 3}
+  - {fileID: 8300000, guid: 15348d10c6c5145cdb70e010c4411a42, type: 3}
+  - {fileID: 8300000, guid: 7a7b6c7c1c72d4a30bdc9771098c66be, type: 3}
   shoeSqueaks:
   - {fileID: 8300000, guid: 4538f493a00f245e5a3b8c7ce74a81e0, type: 3}
   - {fileID: 8300000, guid: 5ac39ad6acdde4c438704e02f45d06d1, type: 3}

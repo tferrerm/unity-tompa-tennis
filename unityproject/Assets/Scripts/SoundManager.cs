@@ -8,6 +8,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip[] crowdSounds;
     public AudioClip[] playerGrunts;
     public AudioClip[] playerServices;
+    public AudioClip[] footsteps;
     public AudioClip[] shoeSqueaks;
     public AudioClip[] racquetHits;
     public AudioClip[] racquetSwishes;
@@ -18,6 +19,11 @@ public class SoundManager : MonoBehaviour
     public void PlayCrowdSounds()
     {
         sceneAudioSource.PlayOneShot(ChooseRandom(crowdSounds));
+    }
+
+    public void PlayFootstep(AudioSource playerAudioSource)
+    {
+        playerAudioSource.PlayOneShot(ChooseRandom(footsteps));
     }
 
     public void PlayGrunt(AudioSource playerAudioSource)
