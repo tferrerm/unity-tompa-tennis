@@ -144,7 +144,11 @@ public class PointManager : MonoBehaviour
 
     public bool IsServing(int playerId)
     {
-        return (_pointState == PointState.FirstServe || _pointState == PointState.SecondServe) 
-               && _scoreManager.GetServingPlayerId() == playerId;
+        return false;//(_pointState == PointState.FirstServe || _pointState == PointState.SecondServe) && _scoreManager.GetServingPlayerId() == playerId;
+    }
+
+    public bool CanHitBall(int playerId)
+    {
+        return true; // TODO 
     }
 }

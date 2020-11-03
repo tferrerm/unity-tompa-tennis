@@ -1,9 +1,15 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Numerics;
 using UnityEngine;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
+
+public enum HitMethod
+{
+    Drive = 0, Backhand = 1, Serve = 2
+}
 
 public class Player : MonoBehaviour
 {
@@ -36,6 +42,7 @@ public class Player : MonoBehaviour
     private const float RotationEpsilon = 1e-4f;
 
     public Rigidbody ball;
+    private Ball _ballComponent;
     public GameObject attachedBall;
     public Transform attachedBallParent;
 
@@ -43,8 +50,15 @@ public class Player : MonoBehaviour
     private PointManager _pointManager;
     private SoundManager _soundManager;
     
+    private Dictionary<HitMethod, TechniqueAttributes> techniqueAttrs = new Dictionary<HitMethod, TechniqueAttributes>();
     private bool _serveBallReleased = false;
     public Vector3 _tossForce = new Vector3(0f, 0.1f, 0f);
+    public Vector3 driveForce = new Vector3(1f, 0f, 0f);
+
+    public Collider ballCollider;
+    private Renderer ballRenderer; // TODO DELETE
+    [HideInInspector] public bool ballInsideHitZone;
+    private HitMethod? _hitMethod;
 
     void Start()
     {
@@ -54,6 +68,17 @@ public class Player : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
         _animator = GetComponent<Animator>();
         CalculateAnimatorHashes();
+
+        _ballComponent = ball.GetComponent<Ball>();
+        ballRenderer = ballCollider.GetComponent<Renderer>();
+        InitTechniqueAttrs();
+    }
+
+    private void InitTechniqueAttrs()
+    {
+        techniqueAttrs.Add(HitMethod.Drive, new TechniqueAttributes(0.1f, 1f));
+        techniqueAttrs.Add(HitMethod.Backhand, new TechniqueAttributes(0.1f, 1f));
+        techniqueAttrs.Add(HitMethod.Serve, new TechniqueAttributes(0.1f, 1f));
     }
 
     private void CalculateAnimatorHashes()
@@ -98,14 +123,30 @@ public class Player : MonoBehaviour
 
     void ReadInput()
     {
-        if (ActionMapper.IsServing() && _pointManager.IsServing(playerId))
+        if (ActionMapper.RacquetSwing())
         {
-            _animator.SetTrigger(_serviceTriggerHash);
-            SwitchBallType(true);
-        } else if (ActionMapper.Drive())
-            _animator.SetTrigger(_driveHash);
-        else if (ActionMapper.Backhand())
-            _animator.SetTrigger(_backhandHash);
+            if (_pointManager.IsServing(playerId))
+            {
+                _animator.SetTrigger(_serviceTriggerHash);
+                SwitchBallType(true);
+                _hitMethod = HitMethod.Serve;
+            } else if (ballInsideHitZone && _pointManager.CanHitBall(playerId) && ball.transform.position.x > transform.position.x + 2)
+            {
+                // Ball entered collision zone (sphere) and is in front of the player
+                ballInsideHitZone = false; // Cannot hit ball twice
+                var ballPosition = ball.transform.position;
+                if (ballPosition.z < transform.position.z) // Should take into account ball direction
+                {
+                    _animator.SetTrigger(_driveHash);
+                    _hitMethod = HitMethod.Drive;
+                }
+                else
+                {
+                    _animator.SetTrigger(_backhandHash);
+                    _hitMethod = HitMethod.Backhand;
+                }
+            }
+        }
 
         var currentStateHash = _animator.GetCurrentAnimatorStateInfo(0).shortNameHash;
         if (currentStateHash == _serviceStartHash || currentStateHash == _serviceEndHash)
@@ -125,7 +166,9 @@ public class Player : MonoBehaviour
         {
             ball.transform.position = attachedBallParent.transform.position;
             SwitchBallType(false);
+            ball.GetComponent<Ball>().ResetVelocity();
             ball.AddForce(_tossForce, ForceMode.Impulse);
+            _hitMethod = null;
         }
     }
 
@@ -142,4 +185,20 @@ public class Player : MonoBehaviour
             _soundManager.PlayFootstep(_audioSource);
     }
 
+    private void ToggleBallCollider()
+    {
+        //ballCollider.enabled = !ballCollider.enabled;
+        //ballRenderer.enabled = !ballRenderer.enabled;
+    }
+
+    private void HitBall()
+    {
+        _ballComponent.ResetVelocity();
+        ball.AddForce(new Vector3(1, 0, 0) * techniqueAttrs[_hitMethod.GetValueOrDefault()].ForceMultiplier, ForceMode.Impulse);
+        _hitMethod = null;
+    } 
+
+    public Vector3 DriveForce => driveForce;
+
+    public Collider BallCollider => ballCollider;
 }

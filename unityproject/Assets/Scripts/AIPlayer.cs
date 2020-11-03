@@ -78,7 +78,7 @@ public class AIPlayer : MonoBehaviour
     {
         if (!ball.gameObject.activeSelf)
             return;
-        Debug.Log($"DISTANCE {DistanceToBall()}");
+        
         var position = transform.position;
         if (position.x <= desiredDistance)
             StayInNet();

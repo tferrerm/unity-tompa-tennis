@@ -20,18 +20,8 @@ public class ActionMapper
         return Input.GetKey(KeyCode.LeftShift); //Input.GetKey(KeyCode.LeftShift) || Input.GetAxis("RT") > 0.1f || Input.GetAxis("LT") > 0.1f;
     }
 
-    public static bool IsServing(int playerNum = 0)
+    public static bool RacquetSwing()
     {
         return Input.GetKeyDown(KeyCode.Space);
-    }
-
-    public static bool Drive()
-    {
-        return Input.GetKeyDown(KeyCode.D);
-    }
-
-    public static bool Backhand()
-    {
-        return Input.GetKeyDown(KeyCode.A);
     }
 }
