@@ -62,6 +62,17 @@ public class Player : MonoBehaviour
     private bool hittingBall;
 
     public Transform hitBallSpawn;
+    public TrailRenderer ballTrailRenderer;
+
+    private const float BackSwingHorizontalAngle = 10f * Mathf.Deg2Rad;
+    private const float BackSwingVerticalAngle = 10f * Mathf.Deg2Rad;
+
+    private readonly Vector3 _backStraightSwingUv = Vector3.Normalize(
+        new Vector3(Mathf.Cos(BackSwingHorizontalAngle), Mathf.Tan(BackSwingVerticalAngle), 0));
+    private readonly Vector3 _backLeftSwingUv = Vector3.Normalize(
+        new Vector3(Mathf.Cos(BackSwingHorizontalAngle), Mathf.Tan(BackSwingVerticalAngle), Mathf.Sin(BackSwingHorizontalAngle)));
+    private readonly Vector3 _backRightSwingUv = Vector3.Normalize(
+        new Vector3(Mathf.Cos(BackSwingHorizontalAngle), Mathf.Tan(BackSwingVerticalAngle), - Mathf.Sin(BackSwingHorizontalAngle)));
 
     void Start()
     {
@@ -79,8 +90,8 @@ public class Player : MonoBehaviour
 
     private void InitTechniqueAttrs()
     {
-        techniqueAttrs.Add(HitMethod.Drive, new TechniqueAttributes(0.1f, 1f));
-        techniqueAttrs.Add(HitMethod.Backhand, new TechniqueAttributes(0.1f, 1f));
+        techniqueAttrs.Add(HitMethod.Drive, new TechniqueAttributes(0.1f, 2.25f));
+        techniqueAttrs.Add(HitMethod.Backhand, new TechniqueAttributes(0.1f, 2.25f));
         techniqueAttrs.Add(HitMethod.Serve, new TechniqueAttributes(0.1f, 1f));
     }
 
@@ -135,7 +146,7 @@ public class Player : MonoBehaviour
                 _animator.SetTrigger(_serviceTriggerHash);
                 SwitchBallType(true);
                 _hitMethod = HitMethod.Serve;
-            } else if (ballInsideHitZone && _pointManager.CanHitBall(playerId) && ball.transform.position.x > transform.position.x + 1.5f)
+            } else if (ballInsideHitZone && _pointManager.CanHitBall(playerId) && ball.transform.position.x > transform.position.x + 2)
             {
                 // Ball entered collision zone (sphere) and is in front of the player
                 ballInsideHitZone = false; // Cannot hit ball twice
@@ -202,7 +213,8 @@ public class Player : MonoBehaviour
     {
         _ballComponent.ResetVelocity();
         ball.position = hitBallSpawn.position;
-        ball.AddForce(new Vector3(1.5f, 0.5f, 0) * techniqueAttrs[_hitMethod.GetValueOrDefault()].ForceMultiplier, ForceMode.Impulse);
+        ballTrailRenderer.Clear();
+        ball.AddForce(_backRightSwingUv * techniqueAttrs[_hitMethod.GetValueOrDefault()].ForceMultiplier, ForceMode.Impulse);
         _hitMethod = null;
     }
 
