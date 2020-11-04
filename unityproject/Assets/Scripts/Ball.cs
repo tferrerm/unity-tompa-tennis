@@ -36,16 +36,9 @@ public class Ball : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other == tennisBatPlayer1)
-        {
-            ResetVelocity();
-            _rigidBody.AddForce(new Vector3(1.75f, 0.25f, 0.5f), ForceMode.Impulse);
-        }
-        else if (other == player1.BallCollider)
+        if (other == player1.BallCollider)
         {
             player1.ballInsideHitZone = true;
-            //ResetVelocity();
-            //_rigidBody.AddForce(player1.DriveForce, ForceMode.Impulse);
         }
     }
 

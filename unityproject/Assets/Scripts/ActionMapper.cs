@@ -24,4 +24,19 @@ public class ActionMapper
     {
         return Input.GetKeyDown(KeyCode.Space);
     }
+
+    public static bool GetForward()
+    {
+        return Input.GetKey(KeyCode.UpArrow);
+    }
+    
+    public static bool GetLeft()
+    {
+        return Input.GetKey(KeyCode.LeftArrow);
+    }
+    
+    public static bool GetRight()
+    {
+        return Input.GetKey(KeyCode.RightArrow);
+    }
 }
