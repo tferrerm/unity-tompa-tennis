@@ -3844,6 +3844,12 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 563917185}
   m_Mesh: {fileID: 4300004, guid: 159263652fffa0c4495db95afe24cb7a, type: 3}
+--- !u!4 &565067166 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 565067166, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+    type: 3}
+  m_PrefabInstance: {fileID: 7372489402327860111}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &568023424
 GameObject:
   m_ObjectHideFlags: 0
@@ -17535,26 +17541,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1950299143}
   m_Mesh: {fileID: 4300006, guid: 159263652fffa0c4495db95afe24cb7a, type: 3}
---- !u!1 &1958057750 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1880786979685979717, guid: 1accc87c261a23f4cb5b0ef26871e32b,
-    type: 3}
-  m_PrefabInstance: {fileID: 7372489402327860111}
-  m_PrefabAsset: {fileID: 0}
---- !u!64 &1958057751
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1958057750}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1965229095
 GameObject:
   m_ObjectHideFlags: 0
@@ -19095,66 +19081,29 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 92473877, guid: 1accc87c261a23f4cb5b0ef26871e32b, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 92473878, guid: 1accc87c261a23f4cb5b0ef26871e32b, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 532034012, guid: 1accc87c261a23f4cb5b0ef26871e32b, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 532034012, guid: 1accc87c261a23f4cb5b0ef26871e32b, type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 532034013, guid: 1accc87c261a23f4cb5b0ef26871e32b, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 819329601, guid: 1accc87c261a23f4cb5b0ef26871e32b, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 819329602, guid: 1accc87c261a23f4cb5b0ef26871e32b, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1742083986, guid: 1accc87c261a23f4cb5b0ef26871e32b, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1742083986, guid: 1accc87c261a23f4cb5b0ef26871e32b, type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
+    - target: {fileID: 565067165, guid: 1accc87c261a23f4cb5b0ef26871e32b, type: 3}
+      propertyPath: m_Name
+      value: HitBallSpawn
       objectReference: {fileID: 0}
     - target: {fileID: 1880786979685979717, guid: 1accc87c261a23f4cb5b0ef26871e32b,
         type: 3}
-      propertyPath: m_Name
-      value: BallCollider
-      objectReference: {fileID: 0}
-    - target: {fileID: 4002040537018465826, guid: 1accc87c261a23f4cb5b0ef26871e32b,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7020418727434988733, guid: 1accc87c261a23f4cb5b0ef26871e32b,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 7020418727434988733, guid: 1accc87c261a23f4cb5b0ef26871e32b,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 7
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 7020418727434988733, guid: 1accc87c261a23f4cb5b0ef26871e32b,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 9
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 7020418727434988733, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7020418727434988733, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7372489401241218498, guid: 1accc87c261a23f4cb5b0ef26871e32b,
         type: 3}
@@ -19228,24 +19177,13 @@ PrefabInstance:
       objectReference: {fileID: 1688545063}
     - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
         type: 3}
-      propertyPath: driveCollider
+      propertyPath: driveBallSpawn
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 565067166}
     - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
         type: 3}
-      propertyPath: ballCollider
+      propertyPath: hitBallSpawn
       value: 
-      objectReference: {fileID: 1958057751}
-    - target: {fileID: 8574103316537788118, guid: 1accc87c261a23f4cb5b0ef26871e32b,
-        type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8574103316537788118, guid: 1accc87c261a23f4cb5b0ef26871e32b,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 8574103316537788118, guid: 1accc87c261a23f4cb5b0ef26871e32b, type: 3}
+      objectReference: {fileID: 565067166}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1accc87c261a23f4cb5b0ef26871e32b, type: 3}

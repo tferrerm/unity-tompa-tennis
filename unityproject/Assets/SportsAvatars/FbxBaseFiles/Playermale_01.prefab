@@ -30,6 +30,36 @@ Transform:
   m_Father: {fileID: 7372489401241645536}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 82.539, y: 159.34, z: 12.327}
+--- !u!1 &565067165
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 565067166}
+  m_Layer: 8
+  m_Name: DriveBallSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &565067166
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 565067165}
+  m_LocalRotation: {x: 0.21653311, y: 0.6228332, z: 0.50457877, w: -0.5573084}
+  m_LocalPosition: {x: -0.2696044, y: 0.73905057, z: 0.035682235}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7372489401241645542}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1202848114
 GameObject:
   m_ObjectHideFlags: 0
@@ -161,7 +191,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1742083984}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 5, z: 2.5}
@@ -177,9 +207,9 @@ GameObject:
   - component: {fileID: 7020418727434988733}
   - component: {fileID: 5918194057718775004}
   - component: {fileID: 4002040537018465826}
-  - component: {fileID: 8574103316537788118}
+  - component: {fileID: 1958057751}
   m_Layer: 8
-  m_Name: Sphere
+  m_Name: BallCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -194,7 +224,7 @@ Transform:
   m_GameObject: {fileID: 1880786979685979717}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 2.21, z: 0}
-  m_LocalScale: {x: 4, y: 4, z: 4}
+  m_LocalScale: {x: 7, y: 7, z: 9}
   m_Children: []
   m_Father: {fileID: 7372489401241645090}
   m_RootOrder: 4
@@ -248,19 +278,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &8574103316537788118
-SphereCollider:
+--- !u!64 &1958057751
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1880786979685979717}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5000003
-  m_Center: {x: 0.000011444099, y: 0, z: 0.00000035762758}
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &7372489401241218048
 GameObject:
   m_ObjectHideFlags: 0
@@ -2271,6 +2302,7 @@ Transform:
   - {fileID: 7372489401241645058}
   - {fileID: 7372489401241645510}
   - {fileID: 7372489401245116516}
+  - {fileID: 565067166}
   m_Father: {fileID: 7372489401241645126}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2723,7 +2755,8 @@ MonoBehaviour:
   gameManager: {fileID: 0}
   _tossForce: {x: 0, y: 0.35, z: -0.025}
   driveForce: {x: 0, y: 0.1, z: 0}
-  driveCollider: {fileID: 0}
+  ballCollider: {fileID: 1958057751}
+  ballInsideHitZone: 0
 --- !u!82 &7372489402327860113
 AudioSource:
   m_ObjectHideFlags: 0

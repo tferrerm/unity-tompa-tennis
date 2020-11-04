@@ -59,6 +59,9 @@ public class Player : MonoBehaviour
     private Renderer ballRenderer; // TODO DELETE
     [HideInInspector] public bool ballInsideHitZone;
     private HitMethod? _hitMethod;
+    private bool hittingBall;
+
+    public Transform hitBallSpawn;
 
     void Start()
     {
@@ -103,6 +106,8 @@ public class Player : MonoBehaviour
 
     private void Move()
     {
+        if (hittingBall) return;
+        
         float dt = Time.deltaTime;
         Vector2 movingDir = new Vector2(_moveLeftRightValue, _moveUpDownValue);
         float manhattanNorm = Math.Abs(movingDir[0]) + Math.Abs(movingDir[1]);
@@ -130,7 +135,7 @@ public class Player : MonoBehaviour
                 _animator.SetTrigger(_serviceTriggerHash);
                 SwitchBallType(true);
                 _hitMethod = HitMethod.Serve;
-            } else if (ballInsideHitZone && _pointManager.CanHitBall(playerId) && ball.transform.position.x > transform.position.x + 2)
+            } else if (ballInsideHitZone && _pointManager.CanHitBall(playerId) && ball.transform.position.x > transform.position.x + 1.5f)
             {
                 // Ball entered collision zone (sphere) and is in front of the player
                 ballInsideHitZone = false; // Cannot hit ball twice
@@ -145,6 +150,8 @@ public class Player : MonoBehaviour
                     _animator.SetTrigger(_backhandHash);
                     _hitMethod = HitMethod.Backhand;
                 }
+
+                hittingBall = true;
             }
         }
 
@@ -194,9 +201,15 @@ public class Player : MonoBehaviour
     private void HitBall()
     {
         _ballComponent.ResetVelocity();
-        ball.AddForce(new Vector3(1, 0, 0) * techniqueAttrs[_hitMethod.GetValueOrDefault()].ForceMultiplier, ForceMode.Impulse);
+        ball.position = hitBallSpawn.position;
+        ball.AddForce(new Vector3(1.5f, 0.5f, 0) * techniqueAttrs[_hitMethod.GetValueOrDefault()].ForceMultiplier, ForceMode.Impulse);
         _hitMethod = null;
-    } 
+    }
+
+    private void ResetHittingBall()
+    {
+        hittingBall = false;
+    }
 
     public Vector3 DriveForce => driveForce;
 
