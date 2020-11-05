@@ -58,6 +58,6 @@ public class SoundManager : MonoBehaviour
 
     private static AudioClip ChooseRandom(IReadOnlyList<AudioClip> clips)
     {
-        return clips[Random.Range(0, clips.Count - 1)];
+        return clips[Random.Range(0, clips.Count)];
     }
 }

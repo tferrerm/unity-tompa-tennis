@@ -14,15 +14,18 @@ public class BallPhysics
     RaycastHit[] ballHits = new RaycastHit[1];
 
     private float groundY;
+
+    private SoundManager _soundManager;
     
     /// <summary>
     /// Constructor
     /// </summary>
-    public BallPhysics(float radius, float bounciness, float grndY)
+    public BallPhysics(float radius, float bounciness, float grndY, SoundManager sndManager)
     {
         this.radius = radius;
         this.bounciness = bounciness;
         this.groundY = grndY;
+        _soundManager = sndManager;
     }
     
     // --------------------------------------------------------------------------------
@@ -66,23 +69,7 @@ public class BallPhysics
                 bounceSpeed = (bounceSpeed > 0.001f ? bounceSpeed : 0.0f);
                 bi.velocity = new Vector3(bi.velocity.x * 0.85f, bounceSpeed, bi.velocity.z * 0.85f);
                 
-                if (bounceSpeed > 3f)
-                {
-                    //SoundManager.Instance.PlaySound("BallBounce1");
-                }
-                else if (bounceSpeed > 2f)
-                {
-                    //SoundManager.Instance.PlaySound("BallBounce2");
-                }
-                else if (bounceSpeed > 1f)
-                {
-                    //SoundManager.Instance.PlaySound("BallBounce3");
-                }
-                else
-                {
-                    //SoundManager.Instance.PlaySound("BallBounce4");
-                }
-                
+                _soundManager.PlayBallBounce();
             }
             else
             {

@@ -25,6 +25,8 @@ public class Ball : MonoBehaviour
 
     // Latest Y position of the ball
     private float[] ballPrevPosY;
+
+    public SoundManager soundManager;
     
     ///////////////////
     public Player player1;
@@ -36,7 +38,7 @@ public class Ball : MonoBehaviour
     {
         ballInfo.Position = transform.position;
         
-        ballPhysics = new BallPhysics(Radius, bounciness, ground.position.y);
+        ballPhysics = new BallPhysics(Radius, bounciness, ground.position.y, soundManager);
         
         // Array to store the latests positions of the ball
         ballPrevPosY = new float[2];

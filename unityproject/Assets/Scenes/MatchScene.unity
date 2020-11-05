@@ -7768,7 +7768,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 891900769}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -35.76, y: -0.1, z: -11.35}
+  m_LocalPosition: {x: -32.63, y: 2.89, z: -11.35}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_Children:
   - {fileID: 2014107645}
@@ -7803,6 +7803,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 529b76d9fb82c410abbb6de097946fe5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soundManager: {fileID: 1688545064}
   player1: {fileID: 114571766}
   ground: {fileID: 1724874829}
   ballThrower: {fileID: 1183299281}
@@ -8957,7 +8958,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!65 &1040540829
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9028,7 +9029,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1040540828}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 32.85, y: -3, z: 9.31}
+  m_LocalPosition: {x: 30.13, y: -3, z: -8.81}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -15284,7 +15285,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ballBounces:
-  - {fileID: 8300000, guid: de7ef679de4894c1c9c9e36c3efdcbe7, type: 3}
   - {fileID: 8300000, guid: 3a4c2b09521974367b5f7edfd4b4ae53, type: 3}
   crowdSounds:
   - {fileID: 8300000, guid: 4bcccf36bfb4b408dbe59bdfc2ebee03, type: 3}
