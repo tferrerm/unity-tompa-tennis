@@ -5,33 +5,177 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    private Rigidbody _rigidBody;
-    public Collider tennisBatPlayer1;
-    public Collider tennisBatPlayer2;
-    public Player player1;
+    // Min move distance to consider the ball stopped
+    private const float MinDistanceToConsiderBallStopped = 0.002f;
+    
+    // Radius of the ball
+    private const float Radius = 0.143f;
+    
+    // Ball bounciness
+    private float bounciness = 0.5f;
+    
+    // Ball basic information
+    private BallInfo ballInfo;
+    
+    // Ball hits array
+    RaycastHit[] ballHits = new RaycastHit[10];
 
+    // Ball Physics
+    private BallPhysics ballPhysics;
+
+    // Latest Y position of the ball
+    private float[] ballPrevPosY;
+    
+    ///////////////////
+    public Player player1;
+    public Transform ground;
     public Transform ballThrower; // TODO DELETE
     public Vector3 ballThrowerForce = new Vector3(-1, 0, 0);
     
     void Start()
     {
-        _rigidBody = GetComponent<Rigidbody>();
+        ballInfo.Position = transform.position;
+        
+        ballPhysics = new BallPhysics(Radius, bounciness, ground.position.y);
+        
+        // Array to store the latests positions of the ball
+        ballPrevPosY = new float[2];
     }
     
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
+        ballInfo = ballPhysics.UpdateBallInfo(ballInfo, Time.deltaTime);
+		
+        CheckCollisions();
+
+        UpdateFromBallInfo();
+        
+        /*if (Input.GetKeyDown(KeyCode.P))
         {
             transform.position = ballThrower.position;
             ResetVelocity();
             _rigidBody.AddForce(ballThrowerForce, ForceMode.Impulse);
         }
+
+        ApplyTargetVelocity();*/
     }
 
-    public void ResetVelocity()
+    /*private void ApplyTargetVelocity()
     {
-        _rigidBody.velocity = Vector3.zero;
-        _rigidBody.angularVelocity = Vector3.zero;
+        velocity += new Vector3(0.0f, Physics.gravity.y * Time.deltaTime, 0.0f);
+        transform.position += velocity * Time.deltaTime;
+        /*
+        var pStart = transform.position;
+        var pEnd = targetPosition.position;
+        var time = Vector3.Distance(pStart, pEnd) / speed;
+        var velocity = new Vector3(
+            (pEnd.x - pStart.x) / time,
+                ((pEnd.y - pStart.y) - 0.5f * gravity * (float)Math.Pow(Time.deltaTime, 2)) / time,
+                (pEnd.z - pStart.z) / time
+            );
+        Debug.Log(velocity);
+        transform.position += velocity * Time.deltaTime;//
+    }*/
+    
+    public float GetRadius()
+    {
+        return Radius;
+    }
+    
+    public Vector3 GetPosition()
+    {
+        return transform.position;
+    }
+    
+    bool UpdateFromBallInfo()
+    {
+        var speed = Vector3.Distance(ballInfo.Position, transform.position) / Time.deltaTime;
+
+        // Change the speed of the trail
+        //trail.SetSpeed(speed * 0.25f);
+
+        transform.position = ballInfo.Position;
+        transform.Rotate(ballInfo.eulerAngles);
+
+        return true;
+    }
+    
+    public void HitBall(Vector3 posStart, Vector3 posEnd)
+    {
+        // TODO Add target position epsilon for unaccurate shots...
+        
+        float dis = Vector2.Distance(new Vector2(posStart.x, posStart.z), new Vector2(posEnd.x, posEnd.z));
+        
+        float speed = 35f; // 35
+
+        float speedYAtt = 0.4f;
+        speedYAtt = (dis / 200f);
+        
+        Vector3 throwDir = new Vector3(posEnd.x - posStart.x, (posEnd.y - posStart.y) * speed * speedYAtt, posEnd.z - posStart.z);
+
+        float time = throwDir.magnitude / speed;
+     
+        float velx = (posEnd.x - posStart.x) / time;
+        float velz = (posEnd.z - posStart.z) / time;
+        
+        float speedVertical = ((posEnd.y - posStart.y) - 0.5f * Physics.gravity.y * time * time ) / time;
+        Vector3 velocity = throwDir.normalized * speed;
+        velocity.y = speedVertical;
+
+        TelePort(posStart);
+        ballInfo.velocity = new Vector3(velx, velocity.y, velz);
+        
+        //SoundManager.Instance.PlaySound("ThrowWhoosh");
+    }
+    
+    void CheckCollisions()
+    {
+        var pos = ballInfo.Position;
+        var prevpos = ballInfo.PrevPosition;
+        var dir = pos - prevpos;
+        var distance = dir.magnitude;
+
+        var ballIsMoving = distance > MinDistanceToConsiderBallStopped;
+
+        // If the ball is not moving, I need to modify some parameters in order to make the
+        // sphere cast to work
+        if (!ballIsMoving)
+        {
+            dir = Vector3.down;
+            distance = 0.5f;
+        }
+
+        // Check collisions against boundaries
+        int layerMask = 1 << LayerMask.NameToLayer("Players");
+        layerMask = ~layerMask;
+        if (Physics.RaycastNonAlloc(prevpos, dir.normalized, ballHits, distance, layerMask) > 0)
+        {
+            var hitLayer = ballHits[0].transform.gameObject.layer;
+            var bounceVelocity = ballHits[0].normal * ballInfo.velocity.magnitude * bounciness;
+
+            ballInfo.Position = ballHits[0].point + ballHits[0].normal * Radius;
+            ballInfo.velocity = bounceVelocity;
+        }
+    }
+    
+    public void TelePort(Vector3 pos)
+    {
+        // Do not allow y position below the field
+        if (pos.y < Radius) pos = new Vector3(pos.x, Radius, pos.z);
+
+        transform.position = pos;
+        ballInfo.Position = pos;
+        ballInfo.velocity = Vector3.zero;
+		
+        ballInfo.ResetPrevPosition();
+
+        //if (trail != null) trail.StopTrail();
+    }
+
+    /*public void ResetVelocity()
+    {
+        //_rigidBody.velocity = Vector3.zero;
+        //_rigidBody.angularVelocity = Vector3.zero;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -53,5 +197,5 @@ public class Ball : MonoBehaviour
     public bool IsInPlayer2Side()
     {
         return transform.position.x > 0;
-    }
+    }*/
 }

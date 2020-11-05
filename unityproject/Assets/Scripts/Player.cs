@@ -79,6 +79,8 @@ public class Player : MonoBehaviour
     private readonly Vector3 _backRightSwingUv = Vector3.Normalize(
         new Vector3(Mathf.Cos(BackSwingHorizontalAngle), Mathf.Tan(BackSwingVerticalAngle), - Mathf.Sin(BackSwingHorizontalAngle)));
 
+    public Transform targetPosition;
+
     void Start()
     {
         _pointManager = gameManager.pointManager;
@@ -90,6 +92,8 @@ public class Player : MonoBehaviour
 
         _ballComponent = ball.GetComponent<Ball>();
         InitTechniqueAttrs();
+        
+        _ballComponent.HitBall(ball.transform.position, targetPosition.position);
     }
 
     private void InitTechniqueAttrs()
@@ -229,15 +233,15 @@ public class Player : MonoBehaviour
     {
         ball.transform.position = attachedBallParent.transform.position;
         SwitchBallType(false);
-        _ballComponent.ResetVelocity();
+        //_ballComponent.ResetVelocity();
         ball.AddForce(_serviceTossForce, ForceMode.Impulse);
         _hitMethod = null;
     }
 
     private void HitServiceBall() // Called as animation event
     {
-        _ballComponent.ResetVelocity();
-        ball.AddForce(new Vector3(1.75f, 0.25f, 0.5f), ForceMode.Impulse);
+        //_ballComponent.ResetVelocity();
+        ball.AddForce(new Vector3(1.75f, 0.25f, 0.5f) * 3, ForceMode.Impulse);
     }
 
     void SwitchBallType(bool attachBall) 
@@ -252,13 +256,14 @@ public class Player : MonoBehaviour
             _soundManager.PlayFootstep(_audioSource);
     }
 
-    private void HitBall() // Called as animation event
+    /*private void HitBall() // Called as animation event
     {
         _ballComponent.ResetVelocity();
-        ball.position = hitBallSpawn.position;
+        _ballComponent.velocity = Vector3.zero;
+        _ballComponent.transform.position = hitBallSpawn.position;
         ballTrailRenderer.Clear();
         ReadHitDirection();
-        if (_hitDirection == HitDirection.BackStraight)
+        /*if (_hitDirection == HitDirection.BackStraight)
         {
             ball.AddForce(_backStraightSwingUv * _techniqueAttrs[_hitMethod.GetValueOrDefault()].ForceMultiplier, ForceMode.Impulse);
         } else if (_hitDirection == HitDirection.BackLeft)
@@ -268,10 +273,23 @@ public class Player : MonoBehaviour
         else if (_hitDirection == HitDirection.BackRight)
         {
             ball.AddForce(_backRightSwingUv * _techniqueAttrs[_hitMethod.GetValueOrDefault()].ForceMultiplier, ForceMode.Impulse);
-        }
+        }*/
+        /*var speed = 35;
+        var posEnd = targetPosition.position;
+        var posStart = ball.transform.position;
+        //Vector3 throwDir = new Vector3(posEnd.x - posStart.x, (posEnd.y - posStart.y), posEnd.z - posStart.z);
+        float time = Vector3.Distance(posStart, posEnd) / speed;//throwDir.magnitude / speed;
+        float velx = (posEnd.x - posStart.x) / time;
+        float velz = (posEnd.z - posStart.z) / time;
+        float speedVertical = ((posEnd.y - posStart.y) - 0.5f * Physics.gravity.y * time * time ) / time;
+        
+        _ballComponent.velocity = new Vector3(velx, speedVertical, velz);
+        
+        ballInfo.velocity = throwInfo.velocity;
+        SoundManager.Instance.PlaySound("ThrowWhoosh");
         
         _hitMethod = null;
-    }
+    }*/
 
     private void ResetHittingBall() // Called as animation event
     {
