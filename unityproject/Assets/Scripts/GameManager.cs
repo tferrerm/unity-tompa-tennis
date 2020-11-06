@@ -5,11 +5,13 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [HideInInspector] public CourtManager courtManager;
     [HideInInspector] public PointManager pointManager;
     [HideInInspector] public SoundManager soundManager;
 
     private void Awake()
     {
+        courtManager = GetComponent<CourtManager>();
         pointManager = GetComponent<PointManager>();
         soundManager = GetComponent<SoundManager>();
     }

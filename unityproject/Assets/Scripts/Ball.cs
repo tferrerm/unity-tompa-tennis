@@ -12,7 +12,7 @@ public class Ball : MonoBehaviour
     private const float Radius = 0.143f;
     
     // Ball bounciness
-    private float bounciness = 0.5f;
+    private float bounciness = 0.85f;
     
     // Ball basic information
     private BallInfo ballInfo;
@@ -27,6 +27,8 @@ public class Ball : MonoBehaviour
     private float[] ballPrevPosY;
 
     public SoundManager soundManager;
+
+    public LayerMask layerMask;
     
     ///////////////////
     public Player player1;
@@ -42,6 +44,8 @@ public class Ball : MonoBehaviour
         
         // Array to store the latests positions of the ball
         ballPrevPosY = new float[2];
+        //Vector3 targetPosition = GameObject.FindWithTag("GameController").GetComponent<GameManager>().courtManager.GetHitTargetPosition(1, HitDirectionVertical.Back, HitDirectionHorizontal.Center);
+        //HitBall(targetPosition);
     }
     
     void Update()
@@ -101,6 +105,11 @@ public class Ball : MonoBehaviour
 
         return true;
     }
+
+    public void HitBall(Vector3 posEnd)
+    {
+        HitBall(ballInfo.Position, posEnd);
+    }
     
     public void HitBall(Vector3 posStart, Vector3 posEnd)
     {
@@ -147,10 +156,8 @@ public class Ball : MonoBehaviour
             distance = 0.5f;
         }
 
-        // Check collisions against boundaries
-        int layerMask = 1 << LayerMask.NameToLayer("Players");
-        layerMask = ~layerMask;
-        if (Physics.RaycastNonAlloc(prevpos, dir.normalized, ballHits, distance, layerMask) > 0)
+        // Check collisions against everything but player & ball layers
+        if (Physics.RaycastNonAlloc(prevpos, dir.normalized, ballHits, distance, ~layerMask) > 0)
         {
             var hitLayer = ballHits[0].transform.gameObject.layer;
             var bounceVelocity = ballHits[0].normal * ballInfo.velocity.magnitude * bounciness;
@@ -178,7 +185,7 @@ public class Ball : MonoBehaviour
     {
         //_rigidBody.velocity = Vector3.zero;
         //_rigidBody.angularVelocity = Vector3.zero;
-    }
+    }*/
 
     private void OnTriggerEnter(Collider other)
     {
@@ -196,7 +203,7 @@ public class Ball : MonoBehaviour
         }
     }
 
-    public bool IsInPlayer2Side()
+    /*public bool IsInPlayer2Side()
     {
         return transform.position.x > 0;
     }*/

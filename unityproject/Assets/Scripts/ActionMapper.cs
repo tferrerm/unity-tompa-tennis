@@ -27,16 +27,16 @@ public class ActionMapper
 
     public static bool GetForward()
     {
-        return Input.GetKey(KeyCode.UpArrow);
+        return Input.GetKeyDown(KeyCode.UpArrow);
     }
     
     public static bool GetLeft()
     {
-        return Input.GetKey(KeyCode.LeftArrow);
+        return Input.GetKeyDown(KeyCode.LeftArrow);
     }
     
     public static bool GetRight()
     {
-        return Input.GetKey(KeyCode.RightArrow);
+        return Input.GetKeyDown(KeyCode.RightArrow);
     }
 }

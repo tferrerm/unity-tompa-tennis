@@ -8,6 +8,10 @@ public class CourtManager : MonoBehaviour
     private const float CourtLength = 39.0f;
     private const float ServingAreaWidth = 13.5f;
     private const float ServingAreaLength = 21.0f;
+
+    public Transform player2BackCenterHit;
+    public Transform player2BackLeftHit;
+    public Transform player2BackRightHit;
     
     public enum CourtSection
     {
@@ -31,5 +35,23 @@ public class CourtManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public Vector3 GetHitTargetPosition(int playerId, HitDirectionVertical? vertical, HitDirectionHorizontal? horiz)
+    {
+        if (playerId == 0)
+        {
+            if (vertical == HitDirectionVertical.Back)
+            {
+                return (horiz == HitDirectionHorizontal.Center) ? player2BackCenterHit.position :
+                    (horiz == HitDirectionHorizontal.Left) ? player2BackLeftHit.position : player2BackRightHit.position;
+            }
+        }
+        else
+        {
+            
+        }
+        
+        return Vector3.zero;
     }
 }
