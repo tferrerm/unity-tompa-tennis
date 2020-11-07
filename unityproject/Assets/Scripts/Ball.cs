@@ -106,21 +106,18 @@ public class Ball : MonoBehaviour
         return true;
     }
 
-    public void HitBall(Vector3 posEnd)
+    public void HitBall(Vector3 posEnd, float speed, bool applySpeedYAtt, float speedYAttDivisor = 0f)
     {
-        HitBall(ballInfo.Position, posEnd);
+        HitBall(ballInfo.Position, posEnd, speed, applySpeedYAtt, speedYAttDivisor);
     }
     
-    public void HitBall(Vector3 posStart, Vector3 posEnd)
+    public void HitBall(Vector3 posStart, Vector3 posEnd, float speed, bool applySpeedYAtt, float speedYAttDivisor = 0f)
     {
         // TODO Add target position epsilon for unaccurate shots...
         
         float dis = Vector2.Distance(new Vector2(posStart.x, posStart.z), new Vector2(posEnd.x, posEnd.z));
-        
-        float speed = 35f; // 35
 
-        float speedYAtt = 0.4f;
-        speedYAtt = (dis / 200f);
+        float speedYAtt = applySpeedYAtt ? (dis / speedYAttDivisor) : 1f;
         
         Vector3 throwDir = new Vector3(posEnd.x - posStart.x, (posEnd.y - posStart.y) * speed * speedYAtt, posEnd.z - posStart.z);
 

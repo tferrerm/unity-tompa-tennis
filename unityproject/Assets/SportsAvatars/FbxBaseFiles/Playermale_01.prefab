@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &314472912
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 314472913}
+  m_Layer: 8
+  m_Name: ServiceHit
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &314472913
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 314472912}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.1476957, y: 3.734152, z: 0.5643058}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7372489401241645090}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &453771571
 GameObject:
   m_ObjectHideFlags: 0
@@ -40,7 +70,7 @@ GameObject:
   m_Component:
   - component: {fileID: 565067166}
   m_Layer: 8
-  m_Name: DriveBallSpawn
+  m_Name: HitBallSpawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -208,7 +238,7 @@ GameObject:
   - component: {fileID: 5918194057718775004}
   - component: {fileID: 4002040537018465826}
   - component: {fileID: 1958057751}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: BallCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -224,7 +254,7 @@ Transform:
   m_GameObject: {fileID: 1880786979685979717}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 2.21, z: 0}
-  m_LocalScale: {x: 7, y: 7, z: 9}
+  m_LocalScale: {x: 6, y: 6, z: 11}
   m_Children: []
   m_Father: {fileID: 7372489401241645090}
   m_RootOrder: 4
@@ -2692,6 +2722,7 @@ Transform:
   - {fileID: 9173125600090937070}
   - {fileID: 1202848115}
   - {fileID: 7020418727434988733}
+  - {fileID: 314472913}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
@@ -2753,10 +2784,11 @@ MonoBehaviour:
   attachedBall: {fileID: 1202848114}
   attachedBallParent: {fileID: 453771572}
   gameManager: {fileID: 0}
-  _tossForce: {x: 0, y: 0.35, z: -0.025}
-  driveForce: {x: 0, y: 0.1, z: 0}
   ballCollider: {fileID: 1958057751}
   ballInsideHitZone: 0
+  hitBallSpawn: {fileID: 565067166}
+  ballTrailRenderer: {fileID: 0}
+  targetPosition: {fileID: 0}
 --- !u!82 &7372489402327860113
 AudioSource:
   m_ObjectHideFlags: 0

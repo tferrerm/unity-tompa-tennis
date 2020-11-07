@@ -52,7 +52,7 @@ public class Player : MonoBehaviour
     private const float RotationEpsilon = 1e-4f;
 
     public Ball ball;
-    public GameObject attachedBall;
+    public GameObject attachedBall; // Ball copy attached to player's hand for service animation
     public Transform attachedBallParent;
 
     public GameManager gameManager;
@@ -61,7 +61,6 @@ public class Player : MonoBehaviour
     private SoundManager _soundManager;
     
     private readonly Dictionary<HitMethod, TechniqueAttributes> _techniqueAttrs = new Dictionary<HitMethod, TechniqueAttributes>();
-    private readonly Vector3 _serviceTossForce = new Vector3(0f, 0.35f, -0.025f);
 
     // Ball interaction variables
     public Collider ballCollider;
@@ -71,23 +70,10 @@ public class Player : MonoBehaviour
     private HitDirectionHorizontal? _hitDirectionHoriz;
     private HitDirectionVertical? _hitDirectionVert;
     public Transform hitBallSpawn;
+    public Transform hitServiceBallSpawn;
+    private float serviceTossSpeed = 20f;
+    
     public TrailRenderer ballTrailRenderer;
-    
-    
-
-    // Angles for each hit direction
-    private const float BackSwingHorizontalAngle = 10f * Mathf.Deg2Rad;
-    private const float BackSwingVerticalAngle = 10f * Mathf.Deg2Rad;
-
-    // Unit vectors for each hit direction
-    private readonly Vector3 _backStraightSwingUv = Vector3.Normalize(
-        new Vector3(Mathf.Cos(BackSwingHorizontalAngle), Mathf.Tan(BackSwingVerticalAngle), 0));
-    private readonly Vector3 _backLeftSwingUv = Vector3.Normalize(
-        new Vector3(Mathf.Cos(BackSwingHorizontalAngle), Mathf.Tan(BackSwingVerticalAngle), Mathf.Sin(BackSwingHorizontalAngle)));
-    private readonly Vector3 _backRightSwingUv = Vector3.Normalize(
-        new Vector3(Mathf.Cos(BackSwingHorizontalAngle), Mathf.Tan(BackSwingVerticalAngle), - Mathf.Sin(BackSwingHorizontalAngle)));
-
-    public Transform targetPosition;
 
     void Start()
     {
@@ -245,17 +231,15 @@ public class Player : MonoBehaviour
 
     private void TossServiceBall() // Called as animation event
     {
-        ball.transform.position = attachedBallParent.transform.position;
+        ball.TelePort(attachedBallParent.position);
         SwitchBallType(false);
-        //_ballComponent.ResetVelocity();
-        //ball.AddForce(_serviceTossForce, ForceMode.Impulse);
-        _hitMethod = null;
+        ball.HitBall(hitServiceBallSpawn.position, serviceTossSpeed, false);
     }
 
     private void HitServiceBall() // Called as animation event
     {
-        //_ballComponent.ResetVelocity();
-        //ball.AddForce(new Vector3(1.75f, 0.25f, 0.5f) * 3, ForceMode.Impulse);
+        ball.HitBall(_courtManager.player2ServiceLeftLeft.position, 200f, true, 250f);
+        _soundManager.PlayService(_audioSource);
     }
 
     void SwitchBallType(bool attachBall) 
@@ -274,7 +258,7 @@ public class Player : MonoBehaviour
     {
         ball.TelePort(hitBallSpawn.position);
         Vector3 targetPosition = _courtManager.GetHitTargetPosition(playerId, _hitDirectionVert, _hitDirectionHoriz);
-        ball.HitBall(targetPosition);
+        ball.HitBall(targetPosition, 35f, true, 200f);
         _hitDirectionVert = null;
         _hitDirectionHoriz = null;
         _hitMethod = null;

@@ -9,9 +9,15 @@ public class CourtManager : MonoBehaviour
     private const float ServingAreaWidth = 13.5f;
     private const float ServingAreaLength = 21.0f;
 
+    [Header("Deep Hit Targets - AI Player Side")]
     public Transform player2BackCenterHit;
     public Transform player2BackLeftHit;
     public Transform player2BackRightHit;
+    
+    [Header("Service Hit Targets - AI Player Left Side")]
+    public Transform player2ServiceLeftLeft;
+    public Transform player2ServiceLeftCenter;
+    public Transform player2ServiceLeftRight;
     
     public enum CourtSection
     {
