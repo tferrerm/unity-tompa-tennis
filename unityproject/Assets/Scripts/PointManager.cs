@@ -5,8 +5,15 @@ using UnityEngine;
 
 public class PointManager : MonoBehaviour
 {
+    private bool _ballCollidedWithCourt;
+    private bool _ballCollidedWithServerRacket;
+    private bool _ballCollidedWithReceiverRacket;
+    
+    private const float NextPointWaitingTime = 3f;
+    
     private ScoreManager _scoreManager;
     public CourtSectionMapper courtSectionMapper;
+    public Player player1;
 
     private enum PointState
     {
@@ -16,6 +23,7 @@ public class PointManager : MonoBehaviour
         ReceiverHit = 3,
         ServerTurn = 4,
         ServerHit = 5,
+        PointFinished = 6
     }
 
     public enum CourtTarget
@@ -29,6 +37,7 @@ public class PointManager : MonoBehaviour
     void Start()
     {
         _scoreManager = GetComponent<ScoreManager>();
+        courtSectionMapper = new CourtSectionMapper(_scoreManager);
     }
 
     // Update is called once per frame
@@ -37,26 +46,21 @@ public class PointManager : MonoBehaviour
         
     }
 
-    private void HandleBallBounce()
+    public void HandleBallBounce(Vector2? bounceCoordinates)
     {
-        bool ballCollidedWithCourt = false;
-        bool ballCollidedWithServerRacket = false;
-        bool ballCollidedWithReceiverRacket = false;
-        var bounceCoordinates = new Vector2Int();
-        
-        if (ballCollidedWithCourt)
-        {
+        //if (ballCollidedWithCourt)
+        //{
             /*
              * Set collision coordinates
              */
-            bounceCoordinates = new Vector2Int();
-        }
+        //    bounceCoordinates = new Vector2Int();
+        //}
         
         switch (_pointState)
         {
             case PointState.FirstServe:
             case PointState.SecondServe:
-                if ( ballCollidedWithCourt && courtSectionMapper.ServiceIsIn(bounceCoordinates))
+                if ( _ballCollidedWithCourt && courtSectionMapper.ServiceIsIn(bounceCoordinates.GetValueOrDefault()))
                 {
                     // Service is in
                     _pointState = PointState.ReceiverTurn;
@@ -67,6 +71,7 @@ public class PointManager : MonoBehaviour
                     if (_pointState == PointState.FirstServe)
                     {
                         _pointState = PointState.SecondServe;
+                        // Reset service ball
                     }
                     else
                     {
@@ -78,7 +83,7 @@ public class PointManager : MonoBehaviour
                 }
                 break;
             case PointState.ReceiverTurn:
-                if (ballCollidedWithReceiverRacket)
+                if (_ballCollidedWithReceiverRacket)
                 {
                     _pointState = PointState.ReceiverHit;
                 }
@@ -86,14 +91,15 @@ public class PointManager : MonoBehaviour
                 {
                     // Collide was anywhere else, receiver didn't reach the ball before second bounce
                     _scoreManager.WinPoint(_scoreManager.GetServingPlayerId());
+                    ResetPoint();
                 }
                 break;
             case PointState.ReceiverHit:
-                if (ballCollidedWithServerRacket)
+                if (_ballCollidedWithServerRacket)
                 {
                     _pointState = PointState.ServerHit;
                 }
-                else if(ballCollidedWithCourt && courtSectionMapper.BallIsIn(bounceCoordinates, CourtTarget.Server))
+                else if(_ballCollidedWithCourt && courtSectionMapper.BallIsIn(bounceCoordinates.GetValueOrDefault(), CourtTarget.Server))
                 {
                     _pointState = PointState.ServerTurn;
                 }
@@ -105,7 +111,7 @@ public class PointManager : MonoBehaviour
                 }
                 break;
             case PointState.ServerTurn:
-                if (ballCollidedWithServerRacket)
+                if (_ballCollidedWithServerRacket)
                 {
                     _pointState = PointState.ServerHit;
                 }
@@ -117,11 +123,11 @@ public class PointManager : MonoBehaviour
                 }
                 break;
             case PointState.ServerHit:
-                if (ballCollidedWithReceiverRacket)
+                if (_ballCollidedWithReceiverRacket)
                 {
                     _pointState = PointState.ReceiverHit;
                 }
-                else if(courtSectionMapper.BallIsIn(bounceCoordinates, CourtTarget.Receiver))
+                else if(courtSectionMapper.BallIsIn(bounceCoordinates.GetValueOrDefault(), CourtTarget.Receiver))
                 {
                     _pointState = PointState.ReceiverTurn;
                 }
@@ -132,6 +138,8 @@ public class PointManager : MonoBehaviour
                     ResetPoint();
                 }
                 break;
+            case PointState.PointFinished:
+                break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
@@ -139,7 +147,25 @@ public class PointManager : MonoBehaviour
 
     private void ResetPoint()
     {
+        _pointState = PointState.PointFinished;
+        _ballCollidedWithCourt = false;
+        _ballCollidedWithReceiverRacket = false;
+        _ballCollidedWithServerRacket = false;
+        StartCoroutine(StartNextPoint());
+    }
+
+    private IEnumerator StartNextPoint()
+    {
+        yield return new WaitForSeconds(NextPointWaitingTime);
         _pointState = PointState.FirstServe;
+        if (_scoreManager.GetServingPlayerId() == 0)
+        {
+            player1.SwitchBallType(true);
+        }
+        else
+        {
+            // player2.SwitchBallType(true);
+        }
     }
 
     public bool IsServing(int playerId)
@@ -150,5 +176,26 @@ public class PointManager : MonoBehaviour
     public bool CanHitBall(int playerId)
     {
         return true; // TODO 
+    }
+
+    public void SetPlayerHitBall(int playerId)
+    {
+        if (playerId == _scoreManager.GetReceivingPlayerId())
+        {
+            _ballCollidedWithReceiverRacket = true;
+            _ballCollidedWithServerRacket = false;
+        }
+        else
+        {
+            _ballCollidedWithServerRacket = true;
+            _ballCollidedWithReceiverRacket = false;
+        }
+
+        _ballCollidedWithCourt = false;
+    }
+
+    public void SetCourtBallBounce()
+    {
+        _ballCollidedWithCourt = true;
     }
 }

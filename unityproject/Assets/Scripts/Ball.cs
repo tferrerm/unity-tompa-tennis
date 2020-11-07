@@ -9,7 +9,7 @@ public class Ball : MonoBehaviour
     private const float MinDistanceToConsiderBallStopped = 0.002f;
     
     // Radius of the ball
-    private const float Radius = 0.143f;
+    private const float Radius = 0.15f;
     
     // Ball bounciness
     private float bounciness = 0.85f;
@@ -26,6 +26,7 @@ public class Ball : MonoBehaviour
     // Latest Y position of the ball
     private float[] ballPrevPosY;
 
+    public PointManager pointManager;
     public SoundManager soundManager;
 
     public LayerMask layerMask;
@@ -40,7 +41,7 @@ public class Ball : MonoBehaviour
     {
         ballInfo.Position = transform.position;
         
-        ballPhysics = new BallPhysics(Radius, bounciness, ground.position.y, soundManager);
+        ballPhysics = new BallPhysics(Radius, bounciness, ground.position.y, soundManager, pointManager);
         
         // Array to store the latests positions of the ball
         ballPrevPosY = new float[2];
@@ -150,7 +151,7 @@ public class Ball : MonoBehaviour
         if (!ballIsMoving)
         {
             dir = Vector3.down;
-            distance = 0.5f;
+            distance = Radius;
         }
 
         // Check collisions against everything but player & ball layers
@@ -161,6 +162,8 @@ public class Ball : MonoBehaviour
 
             ballInfo.Position = ballHits[0].point + ballHits[0].normal * Radius;
             ballInfo.velocity = bounceVelocity;
+            
+            Debug.Log("COLLISION");
         }
     }
     

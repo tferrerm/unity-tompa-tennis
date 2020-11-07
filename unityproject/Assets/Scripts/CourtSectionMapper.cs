@@ -12,7 +12,26 @@ public struct CourtArea
 
 public class CourtSectionMapper
 {
-    public ScoreManager scoreManager;
+    private readonly CourtArea _backLeftServingSquare;
+    private readonly CourtArea _frontRightServingSquare;
+    private readonly CourtArea _backRightServingSquare;
+    private readonly CourtArea _frontLeftServingSquare;
+    private readonly CourtArea _frontFullArea;
+    private readonly CourtArea _backFullArea;
+    
+    private ScoreManager _scoreManager;
+
+    public CourtSectionMapper(ScoreManager scoreManager)
+    {
+        _backLeftServingSquare = GenerateCourtArea(AreaType.ServingSquare, Depth.Back, Horizontal.Left);
+        _frontRightServingSquare = GenerateCourtArea(AreaType.ServingSquare, Depth.Front, Horizontal.Right);
+        _backRightServingSquare = GenerateCourtArea(AreaType.ServingSquare, Depth.Back, Horizontal.Right);
+        _frontLeftServingSquare = GenerateCourtArea(AreaType.ServingSquare, Depth.Front, Horizontal.Left);
+        _frontFullArea = GenerateCourtArea(AreaType.Full, Depth.Front, null);
+        _backFullArea = GenerateCourtArea(AreaType.Full, Depth.Back, null);
+        
+        _scoreManager = scoreManager;
+    }
 
     private enum Depth
     {
@@ -33,58 +52,49 @@ public class CourtSectionMapper
     }
 
 
-    public bool ServiceIsIn(Vector2Int coordinates)
+    public bool ServiceIsIn(Vector2 coordinates)
     {
-        var servingSide = scoreManager.GetServingSide();
+        var servingSide = _scoreManager.GetServingSide();
         return servingSide == ScoreManager.ServingSide.Even ? EvenServiceIsIn(coordinates) : OddServiceIsIn(coordinates);
     }
 
     private bool EvenServiceIsIn(Vector2 coordinates)
     {
-        var backLeftServingSquare = GenerateCourtArea(AreaType.ServingSquare, Depth.Back, Horizontal.Left);
-        var frontRightServingSquare = GenerateCourtArea(AreaType.ServingSquare, Depth.Front, Horizontal.Right);
-        
         // If human player (closer to camera) is serving
-        if (scoreManager.GetServingPlayerId() == scoreManager.player1Id)
+        if (_scoreManager.GetServingPlayerId() == _scoreManager.player1Id)
         {
-            return CoordinatesBelongToArea(coordinates, backLeftServingSquare);
+            return CoordinatesBelongToArea(coordinates, _backLeftServingSquare);
         }
-        return CoordinatesBelongToArea(coordinates, frontRightServingSquare);
+        return CoordinatesBelongToArea(coordinates, _frontRightServingSquare);
     }
     
     private bool OddServiceIsIn(Vector2 coordinates)
     {
-        var backRightServingSquare = GenerateCourtArea(AreaType.ServingSquare, Depth.Back, Horizontal.Right);
-        var frontLeftServingSquare = GenerateCourtArea(AreaType.ServingSquare, Depth.Front, Horizontal.Left);
-
         // If human player (closer to camera) is serving
-        if (scoreManager.GetServingPlayerId() == scoreManager.player1Id)
+        if (_scoreManager.GetServingPlayerId() == _scoreManager.player1Id)
         {
-            return CoordinatesBelongToArea(coordinates, backRightServingSquare);
+            return CoordinatesBelongToArea(coordinates, _backRightServingSquare);
         }
-        return CoordinatesBelongToArea(coordinates, frontLeftServingSquare);
+        return CoordinatesBelongToArea(coordinates, _frontLeftServingSquare);
     }
 
     public bool BallIsIn(Vector2 coordinates, PointManager.CourtTarget target)
     {
-        var frontFullArea = GenerateCourtArea(AreaType.Full, Depth.Front, null);
-        var backFullArea = GenerateCourtArea(AreaType.Full, Depth.Back, null);
-
         // If human player (closer to camera) is receiving and target is his court or if he is serving and his court is target
-        if ((target == PointManager.CourtTarget.Receiver && scoreManager.GetReceivingPlayerId() == scoreManager.player1Id) ||
-            (target == PointManager.CourtTarget.Server && scoreManager.GetServingPlayerId() == scoreManager.player1Id))
+        if ((target == PointManager.CourtTarget.Receiver && _scoreManager.GetReceivingPlayerId() == _scoreManager.player1Id) ||
+            (target == PointManager.CourtTarget.Server && _scoreManager.GetServingPlayerId() == _scoreManager.player1Id))
         {
-            return CoordinatesBelongToArea(coordinates, frontFullArea);
+            return CoordinatesBelongToArea(coordinates, _frontFullArea);
         }
-        return CoordinatesBelongToArea(coordinates, backFullArea);
+        return CoordinatesBelongToArea(coordinates, _backFullArea);
     }
 
     private bool CoordinatesBelongToArea(Vector2 collision, CourtArea area)
     {
-        return collision.x > area.HorizontalStart &&
-               collision.x < area.HorizontalLimit &&
-               collision.y > area.DepthStart &&
-               collision.y < area.DepthLimit;
+        return collision.y > area.HorizontalStart &&
+               collision.y < area.HorizontalLimit &&
+               collision.x > area.DepthStart &&
+               collision.x < area.DepthLimit;
     }
 
     private static CourtArea GenerateCourtArea(AreaType type,  Depth depth, [CanBeNull] Horizontal? horizontal)

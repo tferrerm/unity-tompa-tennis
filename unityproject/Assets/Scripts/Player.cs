@@ -242,7 +242,7 @@ public class Player : MonoBehaviour
         _soundManager.PlayService(_audioSource);
     }
 
-    void SwitchBallType(bool attachBall) 
+    public void SwitchBallType(bool attachBall) 
     {
         attachedBall.SetActive(attachBall);
         ball.gameObject.SetActive(!attachBall);
@@ -256,6 +256,9 @@ public class Player : MonoBehaviour
 
     public void HitBall() // Called as animation event
     {
+        _pointManager.SetPlayerHitBall(playerId);
+        _pointManager.HandleBallBounce(null);
+        
         ball.TelePort(hitBallSpawn.position);
         Vector3 targetPosition = _courtManager.GetHitTargetPosition(playerId, _hitDirectionVert, _hitDirectionHoriz);
         ball.HitBall(targetPosition, 35f, true, 200f);

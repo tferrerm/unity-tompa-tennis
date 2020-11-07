@@ -15,16 +15,18 @@ public class BallPhysics
 
     private float groundY;
 
+    private PointManager _pointManager;
     private SoundManager _soundManager;
     
     /// <summary>
     /// Constructor
     /// </summary>
-    public BallPhysics(float radius, float bounciness, float grndY, SoundManager sndManager)
+    public BallPhysics(float radius, float bounciness, float grndY, SoundManager sndManager, PointManager pointManager)
     {
         this.radius = radius;
         this.bounciness = bounciness;
         this.groundY = grndY;
+        _pointManager = pointManager;
         _soundManager = sndManager;
     }
     
@@ -69,7 +71,10 @@ public class BallPhysics
                 bounceSpeed = (bounceSpeed > 0.001f ? bounceSpeed : 0.0f);
                 bi.velocity = new Vector3(bi.velocity.x * 0.85f, bounceSpeed, bi.velocity.z * 0.85f);
                 
+                _pointManager.SetCourtBallBounce();
+                _pointManager.HandleBallBounce(new Vector2(bi.Position.x, bi.Position.z));
                 _soundManager.PlayBallBounce();
+                Debug.Log("BOUNCE WITH FLOOR");
             }
             else
             {

@@ -853,8 +853,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 19.709303, y: 3.4, z: 1}
-  m_Center: {x: -9.850415, y: -1.6, z: 0.006383223}
+  m_Size: {x: 19.709303, y: 3.4, z: 0.1}
+  m_Center: {x: -9.850415, y: -1.6, z: 0}
 --- !u!1 &73212406
 GameObject:
   m_ObjectHideFlags: 0
@@ -5175,8 +5175,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 19.709303, y: 3.4, z: 1}
-  m_Center: {x: -9.850415, y: -1.6, z: 0.0063832044}
+  m_Size: {x: 19.709303, y: 3.4, z: 0.1}
+  m_Center: {x: -9.850415, y: -1.6, z: 0}
 --- !u!1 &658864837
 GameObject:
   m_ObjectHideFlags: 0
@@ -7790,7 +7790,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!135 &891900770
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -7896,6 +7896,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 529b76d9fb82c410abbb6de097946fe5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pointManager: {fileID: 1688545062}
   soundManager: {fileID: 1688545064}
   layerMask:
     serializedVersion: 2
@@ -15290,6 +15291,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7144657b7d18d40d297f1d34b746bff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player1: {fileID: 114571766}
 --- !u!114 &1688545063
 MonoBehaviour:
   m_ObjectHideFlags: 0
