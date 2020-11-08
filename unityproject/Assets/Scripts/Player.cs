@@ -35,8 +35,6 @@ public class Player : MonoBehaviour
     private AudioSource _audioSource;
     
     private Animator _animator;
-    private int _isMovingHash;
-    private int _speedHash;
     private int _strafeHash;
     private int _forwardHash;
     private int _serviceTriggerHash;
@@ -47,9 +45,6 @@ public class Player : MonoBehaviour
 
     private float _moveLeftRightValue;
     private float _moveUpDownValue;
-
-    private const float Epsilon = 0.001f;
-    private const float RotationEpsilon = 1e-4f;
 
     public Ball ball;
     public GameObject attachedBall; // Ball copy attached to player's hand for service animation
@@ -97,8 +92,6 @@ public class Player : MonoBehaviour
 
     private void CalculateAnimatorHashes()
     {
-        _isMovingHash = Animator.StringToHash("IsMoving");
-        _speedHash = Animator.StringToHash("Speed");
         _strafeHash = Animator.StringToHash("Strafe");
         _forwardHash = Animator.StringToHash("Forward");
         _serviceTriggerHash = Animator.StringToHash("Service Trigger");
@@ -238,8 +231,10 @@ public class Player : MonoBehaviour
 
     private void HitServiceBall() // Called as animation event
     {
-        ball.HitBall(_courtManager.player2ServiceLeftLeft.position, 200f, true, 250f);
+        var position = _courtManager.player2ServiceLeftLeft.position;
+        ball.HitBall(position, 200f, true, 250f);
         _soundManager.PlayService(_audioSource);
+        gameManager.PlayerHitBall(ball.GetPosition(),position);
     }
 
     public void SwitchBallType(bool attachBall) 
@@ -265,6 +260,8 @@ public class Player : MonoBehaviour
         _hitDirectionVert = null;
         _hitDirectionHoriz = null;
         _hitMethod = null;
+
+        gameManager.PlayerHitBall(ball.GetPosition(),targetPosition);
     }
 
     private void ResetHittingBall() // Called as animation event

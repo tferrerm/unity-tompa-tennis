@@ -17,8 +17,6 @@ public class AIPlayer : MonoBehaviour
     private AudioSource _audioSource;
     
     private Animator _animator;
-    private int _isMovingHash;
-    private int _speedHash;
     private int _strafeHash;
     private int _forwardHash;
     private int _serviceTriggerHash;
@@ -29,9 +27,6 @@ public class AIPlayer : MonoBehaviour
 
     private float _moveLeftRightValue;
     private float _moveUpDownValue;
-
-    private const float Epsilon = 0.001f;
-    private const float RotationEpsilon = 1e-4f;
 
     public Rigidbody ball;
     public GameObject attachedBall;
@@ -46,6 +41,10 @@ public class AIPlayer : MonoBehaviour
 
     private int desiredDistance = 1;
     
+    private float? _targetZ = null;
+    private bool _sprinting = false;
+    private float _lastZDifference = float.MaxValue;
+    
     void Start()
     {
         _pointManager = gameManager.pointManager;
@@ -58,8 +57,6 @@ public class AIPlayer : MonoBehaviour
 
     private void CalculateAnimatorHashes()
     {
-        _isMovingHash = Animator.StringToHash("IsMoving");
-        _speedHash = Animator.StringToHash("Speed");
         _strafeHash = Animator.StringToHash("Strafe");
         _forwardHash = Animator.StringToHash("Forward");
         _serviceTriggerHash = Animator.StringToHash("Service Trigger");
@@ -71,21 +68,58 @@ public class AIPlayer : MonoBehaviour
     
     void Update()
     {
-        Move();
+        if (_targetZ != null)
+        {
+            var currentZDifference = Mathf.Abs(transform.position.z - _targetZ.Value);
+            Move();
+            if (currentZDifference > _lastZDifference)
+            {
+                _targetZ = null;
+                _lastZDifference = float.MaxValue;
+                _animator.SetFloat(_strafeHash, 0);
+                _animator.SetFloat(_forwardHash, 0);
+            }
+            else
+            {
+                _lastZDifference = currentZDifference;
+            }
+        }
     }
 
+    // private void Move()
+    // {
+    //     if (!ball.gameObject.activeSelf)
+    //         return;
+    //     
+    //     var position = transform.position;
+    //     if (position.x <= desiredDistance)
+    //         StayInNet();
+    //     else if (DistanceToBall().magnitude <= desiredDistance)
+    //         PrepareToHit();
+    //     else
+    //         MoveTowardsBall();
+    // }
+    
     private void Move()
     {
-        if (!ball.gameObject.activeSelf)
-            return;
         
-        var position = transform.position;
-        if (position.x <= desiredDistance)
-            StayInNet();
-        else if (DistanceToBall().magnitude <= desiredDistance)
-            PrepareToHit();
-        else
-            MoveTowardsBall();
+        float dt = Time.deltaTime;
+        Vector2 movingDir = new Vector2(_moveLeftRightValue, _moveUpDownValue);
+        float manhattanNorm = Math.Abs(movingDir[0]) + Math.Abs(movingDir[1]);
+        if (manhattanNorm == 0)
+            manhattanNorm = 1;
+        float spd = (_sprinting ? sprintSpeed : runSpeed) * movingDir.magnitude;
+        float dx = dt * (_moveUpDownValue < 0 ? backSpeed : spd) * _moveUpDownValue / manhattanNorm;
+        float dz = dt * spd * _moveLeftRightValue / manhattanNorm;
+
+        _characterController.SimpleMove(Vector3.zero);
+        
+        Vector3 move = new Vector3(dx, 0, dz);
+
+        _animator.SetFloat(_strafeHash, _moveLeftRightValue * -1);
+        _animator.SetFloat(_forwardHash, _moveUpDownValue);
+        _characterController.Move(move);
+        
     }
     
     void CheckServiceStatus()
@@ -147,5 +181,20 @@ public class AIPlayer : MonoBehaviour
         return;
         if (animationEvent.animatorClipInfo.weight > 0.5)
             _soundManager.PlayFootstep(_audioSource);
+    }
+
+
+    public void UpdateTargetPosition(Vector3 startPos, Vector3 ballTargetPos)
+    {
+        var xDiff = Mathf.Abs(ballTargetPos.x - startPos.x);
+        var zDiff = Mathf.Abs(ballTargetPos.z - startPos.z);
+
+        var ratio = zDiff / xDiff;
+
+        var playerBallTargetXDiff = Mathf.Abs(transform.position.x - ballTargetPos.x);
+        
+        _targetZ = ballTargetPos.z + playerBallTargetXDiff * ratio;
+        _moveUpDownValue = 0;
+        _moveLeftRightValue = _targetZ - transform.position.z > 0 ? 1 : -1;
     }
 }

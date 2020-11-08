@@ -8,6 +8,9 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public CourtManager courtManager;
     [HideInInspector] public PointManager pointManager;
     [HideInInspector] public SoundManager soundManager;
+    public AIPlayer aiPlayer;
+    public Player player;
+    
 
     private void Awake()
     {
@@ -26,5 +29,15 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void PlayerHitBall(Vector3 startPos, Vector3 ballTargetPos)
+    {
+        TriggerAIPlayerMovement(startPos, ballTargetPos);
+    }
+    
+    private void TriggerAIPlayerMovement(Vector3 startPos, Vector3 ballTargetPos)
+    {
+        aiPlayer.UpdateTargetPosition(startPos, ballTargetPos);
     }
 }

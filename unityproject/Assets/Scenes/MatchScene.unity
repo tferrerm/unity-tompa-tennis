@@ -10467,7 +10467,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1168141959}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 47c54ee8633be499eb24012a1b1c85fe, type: 3}
   m_Name: 
@@ -15490,6 +15490,8 @@ MonoBehaviour:
   courtManager: {fileID: 0}
   pointManager: {fileID: 0}
   soundManager: {fileID: 0}
+  aiPlayer: {fileID: 1168141960}
+  player: {fileID: 114571766}
 --- !u!114 &1688545064
 MonoBehaviour:
   m_ObjectHideFlags: 0
