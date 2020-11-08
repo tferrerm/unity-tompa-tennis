@@ -23,7 +23,8 @@ public class PointManager : MonoBehaviour
         ReceiverHit = 3,
         ServerTurn = 4,
         ServerHit = 5,
-        PointFinished = 6
+        WaitingFirstServe = 6,
+        WaitingSecondServe = 7
     }
 
     public enum CourtTarget
@@ -70,15 +71,15 @@ public class PointManager : MonoBehaviour
                     // Service is out
                     if (_pointState == PointState.FirstServe)
                     {
-                        _pointState = PointState.SecondServe;
-                        // Reset service ball
+                        _pointState = PointState.WaitingSecondServe;
+                        ResetPoint(PointState.SecondServe);
                     }
                     else
                     {
                         //Double fault
-                        _pointState = PointState.FirstServe;
+                        _pointState = PointState.WaitingFirstServe;
                         _scoreManager.WinPoint(_scoreManager.GetReceivingPlayerId());
-                        ResetPoint();
+                        ResetPoint(PointState.FirstServe);
                     }
                 }
                 break;
@@ -90,8 +91,9 @@ public class PointManager : MonoBehaviour
                 else
                 {
                     // Collide was anywhere else, receiver didn't reach the ball before second bounce
+                    _pointState = PointState.WaitingFirstServe;
                     _scoreManager.WinPoint(_scoreManager.GetServingPlayerId());
-                    ResetPoint();
+                    ResetPoint(PointState.FirstServe);
                 }
                 break;
             case PointState.ReceiverHit:
@@ -106,8 +108,9 @@ public class PointManager : MonoBehaviour
                 else
                 {
                     // Receiver hit was out
+                    _pointState = PointState.WaitingFirstServe;
                     _scoreManager.WinPoint(_scoreManager.GetServingPlayerId());
-                    ResetPoint();
+                    ResetPoint(PointState.FirstServe);
                 }
                 break;
             case PointState.ServerTurn:
@@ -119,7 +122,7 @@ public class PointManager : MonoBehaviour
                 {
                     // Collide was anywhere else, server didn't reach the ball before second bounce
                     _scoreManager.WinPoint(_scoreManager.GetReceivingPlayerId());
-                    ResetPoint();
+                    ResetPoint(PointState.FirstServe);
                 }
                 break;
             case PointState.ServerHit:
@@ -135,29 +138,29 @@ public class PointManager : MonoBehaviour
                 {
                     // Server hit was out
                     _scoreManager.WinPoint(_scoreManager.GetReceivingPlayerId());
-                    ResetPoint();
+                    ResetPoint(PointState.FirstServe);
                 }
                 break;
-            case PointState.PointFinished:
+            case PointState.WaitingFirstServe:
+            case PointState.WaitingSecondServe:
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
     }
 
-    private void ResetPoint()
+    private void ResetPoint(PointState nextServeState)
     {
-        _pointState = PointState.PointFinished;
         _ballCollidedWithCourt = false;
         _ballCollidedWithReceiverRacket = false;
         _ballCollidedWithServerRacket = false;
-        StartCoroutine(StartNextPoint());
+        StartCoroutine(WaitForNextServe(nextServeState));
     }
 
-    private IEnumerator StartNextPoint()
+    private IEnumerator WaitForNextServe(PointState nextServeState)
     {
         yield return new WaitForSeconds(NextPointWaitingTime);
-        _pointState = PointState.FirstServe;
+        _pointState = nextServeState;
         if (_scoreManager.GetServingPlayerId() == 0)
         {
             player1.SwitchBallType(true);
@@ -170,12 +173,12 @@ public class PointManager : MonoBehaviour
 
     public bool IsServing(int playerId)
     {
-        return true;//(_pointState == PointState.FirstServe || _pointState == PointState.SecondServe) && _scoreManager.GetServingPlayerId() == playerId;
+        return (_pointState == PointState.FirstServe || _pointState == PointState.SecondServe) && _scoreManager.GetServingPlayerId() == playerId;
     }
 
     public bool CanHitBall(int playerId)
     {
-        return true; // TODO 
+        return true; // TODO player can hit ball only if incoming ball, prevent hitting twice
     }
 
     public void SetPlayerHitBall(int playerId)
