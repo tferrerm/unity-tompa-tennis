@@ -12,6 +12,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip[] shoeSqueaks;
     public AudioClip[] racquetHits;
     public AudioClip[] racquetSwishes;
+    public AudioClip[] netHits;
     
     public AudioSource ballAudioSource;
     public AudioSource sceneAudioSource;
@@ -55,6 +56,12 @@ public class SoundManager : MonoBehaviour
     public void PlayShoeSqueak(AudioSource playerAudioSource)
     {
         playerAudioSource.PlayOneShot(ChooseRandom(shoeSqueaks));
+    }
+
+    public void PlayNetHit()
+    {
+        ballAudioSource.volume = 1;
+        ballAudioSource.PlayOneShot(ChooseRandom(netHits));
     }
 
     private static AudioClip ChooseRandom(IReadOnlyList<AudioClip> clips)
