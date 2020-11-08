@@ -18,6 +18,7 @@ public class ScoreManager : MonoBehaviour
     private List<Vector2Int> sets = new List<Vector2Int>();
     private int _currentSetIndex = 0;
     private Vector2Int _currentGame = new Vector2Int(0, 0);
+    private bool _gameWon = false;
 
     public Player player1;
     public AIPlayer player2;
@@ -74,7 +75,7 @@ public class ScoreManager : MonoBehaviour
             else switch (_currentGame[0])
             {
                 case 40 when _currentGame[1] < 40:
-                    WinGame(playerId);
+                    _gameWon = true;
                     break;
                 case 40 when _currentGame[1] == 40:
                     // 40 40 to AD 40
@@ -86,7 +87,7 @@ public class ScoreManager : MonoBehaviour
                     break;
                 case 45:
                     // AD 40 to game
-                    WinGame(playerId);
+                    _gameWon = true;
                     break;
             }
         }
@@ -99,7 +100,7 @@ public class ScoreManager : MonoBehaviour
             else switch (_currentGame[1])
             {
                 case 40 when _currentGame[0] < 40:
-                    WinGame(playerId);
+                    _gameWon = true;
                     break;
                 case 40 when _currentGame[0] == 40:
                     // 40 40 to 40 AD
@@ -110,10 +111,16 @@ public class ScoreManager : MonoBehaviour
                     _currentGame = new Vector2Int(40, 40);
                     break;
                 case 45:
-                    WinGame(playerId);
+                    _gameWon = true;
                     break;
             }
         }
+
+        if (_gameWon)
+            WinGame(playerId);
+        else
+            SwapServingSide();
+        
         uiManager.SetPlayerGameScore(sets, _currentGame, _currentSetIndex + 1, _servingPlayerId == player1Id);
     }
 
@@ -140,6 +147,7 @@ public class ScoreManager : MonoBehaviour
             _currentGame = new Vector2Int(0, 0);
         }
         CheckSetWon(sets[_currentSetIndex]);
+        SwapServingSide();
         if ((_currentGame[1] + _currentGame[0]) % 2 == 1)
         {
             SwitchServingPlayer();
@@ -163,6 +171,8 @@ public class ScoreManager : MonoBehaviour
             currentlyInTiebreak = true;
         }
         _currentGame = new Vector2Int(0, 0);
+        currentServingSide = ServingSide.Even;
+        _gameWon = false;
         SwitchServingPlayer();
     }
 
@@ -187,15 +197,21 @@ public class ScoreManager : MonoBehaviour
         {
             _player1SetsWon += 1;
             _currentSetIndex += 1;
+            currentServingSide = ServingSide.Even;
+            _gameWon = false;
         }
         if (set[1] == 6 && set[0] < 5 || set[1] == 7)
         {
             _player2SetsWon += 1;
             _currentSetIndex += 1;
+            currentServingSide = ServingSide.Even;
+            _gameWon = false;
         }
         if (_player1SetsWon == setsNeededToWin || _player2SetsWon == setsNeededToWin)
         {
             _matchFinished = true;
+            currentServingSide = ServingSide.Even;
+            _gameWon = false;
         }
     }
 
@@ -247,5 +263,13 @@ public class ScoreManager : MonoBehaviour
         {
             _servingPlayerId = player1Id;
         }  
+    }
+
+    private void SwapServingSide()
+    {
+        Debug.Log($"ANTES: {currentServingSide}");
+        currentServingSide = (currentServingSide == ServingSide.Even)
+            ? ServingSide.Odd : ServingSide.Even;
+        Debug.Log($"DESPUES: {currentServingSide}");
     }
 }
