@@ -163,6 +163,8 @@ public class Ball : MonoBehaviour
             ballInfo.Position = ballHits[0].point + ballHits[0].normal * Radius;
             ballInfo.velocity = bounceVelocity;
             
+            soundManager.PlayBallBounce(ballInfo.velocity);
+            
             Debug.Log("COLLISION");
         }
     }

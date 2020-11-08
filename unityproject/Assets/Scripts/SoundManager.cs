@@ -41,8 +41,9 @@ public class SoundManager : MonoBehaviour
         playerAudioSource.PlayOneShot(ChooseRandom(racquetSwishes));
     }
 
-    public void PlayBallBounce()
+    public void PlayBallBounce(Vector3 ballSpeed)
     {
+        ballAudioSource.volume = 0.05f * ballSpeed.magnitude;
         ballAudioSource.PlayOneShot(ChooseRandom(ballBounces));
     }
 

@@ -73,7 +73,7 @@ public class BallPhysics
                 
                 _pointManager.SetCourtBallBounce();
                 _pointManager.HandleBallBounce(new Vector2(bi.Position.x, bi.Position.z));
-                _soundManager.PlayBallBounce();
+                _soundManager.PlayBallBounce(bi.velocity);
                 Debug.Log("BOUNCE WITH FLOOR");
             }
             else
