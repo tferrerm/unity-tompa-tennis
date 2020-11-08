@@ -30,7 +30,7 @@ public class ScoreManager : MonoBehaviour
 
     private bool _matchFinished;
     [HideInInspector] public bool currentlyInTiebreak;
-    private ServingSide _currentServingSide = ServingSide.Even;
+    [HideInInspector] public ServingSide currentServingSide = ServingSide.Even; // TODO CHANGE VALUE
     private int _servingPlayerId;
 
     // Start is called before the first frame update

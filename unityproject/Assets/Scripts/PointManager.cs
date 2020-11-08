@@ -10,7 +10,8 @@ public class PointManager : MonoBehaviour
     private bool _ballCollidedWithReceiverRacket;
     
     private const float NextPointWaitingTime = 3f;
-    
+
+    private CourtManager _courtManager;
     private ScoreManager _scoreManager;
     public CourtSectionMapper courtSectionMapper;
     public Player player1;
@@ -37,8 +38,11 @@ public class PointManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _courtManager = GetComponent<CourtManager>();
         _scoreManager = GetComponent<ScoreManager>();
         courtSectionMapper = new CourtSectionMapper(_scoreManager);
+
+        ResetPlayerPositions();
     }
 
     // Update is called once per frame
@@ -167,7 +171,25 @@ public class PointManager : MonoBehaviour
         }
         else
         {
-            // player2.SwitchBallType(true);
+            // TODO player2.SwitchBallType(true);
+        }
+
+        ResetPlayerPositions();
+    }
+
+    private void ResetPlayerPositions()
+    {
+        var currentServingSide = _scoreManager.currentServingSide;
+        if (_scoreManager.GetServingPlayerId() == player1.playerId)
+        {
+            player1.transform.position = currentServingSide == ScoreManager.ServingSide.Even ? 
+                _courtManager.player1ServiceSpotRight.position : _courtManager.player1ServiceSpotLeft.position;
+            // TODO PLAYER 2 RECV SPOT
+        }
+        else
+        {
+            // TODO PLAYER 1 RECV SPOT
+            // TODO PLAYER 2 SERVE SPOT
         }
     }
 
