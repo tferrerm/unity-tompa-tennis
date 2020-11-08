@@ -14,6 +14,11 @@ public class CourtManager : MonoBehaviour
     public Transform player2BackLeftHit;
     public Transform player2BackRightHit;
     
+    [Header("Deep Hit Targets - Player Side")]
+    public Transform player1BackCenterHit;
+    public Transform player1BackLeftHit;
+    public Transform player1BackRightHit;
+    
     [Header("Service Hit Spots")]
     public Transform player1ServiceSpotLeft;
     public Transform player1ServiceSpotRight;

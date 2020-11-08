@@ -28,23 +28,33 @@ public class AIPlayer : MonoBehaviour
     private float _moveLeftRightValue;
     private float _moveUpDownValue;
 
-    public Rigidbody ball;
+    public Ball ball;
     public GameObject attachedBall;
     public Transform attachedBallParent;
+    public Collider ballCollider;
+    [HideInInspector] public bool ballInsideHitZone;
+    private HitMethod? _hitMethod;
+    private HitDirectionHorizontal? _hitDirectionHoriz;
+    private HitDirectionVertical? _hitDirectionVert;
+    public Transform hitBallSpawn;
+    public Transform hitServiceBallSpawn;
+    private float serviceTossSpeed = 20f;
+    private float maxXBallHit;
 
     public GameManager gameManager;
     private PointManager _pointManager;
     private SoundManager _soundManager;
     
     private bool _serveBallReleased = false;
-    public Vector3 _tossForce = new Vector3(0f, 0.1f, 0f);
 
     private int desiredDistance = 1;
     
     private float? _targetZ = null;
     private bool _sprinting = false;
     private float _lastZDifference = float.MaxValue;
-    
+    private const float HitDistanceToBall = 3f;
+    private bool waitingForBall;
+
     void Start()
     {
         _pointManager = gameManager.pointManager;
@@ -53,6 +63,7 @@ public class AIPlayer : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
         _animator = GetComponent<Animator>();
         CalculateAnimatorHashes();
+        maxXBallHit = transform.position.x - 2;
     }
 
     private void CalculateAnimatorHashes()
@@ -70,20 +81,38 @@ public class AIPlayer : MonoBehaviour
     {
         if (_targetZ != null)
         {
+            if (!ballInsideHitZone && ball.GetPosition().x > maxXBallHit)
+            {
+                ResetTargetMovementVariables();
+                return;
+            }
+            
             var currentZDifference = Mathf.Abs(transform.position.z - _targetZ.Value);
             Move();
             if (currentZDifference > _lastZDifference)
             {
-                _targetZ = null;
-                _lastZDifference = float.MaxValue;
-                _animator.SetFloat(_strafeHash, 0);
-                _animator.SetFloat(_forwardHash, 0);
+                // Reached target
+                ResetTargetMovementVariables();
+                waitingForBall = true;
             }
             else
             {
                 _lastZDifference = currentZDifference;
             }
         }
+        
+        // CHECK BALL INSIDE HIT ZONE AND WAITING FOR BALL
+        //SelectHitMethod
+        // reset waiting for ball
+        // hit ball
+    }
+
+    private void ResetTargetMovementVariables()
+    {
+        _targetZ = null;
+        _lastZDifference = float.MaxValue;
+        _animator.SetFloat(_strafeHash, 0);
+        _animator.SetFloat(_forwardHash, 0);
     }
 
     // private void Move()
@@ -119,7 +148,23 @@ public class AIPlayer : MonoBehaviour
         _animator.SetFloat(_strafeHash, _moveLeftRightValue * -1);
         _animator.SetFloat(_forwardHash, _moveUpDownValue);
         _characterController.Move(move);
-        
+    }
+    
+    private void SelectHitMethod()
+    {
+        var ballPosition = ball.GetPosition();
+        if (ballPosition.z >= transform.position.z) // Should take into account ball direction
+        {
+            _animator.SetTrigger(_driveHash);
+            _hitMethod = HitMethod.Drive;
+        }
+        else
+        {
+            _animator.SetTrigger(_backhandHash);
+            _hitMethod = HitMethod.Backhand;
+        }
+        _hitDirectionHoriz = HitDirectionHorizontal.Center; // Default value if no keys pressed
+        _hitDirectionVert = HitDirectionVertical.Back;
     }
     
     void CheckServiceStatus()
@@ -129,7 +174,6 @@ public class AIPlayer : MonoBehaviour
         {
             ball.transform.position = attachedBallParent.transform.position;
             SwitchBallType(false);
-            ball.AddForce(_tossForce, ForceMode.Impulse);
         }
     }
     
@@ -192,8 +236,16 @@ public class AIPlayer : MonoBehaviour
 
         var playerBallTargetXDiff = Mathf.Abs(transform.position.x - ballTargetPos.x);
         
-        _targetZ = ballTargetPos.z + (ballTargetPos.z > startPos.z ? 1 : -1) * playerBallTargetXDiff * ratio;
+        _targetZ = ballTargetPos.z + (ballTargetPos.z > startPos.z ? 1 : -1) * playerBallTargetXDiff * ratio 
+                                   + (ballTargetPos.z > startPos.z ? -1 : 1) * HitDistanceToBall;
         _moveUpDownValue = 0;
         _moveLeftRightValue = _targetZ - transform.position.z > 0 ? 1 : -1;
+    }
+    
+    // Ball entered collision zone (sphere) and is in front of the player
+    private bool CanHitBall()
+    {
+        return ballInsideHitZone && _pointManager.CanHitBall(playerId) &&
+               ball.transform.position.x < maxXBallHit;
     }
 }

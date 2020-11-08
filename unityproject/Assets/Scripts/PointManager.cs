@@ -200,7 +200,8 @@ public class PointManager : MonoBehaviour
 
     public bool CanHitBall(int playerId)
     {
-        return true; // TODO player can hit ball only if incoming ball, prevent hitting twice
+        return _pointState == (_scoreManager.GetServingPlayerId() == playerId ? 
+            PointState.ServerTurn : PointState.ReceiverTurn);
     }
 
     public void SetPlayerHitBall(int playerId)

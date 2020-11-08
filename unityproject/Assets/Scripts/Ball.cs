@@ -33,6 +33,7 @@ public class Ball : MonoBehaviour
     
     ///////////////////
     public Player player1;
+    public AIPlayer player2;
     public Transform ground;
     public Transform ballThrower; // TODO DELETE
     public Vector3 ballThrowerForce = new Vector3(-1, 0, 0);
@@ -195,6 +196,10 @@ public class Ball : MonoBehaviour
         {
             player1.ballInsideHitZone = true;
         }
+        else if (other == player2.ballCollider)
+        {
+            player2.ballInsideHitZone = true;
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -202,6 +207,10 @@ public class Ball : MonoBehaviour
         if (other == player1.BallCollider && player1.ballInsideHitZone)
         {
             player1.ballInsideHitZone = false;
+        }
+        else if (other == player2.ballCollider && player2.ballInsideHitZone)
+        {
+            player2.ballInsideHitZone = false;
         }
     }
 
