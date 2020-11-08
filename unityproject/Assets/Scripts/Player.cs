@@ -61,7 +61,7 @@ public class Player : MonoBehaviour
     public Collider ballCollider;
     [HideInInspector] public bool ballInsideHitZone;
     private HitMethod? _hitMethod;
-    private bool _hittingBall;
+    private bool _movementBlocked;
     private HitDirectionHorizontal? _hitDirectionHoriz;
     private HitDirectionVertical? _hitDirectionVert;
     public Transform hitBallSpawn;
@@ -109,7 +109,7 @@ public class Player : MonoBehaviour
 
     private void Move()
     {
-        if (_hittingBall) return;
+        if (_movementBlocked) return;
         
         float dt = Time.deltaTime;
         Vector2 movingDir = new Vector2(_moveLeftRightValue, _moveUpDownValue);
@@ -136,17 +136,25 @@ public class Player : MonoBehaviour
             if (_pointManager.IsServing(playerId))
             {
                 StartService();
+                _movementBlocked = true;
             } else if (CanHitBall())
             {
                 ballInsideHitZone = false; // Cannot hit ball twice
                 SelectHitMethod();
-                _hittingBall = true;
+                _movementBlocked = true;
             }
         }
 
-        if (_hittingBall)
+        if (_movementBlocked)
         {
-            ReadHitDirection();
+            if (_hitMethod == HitMethod.Serve)
+            {
+                ReadServiceDirection();
+            }
+            else
+            {
+                ReadHitDirection();
+            }
         }
         else
         {
@@ -157,7 +165,7 @@ public class Player : MonoBehaviour
     private void ReadMovementInput()
     {
         var currentStateHash = _animator.GetCurrentAnimatorStateInfo(0).shortNameHash;
-        if (_hittingBall || currentStateHash == _serviceStartHash || currentStateHash == _serviceEndHash) // TODO ADD SERVICE BOOL INSTEAD?
+        if (_movementBlocked || currentStateHash == _serviceStartHash || currentStateHash == _serviceEndHash) // TODO ADD SERVICE BOOL INSTEAD?
         {
             _moveLeftRightValue = _moveUpDownValue = 0;
         }
@@ -197,6 +205,7 @@ public class Player : MonoBehaviour
         _animator.SetTrigger(_serviceTriggerHash);
         SwitchBallType(true);
         _hitMethod = HitMethod.Serve;
+        _hitDirectionHoriz = HitDirectionHorizontal.Center;
     }
 
     private void ReadHitDirection()
@@ -221,6 +230,28 @@ public class Player : MonoBehaviour
             _hitDirectionHoriz = HitDirectionHorizontal.Right;
         }
     }
+    
+    private void ReadServiceDirection()
+    {
+        if (_hitMethod == null) return;
+        
+        var hittingCenter = ActionMapper.GetForward();
+        var hittingLeft = ActionMapper.GetLeft();
+        var hittingRight = ActionMapper.GetRight();
+
+        if (hittingCenter)
+        {
+            _hitDirectionHoriz = HitDirectionHorizontal.Center;
+        } 
+        else if (hittingLeft)
+        {
+            _hitDirectionHoriz = HitDirectionHorizontal.Left;
+        } 
+        else if (hittingRight)
+        {
+            _hitDirectionHoriz = HitDirectionHorizontal.Right;
+        }
+    }
 
     private void TossServiceBall() // Called as animation event
     {
@@ -231,10 +262,13 @@ public class Player : MonoBehaviour
 
     private void HitServiceBall() // Called as animation event
     {
-        var position = _courtManager.player2ServiceLeftLeft.position;
-        ball.HitBall(position, 200f, true, 250f);
+        var targetPosition = _courtManager.GetServiceTargetPosition(playerId, _hitDirectionHoriz);
+        ball.HitBall(targetPosition, 200f, true, 250f);
         _soundManager.PlayService(_audioSource);
-        gameManager.PlayerHitBall(ball.GetPosition(),position);
+        _hitDirectionHoriz = null;
+        _hitMethod = null;
+        
+        gameManager.PlayerHitBall(ball.GetPosition(),targetPosition);
     }
 
     public void SwitchBallType(bool attachBall) 
@@ -255,7 +289,7 @@ public class Player : MonoBehaviour
         _pointManager.HandleBallBounce(null);
         
         ball.TelePort(hitBallSpawn.position);
-        Vector3 targetPosition = _courtManager.GetHitTargetPosition(playerId, _hitDirectionVert, _hitDirectionHoriz);
+        var targetPosition = _courtManager.GetHitTargetPosition(playerId, _hitDirectionVert, _hitDirectionHoriz);
         ball.HitBall(targetPosition, 35f, true, 200f);
         _hitDirectionVert = null;
         _hitDirectionHoriz = null;
@@ -266,7 +300,7 @@ public class Player : MonoBehaviour
 
     private void ResetHittingBall() // Called as animation event
     {
-        _hittingBall = false;
+        _movementBlocked = false;
     }
 
     public Collider BallCollider => ballCollider;

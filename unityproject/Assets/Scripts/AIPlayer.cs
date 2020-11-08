@@ -178,7 +178,6 @@ public class AIPlayer : MonoBehaviour
 
     private void Step(AnimationEvent animationEvent)
     {
-        return;
         if (animationEvent.animatorClipInfo.weight > 0.5)
             _soundManager.PlayFootstep(_audioSource);
     }
@@ -193,7 +192,7 @@ public class AIPlayer : MonoBehaviour
 
         var playerBallTargetXDiff = Mathf.Abs(transform.position.x - ballTargetPos.x);
         
-        _targetZ = ballTargetPos.z + playerBallTargetXDiff * ratio;
+        _targetZ = ballTargetPos.z + (ballTargetPos.z > startPos.z ? 1 : -1) * playerBallTargetXDiff * ratio;
         _moveUpDownValue = 0;
         _moveLeftRightValue = _targetZ - transform.position.z > 0 ? 1 : -1;
     }

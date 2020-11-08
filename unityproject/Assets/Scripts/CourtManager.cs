@@ -40,10 +40,12 @@ public class CourtManager : MonoBehaviour
     
     public Dictionary<CourtSection, Vector2> courtSections = new Dictionary<CourtSection,Vector2>();
 
+    private ScoreManager _scoreManager;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        _scoreManager = GetComponent<ScoreManager>();
     }
 
     // Update is called once per frame
@@ -65,6 +67,37 @@ public class CourtManager : MonoBehaviour
         else
         {
             
+        }
+        
+        return Vector3.zero;
+    }
+
+    public Vector3 GetServiceTargetPosition(int playerId, HitDirectionHorizontal? horiz)
+    {
+        var serviceSide = _scoreManager.currentServingSide;
+        if (serviceSide == ScoreManager.ServingSide.Even)
+        {
+            if (playerId == 0)
+            {
+                return (horiz == HitDirectionHorizontal.Center) ? player2ServiceLeftCenter.position :
+                    (horiz == HitDirectionHorizontal.Left) ? player2ServiceLeftLeft.position : player2ServiceLeftRight.position;
+            }
+            else
+            {
+                // TODO
+            }
+        }
+        else
+        {
+            if (playerId == 0)
+            {
+                return (horiz == HitDirectionHorizontal.Center) ? player2ServiceRightCenter.position :
+                    (horiz == HitDirectionHorizontal.Left) ? player2ServiceRightLeft.position : player2ServiceRightRight.position;
+            }
+            else
+            {
+                // TODO
+            }
         }
         
         return Vector3.zero;
