@@ -7711,7 +7711,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 529b76d9fb82c410abbb6de097946fe5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ballTargetRadius: 1
   pointManager: {fileID: 1688545062}
   soundManager: {fileID: 1688545064}
   layerMask:
@@ -19316,6 +19315,11 @@ PrefabInstance:
       propertyPath: gameManager
       value: 
       objectReference: {fileID: 1688545063}
+    - target: {fileID: 3657980968641044636, guid: 7837e3c02f0bf39409f01516872eeb16,
+        type: 3}
+      propertyPath: ballTargetRadius
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7837e3c02f0bf39409f01516872eeb16, type: 3}
 --- !u!1001 &7372489402327860111

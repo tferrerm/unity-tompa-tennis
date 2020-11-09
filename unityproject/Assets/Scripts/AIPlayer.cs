@@ -12,7 +12,8 @@ public class AIPlayer : MonoBehaviour
     public float runSpeed = 8;
     public float sprintSpeed = 10;
     public float backSpeed = 5.5f;
-    public float ballTargetRadius = 4f;
+    public float ballTargetRadius = 8f;
+    public float serveBallTargetRadius = 4f;
 
     private CharacterController _characterController;
 
@@ -184,7 +185,7 @@ public class AIPlayer : MonoBehaviour
 
         ball.TelePort(hitBallSpawn.position);
         var targetPosition = _courtManager.GetHitTargetPosition(playerId, _hitDirectionVert, _hitDirectionHoriz);
-        targetPosition = RandomizeBallTarget(targetPosition);
+        targetPosition = RandomizeBallTarget(targetPosition, ballTargetRadius);
         _soundManager.PlayRacquetHit(_audioSource);
         ball.HitBall(targetPosition, 35f, true, 200f);
         _hitDirectionVert = null;
@@ -192,12 +193,12 @@ public class AIPlayer : MonoBehaviour
         _hitMethod = null;
     }
     
-    private Vector3 RandomizeBallTarget(Vector3 posEnd)
+    private Vector3 RandomizeBallTarget(Vector3 posEnd, float randomRadius)
     {
         return new Vector3(
-            posEnd.x + Random.Range(-ballTargetRadius, ballTargetRadius),
+            posEnd.x + Random.Range(-randomRadius, randomRadius),
             posEnd.y,
-            posEnd.z + Random.Range(-ballTargetRadius, ballTargetRadius));
+            posEnd.z + Random.Range(-randomRadius, randomRadius));
     }
     
     void CheckServiceStatus()
@@ -306,7 +307,7 @@ public class AIPlayer : MonoBehaviour
     private void HitServiceBall() // Called as animation event
     {
         var targetPosition = _courtManager.GetServiceTargetPosition(playerId, _hitDirectionHoriz);
-        targetPosition = RandomizeBallTarget(targetPosition);
+        targetPosition = RandomizeBallTarget(targetPosition, serveBallTargetRadius);
         ball.HitBall(targetPosition, 200f, true, 250f);
         _soundManager.PlayService(_audioSource);
         _hitDirectionHoriz = null;
