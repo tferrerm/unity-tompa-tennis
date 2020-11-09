@@ -22,6 +22,8 @@ public class CourtManager : MonoBehaviour
     [Header("Service Hit Spots")]
     public Transform player1ServiceSpotLeft;
     public Transform player1ServiceSpotRight;
+    public Transform player2ServiceSpotLeft;
+    public Transform player2ServiceSpotRight;
     
     [Header("Service Hit Targets - AI Player Left Side")]
     public Transform player2ServiceLeftLeft;
@@ -32,6 +34,16 @@ public class CourtManager : MonoBehaviour
     public Transform player2ServiceRightLeft;
     public Transform player2ServiceRightCenter;
     public Transform player2ServiceRightRight;
+    
+    [Header("Service Hit Targets - Player Left Side")]
+    public Transform player1ServiceLeftLeft;
+    public Transform player1ServiceLeftCenter;
+    public Transform player1ServiceLeftRight;
+    
+    [Header("Service Hit Targets - Player Right Side")]
+    public Transform player1ServiceRightLeft;
+    public Transform player1ServiceRightCenter;
+    public Transform player1ServiceRightRight;
     
     public enum CourtSection
     {
@@ -93,7 +105,8 @@ public class CourtManager : MonoBehaviour
             }
             else
             {
-                // TODO
+                return (horiz == HitDirectionHorizontal.Center) ? player1ServiceRightCenter.position :
+                    (horiz == HitDirectionHorizontal.Left) ? player1ServiceRightLeft.position : player1ServiceRightRight.position;
             }
         }
         else
@@ -105,10 +118,9 @@ public class CourtManager : MonoBehaviour
             }
             else
             {
-                // TODO
+                return (horiz == HitDirectionHorizontal.Center) ? player1ServiceLeftCenter.position :
+                    (horiz == HitDirectionHorizontal.Left) ? player1ServiceLeftLeft.position : player1ServiceLeftRight.position;
             }
         }
-        
-        return Vector3.zero;
     }
 }

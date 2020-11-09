@@ -56,6 +56,8 @@ public class AIPlayer : MonoBehaviour
     private const float HitDistanceToBall = 3f;
     private bool waitingForBall;
 
+    private const float ServiceWaitTime = 1f;
+
     void Start()
     {
         _courtManager = gameManager.courtManager;
@@ -194,13 +196,6 @@ public class AIPlayer : MonoBehaviour
             SwitchBallType(false);
         }
     }
-    
-    void SwitchBallType(bool attachBall) 
-    {
-        _serveBallReleased = !attachBall;
-        attachedBall.SetActive(attachBall);
-        ball.gameObject.SetActive(!attachBall);
-    }
 
     private void StayInNet()
     {
@@ -270,5 +265,37 @@ public class AIPlayer : MonoBehaviour
     private void ResetHittingBall() // Called as animation event
     {
         
+    }
+    
+    public IEnumerator StartService()
+    {
+        yield return new WaitForSeconds(ServiceWaitTime);
+        
+        _animator.SetTrigger(_serviceTriggerHash);
+        _hitMethod = HitMethod.Serve;
+        _hitDirectionHoriz = HitDirectionHorizontal.Center;
+    }
+    
+    private void TossServiceBall() // Called as animation event
+    {
+        ball.TelePort(attachedBallParent.position);
+        SwitchBallType(false);
+        ball.HitBall(hitServiceBallSpawn.position, serviceTossSpeed, false);
+    }
+    
+    public void SwitchBallType(bool attachBall) 
+    {
+        _serveBallReleased = !attachBall;
+        attachedBall.SetActive(attachBall);
+        ball.gameObject.SetActive(!attachBall);
+    }
+    
+    private void HitServiceBall() // Called as animation event
+    {
+        var targetPosition = _courtManager.GetServiceTargetPosition(playerId, _hitDirectionHoriz);
+        ball.HitBall(targetPosition, 200f, true, 250f);
+        _soundManager.PlayService(_audioSource);
+        _hitDirectionHoriz = null;
+        _hitMethod = null;
     }
 }
