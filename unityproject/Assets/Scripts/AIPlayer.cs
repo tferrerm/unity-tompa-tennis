@@ -298,4 +298,9 @@ public class AIPlayer : MonoBehaviour
         _hitDirectionHoriz = null;
         _hitMethod = null;
     }
+    
+    public void ToggleCharacterController()
+    {
+        _characterController.enabled = !_characterController.enabled;
+    }
 }

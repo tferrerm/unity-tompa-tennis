@@ -19395,5 +19395,10 @@ PrefabInstance:
       propertyPath: hitServiceBallSpawn
       value: 
       objectReference: {fileID: 314472913}
+    - target: {fileID: 7372489402264249969, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1accc87c261a23f4cb5b0ef26871e32b, type: 3}

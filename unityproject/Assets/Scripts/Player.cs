@@ -315,4 +315,9 @@ public class Player : MonoBehaviour
             _animator.SetFloat(_forwardHash, 0);
         }
     }
+
+    public void ToggleCharacterController()
+    {
+        _characterController.enabled = !_characterController.enabled;
+    }
 }

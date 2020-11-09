@@ -66,7 +66,7 @@ public class PointManager : MonoBehaviour
              */
         //    bounceCoordinates = new Vector2Int();
         //}
-        
+        Debug.Log(_pointState);
         switch (_pointState)
         {
             case PointState.FirstServe:
@@ -131,6 +131,7 @@ public class PointManager : MonoBehaviour
                 else
                 {
                     // Collide was anywhere else, server didn't reach the ball before second bounce
+                    _pointState = PointState.WaitingFirstServe;
                     _scoreManager.WinPoint(_scoreManager.GetReceivingPlayerId());
                     ResetPoint(PointState.FirstServe);
                 }
@@ -147,6 +148,7 @@ public class PointManager : MonoBehaviour
                 else
                 {
                     // Server hit was out
+                    _pointState = PointState.WaitingFirstServe;
                     _scoreManager.WinPoint(_scoreManager.GetReceivingPlayerId());
                     ResetPoint(PointState.FirstServe);
                 }
@@ -191,6 +193,8 @@ public class PointManager : MonoBehaviour
 
     private void ResetPlayerPositions()
     {
+        TogglePlayerCharacterControllers();
+        
         var currentServingSide = _scoreManager.currentServingSide;
         player1.transform.position = currentServingSide == ScoreManager.ServingSide.Even ? 
             _courtManager.player1ServiceSpotRight.position : _courtManager.player1ServiceSpotLeft.position;
@@ -205,6 +209,14 @@ public class PointManager : MonoBehaviour
         {
             player2.SwitchBallType(true);
         }
+
+        TogglePlayerCharacterControllers();
+    }
+
+    private void TogglePlayerCharacterControllers()
+    {
+        player1.ToggleCharacterController();
+        player2.ToggleCharacterController();
     }
 
     public bool IsServing(int playerId)

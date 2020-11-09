@@ -39,7 +39,7 @@ public class ScoreManager : MonoBehaviour
         player1Id = player1.playerId;
         player2Id = player2.playerId;
         
-        _servingPlayerId = player2Id;
+        _servingPlayerId = player1Id;
         
         var totalSets = setsNeededToWin == 3 ? 5 : 3;
         for (int i = 0; i < totalSets; i++)
@@ -272,9 +272,7 @@ public class ScoreManager : MonoBehaviour
 
     private void SwapServingSide()
     {
-        Debug.Log($"ANTES: {currentServingSide}");
         currentServingSide = (currentServingSide == ServingSide.Even)
             ? ServingSide.Odd : ServingSide.Even;
-        Debug.Log($"DESPUES: {currentServingSide}");
     }
 }
