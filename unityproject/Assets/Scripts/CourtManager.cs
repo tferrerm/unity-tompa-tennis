@@ -71,7 +71,11 @@ public class CourtManager : MonoBehaviour
         }
         else
         {
-            
+            if (vertical == HitDirectionVertical.Back)
+            {
+                return (horiz == HitDirectionHorizontal.Center) ? player1BackCenterHit.position :
+                    (horiz == HitDirectionHorizontal.Left) ? player1BackLeftHit.position : player1BackRightHit.position;
+            }
         }
         
         return Vector3.zero;

@@ -42,6 +42,7 @@ public class AIPlayer : MonoBehaviour
     private float maxXBallHit;
 
     public GameManager gameManager;
+    private CourtManager _courtManager;
     private PointManager _pointManager;
     private SoundManager _soundManager;
     
@@ -57,6 +58,7 @@ public class AIPlayer : MonoBehaviour
 
     void Start()
     {
+        _courtManager = gameManager.courtManager;
         _pointManager = gameManager.pointManager;
         _soundManager = gameManager.soundManager;
         _characterController = GetComponent<CharacterController>();
@@ -100,9 +102,12 @@ public class AIPlayer : MonoBehaviour
                 _lastZDifference = currentZDifference;
             }
         }
-        
-        // CHECK BALL INSIDE HIT ZONE AND WAITING FOR BALL
-        //SelectHitMethod
+
+        if (waitingForBall && ballInsideHitZone)
+        {
+            SelectHitMethod();
+            waitingForBall = false;
+        }
         // reset waiting for ball
         // hit ball
     }
@@ -163,8 +168,21 @@ public class AIPlayer : MonoBehaviour
             _animator.SetTrigger(_backhandHash);
             _hitMethod = HitMethod.Backhand;
         }
-        _hitDirectionHoriz = HitDirectionHorizontal.Center; // Default value if no keys pressed
+        _hitDirectionHoriz = HitDirectionHorizontal.Center; // TODO RANDOM
         _hitDirectionVert = HitDirectionVertical.Back;
+    }
+    
+    public void HitBall() // Called as animation event
+    {
+        _pointManager.SetPlayerHitBall(playerId);
+        _pointManager.HandleBallBounce(null);
+        
+        ball.TelePort(hitBallSpawn.position);
+        var targetPosition = _courtManager.GetHitTargetPosition(playerId, _hitDirectionVert, _hitDirectionHoriz);
+        ball.HitBall(targetPosition, 35f, true, 200f);
+        _hitDirectionVert = null;
+        _hitDirectionHoriz = null;
+        _hitMethod = null;
     }
     
     void CheckServiceStatus()
@@ -247,5 +265,10 @@ public class AIPlayer : MonoBehaviour
     {
         return ballInsideHitZone && _pointManager.CanHitBall(playerId) &&
                ball.transform.position.x < maxXBallHit;
+    }
+    
+    private void ResetHittingBall() // Called as animation event
+    {
+        
     }
 }
