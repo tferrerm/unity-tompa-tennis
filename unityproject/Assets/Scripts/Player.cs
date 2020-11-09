@@ -61,7 +61,7 @@ public class Player : MonoBehaviour
     public Collider ballCollider;
     [HideInInspector] public bool ballInsideHitZone;
     private HitMethod? _hitMethod;
-    private bool _movementBlocked;
+    public bool _movementBlocked;
     private HitDirectionHorizontal? _hitDirectionHoriz;
     private HitDirectionVertical? _hitDirectionVert;
     public Transform hitBallSpawn;
@@ -81,6 +81,7 @@ public class Player : MonoBehaviour
         CalculateAnimatorHashes();
 
         InitTechniqueAttrs();
+        _movementBlocked = _pointManager.IsServing(playerId);
     }
 
     private void InitTechniqueAttrs()
@@ -203,7 +204,6 @@ public class Player : MonoBehaviour
     private void StartService()
     {
         _animator.SetTrigger(_serviceTriggerHash);
-        SwitchBallType(true);
         _hitMethod = HitMethod.Serve;
         _hitDirectionHoriz = HitDirectionHorizontal.Center;
     }
@@ -304,4 +304,15 @@ public class Player : MonoBehaviour
     }
 
     public Collider BallCollider => ballCollider;
+
+    public bool MovementBlocked
+    {
+        get => _movementBlocked;
+        set
+        {
+            _movementBlocked = value;
+            _animator.SetFloat(_strafeHash, 0);
+            _animator.SetFloat(_forwardHash, 0);
+        }
+    }
 }

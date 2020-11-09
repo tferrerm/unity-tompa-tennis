@@ -15,6 +15,7 @@ public class PointManager : MonoBehaviour
     private ScoreManager _scoreManager;
     public CourtSectionMapper courtSectionMapper;
     public Player player1;
+    public AIPlayer player2;
 
     private enum PointState
     {
@@ -35,14 +36,19 @@ public class PointManager : MonoBehaviour
     }
 
     private PointState _pointState = PointState.FirstServe;
-    // Start is called before the first frame update
-    void Start()
+
+    private void Awake()
     {
         _courtManager = GetComponent<CourtManager>();
         _scoreManager = GetComponent<ScoreManager>();
         courtSectionMapper = new CourtSectionMapper(_scoreManager);
+    }
 
+    // Start is called before the first frame update
+    void Start()
+    {
         ResetPlayerPositions();
+        AIPlayerServiceCheck();
     }
 
     // Update is called once per frame
@@ -158,38 +164,46 @@ public class PointManager : MonoBehaviour
         _ballCollidedWithCourt = false;
         _ballCollidedWithReceiverRacket = false;
         _ballCollidedWithServerRacket = false;
-        StartCoroutine(WaitForNextServe(nextServeState));
+        
+        var coroutine = WaitForNextServe(nextServeState);
+        StartCoroutine(coroutine);
     }
 
     private IEnumerator WaitForNextServe(PointState nextServeState)
     {
+        player1.MovementBlocked = true;
         yield return new WaitForSeconds(NextPointWaitingTime);
+        
+        player1.MovementBlocked = false;
+        ResetPlayerPositions();
+        AIPlayerServiceCheck();
         _pointState = nextServeState;
+    }
+
+    private void AIPlayerServiceCheck()
+    {
+        if (_scoreManager.GetServingPlayerId() == player2.playerId)
+        {
+            var coroutine = player2.StartService();
+            StartCoroutine(coroutine);
+        }
+    }
+
+    private void ResetPlayerPositions()
+    {
+        var currentServingSide = _scoreManager.currentServingSide;
+        player1.transform.position = currentServingSide == ScoreManager.ServingSide.Even ? 
+            _courtManager.player1ServiceSpotRight.position : _courtManager.player1ServiceSpotLeft.position;
+        player2.transform.position = currentServingSide == ScoreManager.ServingSide.Even ? 
+            _courtManager.player2ServiceSpotLeft.position : _courtManager.player2ServiceSpotRight.position;
+
         if (_scoreManager.GetServingPlayerId() == 0)
         {
             player1.SwitchBallType(true);
         }
         else
         {
-            // TODO player2.SwitchBallType(true);
-        }
-
-        ResetPlayerPositions();
-    }
-
-    private void ResetPlayerPositions()
-    {
-        var currentServingSide = _scoreManager.currentServingSide;
-        if (_scoreManager.GetServingPlayerId() == player1.playerId)
-        {
-            player1.transform.position = currentServingSide == ScoreManager.ServingSide.Even ? 
-                _courtManager.player1ServiceSpotRight.position : _courtManager.player1ServiceSpotLeft.position;
-            // TODO PLAYER 2 RECV SPOT
-        }
-        else
-        {
-            // TODO PLAYER 1 RECV SPOT
-            // TODO PLAYER 2 SERVE SPOT
+            player2.SwitchBallType(true);
         }
     }
 
