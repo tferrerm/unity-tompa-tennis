@@ -181,7 +181,7 @@ public class Player : MonoBehaviour
     private bool CanHitBall()
     {
         return ballInsideHitZone && _pointManager.CanHitBall(playerId) &&
-               ball.transform.position.x > transform.position.x + 2;
+               ball.transform.position.x > transform.position.x + 4;
     }
 
     private void SelectHitMethod()
@@ -290,6 +290,7 @@ public class Player : MonoBehaviour
         
         ball.TelePort(hitBallSpawn.position);
         var targetPosition = _courtManager.GetHitTargetPosition(playerId, _hitDirectionVert, _hitDirectionHoriz);
+        _soundManager.PlayRacquetHit(_audioSource);
         ball.HitBall(targetPosition, 35f, true, 200f);
         _hitDirectionVert = null;
         _hitDirectionHoriz = null;

@@ -22,6 +22,7 @@ public class Ball : MonoBehaviour
 
     // Ball Physics
     private BallPhysics ballPhysics;
+    public float netBounceCoef = 0.25f;
 
     // Latest Y position of the ball
     private float[] ballPrevPosY;
@@ -30,7 +31,8 @@ public class Ball : MonoBehaviour
     public SoundManager soundManager;
 
     public LayerMask layerMask;
-    
+    public int netLayer;
+
     ///////////////////
     public Player player1;
     public AIPlayer player2;
@@ -48,6 +50,8 @@ public class Ball : MonoBehaviour
         ballPrevPosY = new float[2];
         //Vector3 targetPosition = GameObject.FindWithTag("GameController").GetComponent<GameManager>().courtManager.GetHitTargetPosition(1, HitDirectionVertical.Back, HitDirectionHorizontal.Center);
         //HitBall(targetPosition);
+
+        netLayer = LayerMask.NameToLayer("Net");
     }
     
     void Update()
@@ -159,13 +163,21 @@ public class Ball : MonoBehaviour
         if (Physics.RaycastNonAlloc(prevpos, dir.normalized, ballHits, distance, ~layerMask) > 0)
         {
             var hitLayer = ballHits[0].transform.gameObject.layer;
-            var bounceVelocity = ballHits[0].normal * ballInfo.velocity.magnitude * bounciness;
+            var bounceVelocity = ballInfo.velocity.magnitude * bounciness * ballHits[0].normal;
+
+            if (netLayer == hitLayer)
+            {
+                soundManager.PlayNetHit(ballInfo.velocity);
+                bounceVelocity *= netBounceCoef;
+            }
+            else
+            {
+                soundManager.PlayBallBounce(ballInfo.velocity);
+            }
 
             ballInfo.Position = ballHits[0].point + ballHits[0].normal * Radius;
             ballInfo.velocity = bounceVelocity;
-            
-            soundManager.PlayBallBounce(ballInfo.velocity);
-            
+
             Debug.Log("COLLISION");
         }
     }

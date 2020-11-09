@@ -181,6 +181,7 @@ public class AIPlayer : MonoBehaviour
         
         ball.TelePort(hitBallSpawn.position);
         var targetPosition = _courtManager.GetHitTargetPosition(playerId, _hitDirectionVert, _hitDirectionHoriz);
+        _soundManager.PlayRacquetHit(_audioSource);
         ball.HitBall(targetPosition, 35f, true, 200f);
         _hitDirectionVert = null;
         _hitDirectionHoriz = null;

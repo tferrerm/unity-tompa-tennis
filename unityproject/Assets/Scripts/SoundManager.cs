@@ -58,9 +58,9 @@ public class SoundManager : MonoBehaviour
         playerAudioSource.PlayOneShot(ChooseRandom(shoeSqueaks));
     }
 
-    public void PlayNetHit()
+    public void PlayNetHit(Vector3 ballVelocity)
     {
-        ballAudioSource.volume = 1;
+        ballAudioSource.volume = 0.1f * ballVelocity.magnitude;
         ballAudioSource.PlayOneShot(ChooseRandom(netHits));
     }
 
