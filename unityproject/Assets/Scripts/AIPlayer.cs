@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class AIPlayer : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class AIPlayer : MonoBehaviour
     public float runSpeed = 8;
     public float sprintSpeed = 10;
     public float backSpeed = 5.5f;
+    public float ballTargetRadius = 4f;
 
     private CharacterController _characterController;
 
@@ -170,7 +172,8 @@ public class AIPlayer : MonoBehaviour
             _animator.SetTrigger(_backhandHash);
             _hitMethod = HitMethod.Backhand;
         }
-        _hitDirectionHoriz = HitDirectionHorizontal.Center; // TODO RANDOM
+
+        _hitDirectionHoriz = (HitDirectionHorizontal)Random.Range(0, 3);
         _hitDirectionVert = HitDirectionVertical.Back;
     }
     
@@ -178,14 +181,23 @@ public class AIPlayer : MonoBehaviour
     {
         _pointManager.SetPlayerHitBall(playerId);
         _pointManager.HandleBallBounce(null);
-        
+
         ball.TelePort(hitBallSpawn.position);
         var targetPosition = _courtManager.GetHitTargetPosition(playerId, _hitDirectionVert, _hitDirectionHoriz);
+        targetPosition = RandomizeBallTarget(targetPosition);
         _soundManager.PlayRacquetHit(_audioSource);
         ball.HitBall(targetPosition, 35f, true, 200f);
         _hitDirectionVert = null;
         _hitDirectionHoriz = null;
         _hitMethod = null;
+    }
+    
+    private Vector3 RandomizeBallTarget(Vector3 posEnd)
+    {
+        return new Vector3(
+            posEnd.x + Random.Range(-ballTargetRadius, ballTargetRadius),
+            posEnd.y,
+            posEnd.z + Random.Range(-ballTargetRadius, ballTargetRadius));
     }
     
     void CheckServiceStatus()
@@ -274,7 +286,7 @@ public class AIPlayer : MonoBehaviour
         
         _animator.SetTrigger(_serviceTriggerHash);
         _hitMethod = HitMethod.Serve;
-        _hitDirectionHoriz = HitDirectionHorizontal.Center;
+        _hitDirectionHoriz = (HitDirectionHorizontal)Random.Range(0, 3);
     }
     
     private void TossServiceBall() // Called as animation event
@@ -294,6 +306,7 @@ public class AIPlayer : MonoBehaviour
     private void HitServiceBall() // Called as animation event
     {
         var targetPosition = _courtManager.GetServiceTargetPosition(playerId, _hitDirectionHoriz);
+        targetPosition = RandomizeBallTarget(targetPosition);
         ball.HitBall(targetPosition, 200f, true, 250f);
         _soundManager.PlayService(_audioSource);
         _hitDirectionHoriz = null;

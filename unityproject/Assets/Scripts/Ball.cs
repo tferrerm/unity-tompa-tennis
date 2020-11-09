@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Ball : MonoBehaviour
 {
@@ -22,7 +23,6 @@ public class Ball : MonoBehaviour
 
     // Ball Physics
     private BallPhysics ballPhysics;
-    public float netBounceCoef = 0.25f;
 
     // Latest Y position of the ball
     private float[] ballPrevPosY;
@@ -31,7 +31,8 @@ public class Ball : MonoBehaviour
     public SoundManager soundManager;
 
     public LayerMask layerMask;
-    public int netLayer;
+    private int _netLayer;
+    public float netBounceCoef = 0.25f;
 
     ///////////////////
     public Player player1;
@@ -51,7 +52,7 @@ public class Ball : MonoBehaviour
         //Vector3 targetPosition = GameObject.FindWithTag("GameController").GetComponent<GameManager>().courtManager.GetHitTargetPosition(1, HitDirectionVertical.Back, HitDirectionHorizontal.Center);
         //HitBall(targetPosition);
 
-        netLayer = LayerMask.NameToLayer("Net");
+        _netLayer = LayerMask.NameToLayer("Net");
     }
     
     void Update()
@@ -119,8 +120,6 @@ public class Ball : MonoBehaviour
     
     public void HitBall(Vector3 posStart, Vector3 posEnd, float speed, bool applySpeedYAtt, float speedYAttDivisor = 0f)
     {
-        // TODO Add target position epsilon for unaccurate shots...
-        
         float dis = Vector2.Distance(new Vector2(posStart.x, posStart.z), new Vector2(posEnd.x, posEnd.z));
 
         float speedYAtt = applySpeedYAtt ? (dis / speedYAttDivisor) : 1f;
@@ -141,7 +140,7 @@ public class Ball : MonoBehaviour
         
         //SoundManager.Instance.PlaySound("ThrowWhoosh");
     }
-    
+
     void CheckCollisions()
     {
         var pos = ballInfo.Position;
@@ -165,7 +164,7 @@ public class Ball : MonoBehaviour
             var hitLayer = ballHits[0].transform.gameObject.layer;
             var bounceVelocity = ballInfo.velocity.magnitude * bounciness * ballHits[0].normal;
 
-            if (netLayer == hitLayer)
+            if (_netLayer == hitLayer)
             {
                 soundManager.PlayNetHit(ballInfo.velocity);
                 bounceVelocity *= netBounceCoef;

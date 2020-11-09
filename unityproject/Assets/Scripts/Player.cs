@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
 using UnityEngine;
+using Random = UnityEngine.Random;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 
@@ -29,6 +30,7 @@ public class Player : MonoBehaviour
     public float runSpeed = 8;
     public float sprintSpeed = 10;
     public float backSpeed = 5.5f;
+    public float ballTargetRadius = 2f;
 
     private CharacterController _characterController;
 
@@ -263,6 +265,7 @@ public class Player : MonoBehaviour
     private void HitServiceBall() // Called as animation event
     {
         var targetPosition = _courtManager.GetServiceTargetPosition(playerId, _hitDirectionHoriz);
+        targetPosition = RandomizeBallTarget(targetPosition);
         ball.HitBall(targetPosition, 200f, true, 250f);
         _soundManager.PlayService(_audioSource);
         _hitDirectionHoriz = null;
@@ -290,6 +293,7 @@ public class Player : MonoBehaviour
         
         ball.TelePort(hitBallSpawn.position);
         var targetPosition = _courtManager.GetHitTargetPosition(playerId, _hitDirectionVert, _hitDirectionHoriz);
+        targetPosition = RandomizeBallTarget(targetPosition);
         _soundManager.PlayRacquetHit(_audioSource);
         ball.HitBall(targetPosition, 35f, true, 200f);
         _hitDirectionVert = null;
@@ -297,6 +301,14 @@ public class Player : MonoBehaviour
         _hitMethod = null;
 
         gameManager.PlayerHitBall(ball.GetPosition(),targetPosition);
+    }
+    
+    private Vector3 RandomizeBallTarget(Vector3 posEnd)
+    {
+        return new Vector3(
+            posEnd.x + Random.Range(-ballTargetRadius, ballTargetRadius),
+            posEnd.y,
+            posEnd.z + Random.Range(-ballTargetRadius, ballTargetRadius));
     }
 
     private void ResetHittingBall() // Called as animation event

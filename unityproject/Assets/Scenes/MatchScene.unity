@@ -7711,14 +7711,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 529b76d9fb82c410abbb6de097946fe5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  netBounceCoef: 0.25
+  ballTargetRadius: 1
   pointManager: {fileID: 1688545062}
   soundManager: {fileID: 1688545064}
   layerMask:
     serializedVersion: 2
     m_Bits: 768
-  netTransform1: {fileID: 67222787}
-  netTransform2: {fileID: 651598163}
+  netBounceCoef: 0.25
   player1: {fileID: 114571766}
   player2: {fileID: 1168141960}
   ground: {fileID: 1724874829}
