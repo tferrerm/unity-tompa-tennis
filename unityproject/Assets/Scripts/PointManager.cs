@@ -8,6 +8,7 @@ public class PointManager : MonoBehaviour
     private bool _ballCollidedWithCourt;
     private bool _ballCollidedWithServerRacket;
     private bool _ballCollidedWithReceiverRacket;
+    private bool _ballCollidedOutOfBounds;
     
     private const float NextPointWaitingTime = 3f;
 
@@ -166,6 +167,7 @@ public class PointManager : MonoBehaviour
         _ballCollidedWithCourt = false;
         _ballCollidedWithReceiverRacket = false;
         _ballCollidedWithServerRacket = false;
+        _ballCollidedOutOfBounds = false;
         
         var coroutine = WaitForNextServe(nextServeState);
         StartCoroutine(coroutine);

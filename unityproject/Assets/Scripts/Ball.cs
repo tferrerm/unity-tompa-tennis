@@ -32,6 +32,7 @@ public class Ball : MonoBehaviour
 
     public LayerMask layerMask;
     private int _netLayer;
+    private int _groundLayer;
     public float netBounceCoef = 0.25f;
 
     ///////////////////
@@ -53,6 +54,7 @@ public class Ball : MonoBehaviour
         //HitBall(targetPosition);
 
         _netLayer = LayerMask.NameToLayer("Net");
+        _groundLayer = LayerMask.NameToLayer("Ground");
     }
     
     void Update()
@@ -171,6 +173,10 @@ public class Ball : MonoBehaviour
             }
             else
             {
+                if (hitLayer != _groundLayer)
+                {
+                    pointManager.HandleBallBounce(null);
+                }
                 soundManager.PlayBallBounce(ballInfo.velocity);
             }
 
