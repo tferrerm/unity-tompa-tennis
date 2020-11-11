@@ -34,6 +34,8 @@ public class ScoreManager : MonoBehaviour
     [HideInInspector] public ServingSide currentServingSide = ServingSide.Even;
     private int _servingPlayerId;
 
+    private SoundManager _soundManager;
+
     private void Awake()
     {
         player1Id = player1.playerId;
@@ -46,6 +48,8 @@ public class ScoreManager : MonoBehaviour
         {
             sets.Add(new Vector2Int(0, 0));
         }
+
+        _soundManager = GetComponent<SoundManager>();
     }
 
     // Start is called before the first frame update
@@ -126,6 +130,7 @@ public class ScoreManager : MonoBehaviour
         else
             SwapServingSide();
         
+        _soundManager.PlayCrowdSounds();
         uiManager.SetPlayerGameScore(sets, _currentGame, _currentSetIndex + 1, _servingPlayerId == player1Id);
     }
 
