@@ -64,6 +64,8 @@ public class AIPlayer : MonoBehaviour
     private const float ServiceWaitTime = 1f;
     private const float MaxReactionTime = 0.75f;
     private float _reactionWaitTimer;
+    private const float Center = 0.0f;
+    private bool _movingToCenter = false;
 
     void Start()
     {
@@ -92,7 +94,26 @@ public class AIPlayer : MonoBehaviour
     
     void Update()
     {
-        if (_targetZ != null)
+        if (_movingToCenter)
+        {
+            // Move player to center
+            Debug.Log(_lastZDifference);
+            var currentZDifference = Mathf.Abs(transform.position.z - _targetZ.Value);
+            Move();
+            if (currentZDifference > _lastZDifference)
+            {
+                // Reached target
+                _targetZ = null;
+                ResetTargetMovementVariables();
+                _waitingForBall = true;
+                _movingToCenter = false;
+            }
+            else
+            {
+                _lastZDifference = currentZDifference;
+            }
+        } 
+        else if (_targetZ != null)
         {
             // Reset if target behind player
             if (!ballInsideHitZone && ball.GetPosition().x > maxXBallHit)
@@ -300,7 +321,8 @@ public class AIPlayer : MonoBehaviour
     
     private void ResetHittingBall() // Called as animation event
     {
-        
+        _movingToCenter = true;
+        _targetZ = Center;
     }
     
     private void ResetHittingServiceBall() // Called as animation event
