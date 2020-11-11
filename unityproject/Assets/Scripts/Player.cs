@@ -72,7 +72,10 @@ public class Player : MonoBehaviour
     public Transform hitBallSpawn;
     public Transform hitServiceBallSpawn;
     private float serviceTossSpeed = 20f;
+    // Prevents movement until serve animation is finished
     [HideInInspector] public bool serveDone;
+    // Prevents serving twice in the same point
+    [HideInInspector] public bool hitServiceBall;
     
     public TrailRenderer ballTrailRenderer;
 
@@ -170,7 +173,7 @@ public class Player : MonoBehaviour
     {
         if (ActionMapper.RacquetSwing())
         {
-            if (_pointManager.IsServing(playerId))
+            if (_pointManager.IsServing(playerId) && !hitServiceBall && _hitMethod == null)
             {
                 StartService();
                 _movementBlocked = true;
@@ -309,6 +312,7 @@ public class Player : MonoBehaviour
         _soundManager.PlayService(_audioSource);
         _hitDirectionHoriz = null;
         _hitMethod = null;
+        hitServiceBall = true;
         
         gameManager.PlayerHitBall(ball.GetPosition(),targetPosition);
     }

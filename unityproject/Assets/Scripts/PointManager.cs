@@ -199,6 +199,7 @@ public class PointManager : MonoBehaviour
         {
             player1.SwitchBallType(true);
             player1.serveDone = false;
+            player1.hitServiceBall = false;
         }
         else
         {
