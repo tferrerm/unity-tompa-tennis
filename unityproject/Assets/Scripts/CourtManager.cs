@@ -84,10 +84,10 @@ public class CourtManager : MonoBehaviour
                 switch (vertical)
                 {
                     case null:
-                    case HitDirectionVertical.Back:
+                    case HitDirectionVertical.Deep:
                         return (horiz == HitDirectionHorizontal.Center) ? player2BackCenterHit.position :
                             (horiz == HitDirectionHorizontal.Left) ? player2BackLeftHit.position : player2BackRightHit.position;
-                    case HitDirectionVertical.Front:
+                    case HitDirectionVertical.Dropshot:
                         return (horiz == HitDirectionHorizontal.Center) ? player2FrontCenterHit.position :
                             (horiz == HitDirectionHorizontal.Left) ? player2FrontLeftHit.position : player2FrontRightHit.position;
                     default:
@@ -97,10 +97,10 @@ public class CourtManager : MonoBehaviour
                 switch (vertical)
                 {
                     case null:
-                    case HitDirectionVertical.Back:
+                    case HitDirectionVertical.Deep:
                         return (horiz == HitDirectionHorizontal.Center) ? player1BackCenterHit.position :
                             (horiz == HitDirectionHorizontal.Left) ? player1BackLeftHit.position : player1BackRightHit.position;
-                    case HitDirectionVertical.Front:
+                    case HitDirectionVertical.Dropshot:
                         return (horiz == HitDirectionHorizontal.Center) ? player1FrontCenterHit.position :
                             (horiz == HitDirectionHorizontal.Left) ? player1FrontLeftHit.position : player1FrontRightHit.position;
                     default:

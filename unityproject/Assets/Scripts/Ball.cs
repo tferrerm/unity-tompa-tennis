@@ -32,6 +32,7 @@ public class Ball : MonoBehaviour
     private int _groundLayer;
     private float _netBounceCoef;
     private float _defaultBounceCoef;
+    [HideInInspector] public bool isDropshot;
 
     ///////////////////
     public Player player1;
@@ -54,7 +55,7 @@ public class Ball : MonoBehaviour
     
     void Update()
     {
-        ballInfo = ballPhysics.UpdateBallInfo(ballInfo, Time.deltaTime);
+        ballInfo = ballPhysics.UpdateBallInfo(ballInfo, Time.deltaTime, isDropshot);
 		
         CheckCollisions();
 
@@ -84,8 +85,9 @@ public class Ball : MonoBehaviour
         return true;
     }
 
-    public void HitBall(Vector3 posEnd, float speed, bool applySpeedYAtt, float speedYAttDivisor = 0f)
+    public void HitBall(Vector3 posEnd, float speed, bool isDropshot, bool applySpeedYAtt, float speedYAttDivisor = 0f)
     {
+        this.isDropshot = isDropshot;
         HitBall(ballInfo.Position, posEnd, speed, applySpeedYAtt, speedYAttDivisor);
     }
     
@@ -150,8 +152,6 @@ public class Ball : MonoBehaviour
 
             ballInfo.Position = ballHits[0].point + ballHits[0].normal * Radius;
             ballInfo.velocity = bounceVelocity;
-
-            Debug.Log("COLLISION");
         }
     }
     

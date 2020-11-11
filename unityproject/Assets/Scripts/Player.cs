@@ -19,7 +19,7 @@ public enum HitDirectionHorizontal
 
 public enum HitDirectionVertical
 {
-    Back = 0, Front = 1
+    Deep = 0, Dropshot = 1
 }
 
 public class Player : MonoBehaviour
@@ -30,8 +30,8 @@ public class Player : MonoBehaviour
     public float runSpeed = 8;
     public float sprintSpeed = 10;
     public float backSpeed = 5.5f;
-    public float ballTargetRadius = 3f;
-    public float serveBallTargetRadius = 2f;
+    private float ballTargetRadius = 3f;
+    private float serveBallTargetRadius = 2f;
 
     private CharacterController _characterController;
 
@@ -201,7 +201,7 @@ public class Player : MonoBehaviour
             _hitMethod = HitMethod.Backhand;
         }
         _hitDirectionHoriz = HitDirectionHorizontal.Center; // Default value if no keys pressed
-        _hitDirectionVert = HitDirectionVertical.Back;
+        _hitDirectionVert = HitDirectionVertical.Deep;
     }
 
     private void StartService()
@@ -222,11 +222,11 @@ public class Player : MonoBehaviour
         
         if (hittingStraight) // Vertical input resets horizontal input
         {
-            _hitDirectionVert = HitDirectionVertical.Back;
+            _hitDirectionVert = HitDirectionVertical.Deep;
             _hitDirectionHoriz = HitDirectionHorizontal.Center;
         } else if (hittingDropshot)
         {
-            _hitDirectionVert = HitDirectionVertical.Front;
+            _hitDirectionVert = HitDirectionVertical.Dropshot;
             _hitDirectionHoriz = HitDirectionHorizontal.Center;
         }
 
@@ -265,14 +265,14 @@ public class Player : MonoBehaviour
     {
         ball.TelePort(attachedBallParent.position);
         SwitchBallType(false);
-        ball.HitBall(hitServiceBallSpawn.position, serviceTossSpeed, false);
+        ball.HitBall(hitServiceBallSpawn.position, serviceTossSpeed, false, false);
     }
 
     private void HitServiceBall() // Called as animation event
     {
         var targetPosition = _courtManager.GetServiceTargetPosition(playerId, _hitDirectionHoriz);
         targetPosition = RandomizeBallTarget(targetPosition, serveBallTargetRadius);
-        ball.HitBall(targetPosition, TennisVariables.ServiceSpeed, true, TennisVariables.ServiceYAttenuation);
+        ball.HitBall(targetPosition, TennisVariables.ServiceSpeed, false, true, TennisVariables.ServiceYAttenuation);
         _soundManager.PlayService(_audioSource);
         _hitDirectionHoriz = null;
         _hitMethod = null;
@@ -302,14 +302,14 @@ public class Player : MonoBehaviour
         targetPosition = RandomizeBallTarget(targetPosition, ballTargetRadius);
         _soundManager.PlayRacquetHit(_audioSource);
         
-        var speed = _hitDirectionVert == HitDirectionVertical.Back
+        var speed = _hitDirectionVert == HitDirectionVertical.Deep
             ? TennisVariables.DeepHitSpeed
             : TennisVariables.FrontHitSpeed;
-        var speedYAtt = _hitDirectionVert == HitDirectionVertical.Back
+        var speedYAtt = _hitDirectionVert == HitDirectionVertical.Deep
             ? TennisVariables.DeepHitYAttenuation
             : TennisVariables.FrontHitYAttenuation;
         
-        ball.HitBall(targetPosition, speed, true, speedYAtt);
+        ball.HitBall(targetPosition, speed, _hitDirectionVert == HitDirectionVertical.Dropshot, true, speedYAtt);
         _hitDirectionVert = null;
         _hitDirectionHoriz = null;
         _hitMethod = null;

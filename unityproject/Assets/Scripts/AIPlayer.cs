@@ -12,8 +12,8 @@ public class AIPlayer : MonoBehaviour
     public float runSpeed = 8;
     public float sprintSpeed = 10;
     public float backSpeed = 5.5f;
-    public float ballTargetRadius = 3.5f;
-    public float serveBallTargetRadius = 3f;
+    private float ballTargetRadius = 4f;
+    private float serveBallTargetRadius = 3f;
 
     private CharacterController _characterController;
 
@@ -188,7 +188,7 @@ public class AIPlayer : MonoBehaviour
         }
 
         _hitDirectionHoriz = (HitDirectionHorizontal)Random.Range(0, 3);
-        _hitDirectionVert = HitDirectionVertical.Back;
+        _hitDirectionVert = (HitDirectionVertical)Random.Range(0, 2);
     }
     
     public void HitBall() // Called as animation event
@@ -201,14 +201,14 @@ public class AIPlayer : MonoBehaviour
         targetPosition = RandomizeBallTarget(targetPosition, ballTargetRadius);
         _soundManager.PlayRacquetHit(_audioSource);
         
-        var speed = _hitDirectionVert == HitDirectionVertical.Back
+        var speed = _hitDirectionVert == HitDirectionVertical.Deep
             ? TennisVariables.DeepHitSpeed
             : TennisVariables.FrontHitSpeed;
-        var speedYAtt = _hitDirectionVert == HitDirectionVertical.Back
+        var speedYAtt = _hitDirectionVert == HitDirectionVertical.Deep
             ? TennisVariables.DeepHitYAttenuation
             : TennisVariables.FrontHitYAttenuation;
         
-        ball.HitBall(targetPosition, speed, true, speedYAtt);
+        ball.HitBall(targetPosition, speed, _hitDirectionVert == HitDirectionVertical.Dropshot, true, speedYAtt);
         _hitDirectionVert = null;
         _hitDirectionHoriz = null;
         _hitMethod = null;
@@ -313,7 +313,7 @@ public class AIPlayer : MonoBehaviour
     {
         ball.TelePort(attachedBallParent.position);
         SwitchBallType(false);
-        ball.HitBall(hitServiceBallSpawn.position, serviceTossSpeed, false);
+        ball.HitBall(hitServiceBallSpawn.position, serviceTossSpeed, false, false);
     }
     
     public void SwitchBallType(bool attachBall) 
@@ -327,7 +327,7 @@ public class AIPlayer : MonoBehaviour
     {
         var targetPosition = _courtManager.GetServiceTargetPosition(playerId, _hitDirectionHoriz);
         targetPosition = RandomizeBallTarget(targetPosition, serveBallTargetRadius);
-        ball.HitBall(targetPosition, TennisVariables.ServiceSpeed, true, TennisVariables.ServiceYAttenuation);
+        ball.HitBall(targetPosition, TennisVariables.ServiceSpeed, false, true, TennisVariables.ServiceYAttenuation);
         _soundManager.PlayService(_audioSource);
         _hitDirectionHoriz = null;
         _hitMethod = null;

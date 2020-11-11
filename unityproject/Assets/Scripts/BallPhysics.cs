@@ -31,7 +31,7 @@ public class BallPhysics
     }
     
     // --------------------------------------------------------------------------------
-    public BallInfo UpdateBallInfo(BallInfo bi, float dt)
+    public BallInfo UpdateBallInfo(BallInfo bi, float dt, bool isDropshot)
     {
         // Apply gravity
         bi.velocity += new Vector3(0.0f, Physics.gravity.y * dt, 0.0f);
@@ -69,13 +69,15 @@ public class BallPhysics
             {
                 float bounceSpeed = bi.velocity.y * -bounciness;
                 bounceSpeed = (bounceSpeed > 0.001f ? bounceSpeed : 0.0f);
-                bi.velocity = new Vector3(bi.velocity.x * TennisVariables.BallBounceFrictionMultiplier, 
-                    bounceSpeed, bi.velocity.z * TennisVariables.BallBounceFrictionMultiplier);
+                var frictionMultiplier = isDropshot
+                    ? TennisVariables.DropshotBallBounceFrictionMultiplier
+                    : TennisVariables.DeepBallBounceFrictionMultiplier;
+                
+                bi.velocity = new Vector3(bi.velocity.x * frictionMultiplier, bounceSpeed, bi.velocity.z * frictionMultiplier);
                 
                 _pointManager.SetCourtBallBounce();
                 _pointManager.HandleBallBounce(new Vector2(bi.Position.x, bi.Position.z));
                 _soundManager.PlayBallBounce(bi.velocity);
-                Debug.Log("BOUNCE WITH FLOOR");
             }
             else
             {
