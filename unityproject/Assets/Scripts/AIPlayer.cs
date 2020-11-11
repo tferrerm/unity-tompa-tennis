@@ -57,7 +57,8 @@ public class AIPlayer : MonoBehaviour
     private bool _sprinting = false;
     private float _lastZDifference = float.MaxValue;
     private const float HitDistanceToBall = 3f;
-    private bool waitingForBall;
+    private bool _waitingForBall;
+    private Vector3 waitingForBallPos = new Vector3(39.75f, -3.067426f, 1.59f);
 
     private const float ServiceWaitTime = 1f;
     private const float MaxReactionTime = 0.75f;
@@ -112,7 +113,7 @@ public class AIPlayer : MonoBehaviour
             {
                 // Reached target
                 ResetTargetMovementVariables();
-                waitingForBall = true;
+                _waitingForBall = true;
             }
             else
             {
@@ -120,10 +121,10 @@ public class AIPlayer : MonoBehaviour
             }
         }
 
-        if (waitingForBall && ballInsideHitZone)
+        if (_waitingForBall && ballInsideHitZone)
         {
             SelectHitMethod();
-            waitingForBall = false;
+            _waitingForBall = false;
         }
         // reset waiting for ball
         // hit ball

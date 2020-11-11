@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -20,6 +21,13 @@ public class UIManager : MonoBehaviour
     public Image player1ServingBall;
     public Image player2ServingBall;
 
+    public bl_ScrollText eventMessenger;
+    public Text eventText;
+    public string gameMessage;
+    public string setMessage;
+    public string defeatMessage;
+    public string victoryMessage;
+
     private ScoreManager _scoreManager;
     
     // Start is called before the first frame update
@@ -29,7 +37,7 @@ public class UIManager : MonoBehaviour
         _player2CurrentSetScore = currentSetContainer.Find("Player 2/Player 2 Score").GetComponent<TMP_Text>();
         _player1CurrentGameScore = currentGameContainer.Find("Player 1/Player 1 Score").GetComponent<TMP_Text>();
         _player2CurrentGameScore = currentGameContainer.Find("Player 2/Player 2 Score").GetComponent<TMP_Text>();
-
+        
         _scoreManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<ScoreManager>();
     }
 
@@ -85,5 +93,39 @@ public class UIManager : MonoBehaviour
     private string GetScoreString(int score)
     {
         return score == 45 && !_scoreManager.currentlyInTiebreak ? "AD" : score.ToString();
+    }
+
+    public void ShowEventMessage(MessageType msgType) // TODO ADD QUEUE
+    {
+        switch (msgType)
+        {
+            case MessageType.Game:
+                eventText.text = gameMessage;
+                break;
+            case MessageType.Set:
+                eventText.text = setMessage;
+                break;
+            case MessageType.Defeat:
+                eventText.text = defeatMessage;
+                break;
+            case MessageType.Victory:
+                eventText.text = victoryMessage;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+
+        eventMessenger.gameObject.SetActive(true);
+        var backgroundColor = eventMessenger.background.color;
+        eventMessenger.background.color = new Color(backgroundColor.r, backgroundColor.g, backgroundColor.b, 0.44f);
+        eventMessenger.showMessage = true;
+    }
+
+    public enum MessageType
+    {
+        Game = 0,
+        Set = 1,
+        Defeat = 2,
+        Victory = 3
     }
 }

@@ -144,12 +144,14 @@ public class ScoreManager : MonoBehaviour
             sets[_currentSetIndex] = new Vector2Int(sets[_currentSetIndex][0] + 1, sets[_currentSetIndex][1]);
             currentlyInTiebreak = false;
             _currentGame = new Vector2Int(0, 0);
+            uiManager.ShowEventMessage(UIManager.MessageType.Game);
         }
         if (_currentGame[1] >= 7 && _currentGame[0] < _currentGame[1] - 1)
         {
             sets[_currentSetIndex] = new Vector2Int(sets[_currentSetIndex][0], sets[_currentSetIndex][1] + 1);
             currentlyInTiebreak = false;
             _currentGame = new Vector2Int(0, 0);
+            uiManager.ShowEventMessage(UIManager.MessageType.Game);
         }
         CheckSetWon(sets[_currentSetIndex]);
         SwapServingSide();
@@ -161,6 +163,8 @@ public class ScoreManager : MonoBehaviour
 
     private void WinGame(int playerId)
     {
+        uiManager.ShowEventMessage(UIManager.MessageType.Game);
+        
         var currentSet = sets[_currentSetIndex];
         if (player1Id == playerId)
         {
@@ -204,6 +208,7 @@ public class ScoreManager : MonoBehaviour
             _currentSetIndex += 1;
             currentServingSide = ServingSide.Even;
             _gameWon = false;
+            uiManager.ShowEventMessage(UIManager.MessageType.Set);
         }
         if (set[1] == 6 && set[0] < 5 || set[1] == 7)
         {
@@ -211,12 +216,14 @@ public class ScoreManager : MonoBehaviour
             _currentSetIndex += 1;
             currentServingSide = ServingSide.Even;
             _gameWon = false;
+            uiManager.ShowEventMessage(UIManager.MessageType.Set);
         }
         if (_player1SetsWon == setsNeededToWin || _player2SetsWon == setsNeededToWin)
         {
             _matchFinished = true;
             currentServingSide = ServingSide.Even;
             _gameWon = false;
+            uiManager.ShowEventMessage(_player1SetsWon == setsNeededToWin ? UIManager.MessageType.Victory : UIManager.MessageType.Defeat);
         }
     }
 
