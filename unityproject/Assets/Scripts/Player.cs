@@ -159,7 +159,7 @@ public class Player : MonoBehaviour
                 manhattanNorm = 1;
             
             var spd = (ActionMapper.IsSprinting() ? sprintSpeed : runSpeed) * movingDir.magnitude;
-            var dx = dt * (_moveUpDownValue < 0 ? backSpeed : spd) * _moveUpDownValue / manhattanNorm;
+            var dx = transform.position.x < 0 ? dt * (_moveUpDownValue < 0 ? backSpeed : spd) * _moveUpDownValue / manhattanNorm : 0;
             var dz = dt * spd * _moveLeftRightValue / manhattanNorm;
             
             _characterController.SimpleMove(Vector3.zero);
