@@ -167,10 +167,10 @@ public class PointManager : MonoBehaviour
 
     private IEnumerator WaitForNextServe(PointState nextServeState)
     {
-        player1.MovementBlocked = true;
+        player1.StopMovementAnimation();
         yield return new WaitForSeconds(NextPointWaitingTime);
-        
-        player1.MovementBlocked = false;
+
+        player1.StopMovementAnimation();
         ResetPlayerPositions();
         AIPlayerServiceCheck();
         _pointState = nextServeState;
@@ -198,6 +198,7 @@ public class PointManager : MonoBehaviour
         if (_scoreManager.GetServingPlayerId() == 0)
         {
             player1.SwitchBallType(true);
+            player1.serveDone = false;
         }
         else
         {
@@ -243,5 +244,20 @@ public class PointManager : MonoBehaviour
     public void SetCourtBallBounce()
     {
         _ballCollidedWithCourt = true;
+    }
+    
+    public bool ServicePositionOutOfBounds(int playerId, float posZ)
+    {
+        var serviceSide = _scoreManager.currentServingSide;
+        if ((playerId == 0 && serviceSide == ScoreManager.ServingSide.Even) || (playerId == 1 && serviceSide == ScoreManager.ServingSide.Odd))
+        {
+            // Right boundaries
+            return !courtSectionMapper.PositionInHorizontalArea(posZ, CourtSectionMapper.Horizontal.Right);
+        }
+        else
+        {
+            // Left boundaries
+            return !courtSectionMapper.PositionInHorizontalArea(posZ, CourtSectionMapper.Horizontal.Left);
+        }
     }
 }

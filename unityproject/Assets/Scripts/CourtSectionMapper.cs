@@ -39,7 +39,7 @@ public class CourtSectionMapper
         Back = 1,
     }
 
-    private enum Horizontal
+    public enum Horizontal
     {
         Left = 0,
         Right = 1,
@@ -96,6 +96,8 @@ public class CourtSectionMapper
                collision.x > area.DepthStart &&
                collision.x < area.DepthLimit;
     }
+
+    
 
     private static CourtArea GenerateCourtArea(AreaType type,  Depth depth, [CanBeNull] Horizontal? horizontal)
     {
@@ -167,4 +169,16 @@ public class CourtSectionMapper
         return area;
     }
 
+    // When serving, position in Z must be between correct boundaries
+    public bool PositionInHorizontalArea(float posZ, Horizontal horiz)
+    {
+        if (horiz == Horizontal.Left)
+        {
+            return posZ > _backLeftServingSquare.HorizontalStart && posZ < _backLeftServingSquare.HorizontalLimit;
+        }
+        else
+        {
+            return posZ > _backRightServingSquare.HorizontalStart && posZ < _backRightServingSquare.HorizontalLimit;
+        }
+    }
 }

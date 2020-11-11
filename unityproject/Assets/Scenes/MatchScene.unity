@@ -7782,12 +7782,10 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 768
-  netBounceCoef: 0.25
+  isDropshot: 0
   player1: {fileID: 114571766}
   player2: {fileID: 1168141960}
   ground: {fileID: 1724874829}
-  ballThrower: {fileID: 1183299281}
-  ballThrowerForce: {x: -1, y: 0, z: 0}
 --- !u!82 &891900776
 AudioSource:
   m_ObjectHideFlags: 0
@@ -19620,6 +19618,11 @@ PrefabInstance:
       propertyPath: hitServiceBallSpawn
       value: 
       objectReference: {fileID: 314472913}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: walkingSpeed
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7372489402264249969, guid: 1accc87c261a23f4cb5b0ef26871e32b,
         type: 3}
       propertyPath: m_Enabled

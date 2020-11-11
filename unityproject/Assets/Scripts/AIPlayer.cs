@@ -12,8 +12,8 @@ public class AIPlayer : MonoBehaviour
     public float runSpeed = 8;
     public float sprintSpeed = 10;
     public float backSpeed = 5.5f;
-    private float ballTargetRadius = 4f;
-    private float serveBallTargetRadius = 3f;
+    private float ballTargetRadius = 3.5f;
+    private float serveBallTargetRadius = 2.5f;
 
     private CharacterController _characterController;
 
@@ -296,6 +296,11 @@ public class AIPlayer : MonoBehaviour
     }
     
     private void ResetHittingBall() // Called as animation event
+    {
+        
+    }
+    
+    private void ResetHittingServiceBall() // Called as animation event
     {
         
     }

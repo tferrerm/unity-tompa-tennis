@@ -31,7 +31,7 @@ public class ScoreManager : MonoBehaviour
 
     private bool _matchFinished;
     [HideInInspector] public bool currentlyInTiebreak;
-    [HideInInspector] public ServingSide currentServingSide = ServingSide.Even; // TODO CHANGE VALUE
+    [HideInInspector] public ServingSide currentServingSide = ServingSide.Even;
     private int _servingPlayerId;
 
     private void Awake()

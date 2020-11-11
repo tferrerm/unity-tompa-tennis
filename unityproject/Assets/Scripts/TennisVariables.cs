@@ -9,7 +9,7 @@ public static class TennisVariables
     public const float DeepHitSpeed = 45f;
     public const float DeepHitYAttenuation = 400f;
     public const float FrontHitSpeed = 35f;
-    public const float FrontHitYAttenuation = 250f;
+    public const float FrontHitYAttenuation = 200f;
     public const float DeepBallBounceFrictionMultiplier = 0.75f;
     public const float DropshotBallBounceFrictionMultiplier = 0.5f;
     public const float BallBounciness = 0.8f;

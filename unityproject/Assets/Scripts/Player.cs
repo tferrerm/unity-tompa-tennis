@@ -30,7 +30,8 @@ public class Player : MonoBehaviour
     public float runSpeed = 8;
     public float sprintSpeed = 10;
     public float backSpeed = 5.5f;
-    private float ballTargetRadius = 3f;
+    public float walkingSpeed = 3;
+    private float ballTargetRadius = 2.5f;
     private float serveBallTargetRadius = 2f;
 
     private CharacterController _characterController;
@@ -45,6 +46,7 @@ public class Player : MonoBehaviour
     private int _serviceEndHash;
     private int _driveHash;
     private int _backhandHash;
+    private bool _reachedServingBound;
 
     private float _moveLeftRightValue;
     private float _moveUpDownValue;
@@ -70,6 +72,7 @@ public class Player : MonoBehaviour
     public Transform hitBallSpawn;
     public Transform hitServiceBallSpawn;
     private float serviceTossSpeed = 20f;
+    [HideInInspector] public bool serveDone;
     
     public TrailRenderer ballTrailRenderer;
 
@@ -84,7 +87,7 @@ public class Player : MonoBehaviour
         CalculateAnimatorHashes();
 
         //InitTechniqueAttrs();
-        _movementBlocked = _pointManager.IsServing(playerId);
+        //_movementBlocked = _pointManager.IsServing(playerId);
     }
 
     /*private void InitTechniqueAttrs()
@@ -114,23 +117,53 @@ public class Player : MonoBehaviour
     private void Move()
     {
         if (_movementBlocked) return;
-        
-        float dt = Time.deltaTime;
-        Vector2 movingDir = new Vector2(_moveLeftRightValue, _moveUpDownValue);
-        float manhattanNorm = Math.Abs(movingDir[0]) + Math.Abs(movingDir[1]);
-        if (manhattanNorm == 0)
-            manhattanNorm = 1;
-        float spd = (ActionMapper.IsSprinting() ? sprintSpeed : runSpeed) * movingDir.magnitude;
-        float dx = dt * (_moveUpDownValue < 0 ? backSpeed : spd) * _moveUpDownValue / manhattanNorm;
-        float dz = dt * spd * _moveLeftRightValue / manhattanNorm;
 
-        _characterController.SimpleMove(Vector3.zero);
+        var dt = Time.deltaTime;
+        var movingDir = new Vector2(_moveLeftRightValue, _moveUpDownValue);
         
-        Vector3 move = new Vector3(dx, 0, dz);
+        if (_pointManager.IsServing(playerId) && !serveDone)
+        {
+            var posZ = transform.position.z;
+            var spd = walkingSpeed * movingDir.magnitude;
+            var dz = dt * spd * _moveLeftRightValue;
+            if (_pointManager.ServicePositionOutOfBounds(playerId, posZ + dz + 1 * Mathf.Sign(_moveLeftRightValue)))
+            {
+                _reachedServingBound = true;
+                dz = posZ;
+            }
+            else
+            {
+                _reachedServingBound = false;
+            }
+            
+            _characterController.SimpleMove(Vector3.zero);
+            if (!_reachedServingBound)
+            {
+                var move = new Vector3(0, 0, dz);
+                _characterController.Move(move);
+            }
 
-        _animator.SetFloat(_strafeHash, _moveLeftRightValue);
-        _animator.SetFloat(_forwardHash, _moveUpDownValue);
-        _characterController.Move(move);
+            _animator.SetFloat(_strafeHash, _reachedServingBound ? 0 : _moveLeftRightValue * 0.5f);
+            _animator.SetFloat(_forwardHash, 0);
+            
+        }
+        else
+        {
+            var manhattanNorm = Math.Abs(movingDir[0]) + Math.Abs(movingDir[1]);
+            if (manhattanNorm == 0)
+                manhattanNorm = 1;
+            
+            var spd = (ActionMapper.IsSprinting() ? sprintSpeed : runSpeed) * movingDir.magnitude;
+            var dx = dt * (_moveUpDownValue < 0 ? backSpeed : spd) * _moveUpDownValue / manhattanNorm;
+            var dz = dt * spd * _moveLeftRightValue / manhattanNorm;
+            
+            _characterController.SimpleMove(Vector3.zero);
+            var move = new Vector3(dx, 0, dz);
+
+            _animator.SetFloat(_strafeHash, _moveLeftRightValue);
+            _animator.SetFloat(_forwardHash, _moveUpDownValue);
+            _characterController.Move(move);
+        }
     }
 
     private void ReadInput()
@@ -329,18 +362,19 @@ public class Player : MonoBehaviour
     {
         _movementBlocked = false;
     }
+    
+    private void ResetHittingServiceBall() // Called as animation event
+    {
+        _movementBlocked = false;
+        serveDone = true;
+    }
 
     public Collider BallCollider => ballCollider;
 
-    public bool MovementBlocked
+    public void StopMovementAnimation()
     {
-        get => _movementBlocked;
-        set
-        {
-            _movementBlocked = value;
-            _animator.SetFloat(_strafeHash, 0);
-            _animator.SetFloat(_forwardHash, 0);
-        }
+        _animator.SetFloat(_strafeHash, 0);
+        _animator.SetFloat(_forwardHash, 0);
     }
 
     public void ToggleCharacterController()
