@@ -7052,7 +7052,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11414788, guid: a00d8cb988b6e7943a0eb0bf916e5a41, type: 3}
       propertyPath: m_Text
-      value: GAME
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 11414788, guid: a00d8cb988b6e7943a0eb0bf916e5a41, type: 3}
       propertyPath: m_FontData.m_Font
@@ -7071,6 +7071,10 @@ PrefabInstance:
       propertyPath: m_FontData.m_MaxSize
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 11414788, guid: a00d8cb988b6e7943a0eb0bf916e5a41, type: 3}
+      propertyPath: m_FontData.m_HorizontalOverflow
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 11497980, guid: a00d8cb988b6e7943a0eb0bf916e5a41, type: 3}
       propertyPath: Texts.Array.size
       value: 1
@@ -7081,7 +7085,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11497980, guid: a00d8cb988b6e7943a0eb0bf916e5a41, type: 3}
       propertyPath: Texts.Array.data[0]
-      value: GAME
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 11497980, guid: a00d8cb988b6e7943a0eb0bf916e5a41, type: 3}
       propertyPath: Download
@@ -7097,11 +7101,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11497980, guid: a00d8cb988b6e7943a0eb0bf916e5a41, type: 3}
       propertyPath: StartPosition.x
-      value: -615
+      value: -700
       objectReference: {fileID: 0}
     - target: {fileID: 11497980, guid: a00d8cb988b6e7943a0eb0bf916e5a41, type: 3}
       propertyPath: FinalPosition.x
-      value: 615
+      value: 700
       objectReference: {fileID: 0}
     - target: {fileID: 11497980, guid: a00d8cb988b6e7943a0eb0bf916e5a41, type: 3}
       propertyPath: ScrollSpeed
@@ -7197,7 +7201,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 22431712, guid: a00d8cb988b6e7943a0eb0bf916e5a41, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -615
+      value: -700
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a00d8cb988b6e7943a0eb0bf916e5a41, type: 3}
@@ -9837,7 +9841,7 @@ RectTransform:
   - {fileID: 1129925533}
   - {fileID: 1211060538}
   m_Father: {fileID: 1264575180}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -20619,6 +20623,11 @@ PrefabInstance:
       propertyPath: ballTargetRadius
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 3657980968641044636, guid: 7837e3c02f0bf39409f01516872eeb16,
+        type: 3}
+      propertyPath: playerName
+      value: TOMAS FERRER
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7837e3c02f0bf39409f01516872eeb16, type: 3}
 --- !u!1001 &7372489402327860111
@@ -20731,6 +20740,11 @@ PrefabInstance:
         type: 3}
       propertyPath: walkingSpeed
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: playerName
+      value: SANTIAGO SWINNEN
       objectReference: {fileID: 0}
     - target: {fileID: 7372489402264249969, guid: 1accc87c261a23f4cb5b0ef26871e32b,
         type: 3}

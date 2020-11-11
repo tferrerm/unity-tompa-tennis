@@ -23,6 +23,8 @@ public class UIManager : MonoBehaviour
 
     public bl_ScrollText eventMessenger;
     public Text eventText;
+    private string _player1ScoreMessage;
+    private string _player2ScoreMessage;
     public string gameMessage;
     public string setMessage;
     public string defeatMessage;
@@ -39,6 +41,10 @@ public class UIManager : MonoBehaviour
         _player2CurrentGameScore = currentGameContainer.Find("Player 2/Player 2 Score").GetComponent<TMP_Text>();
         
         _scoreManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<ScoreManager>();
+
+        var gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
+        _player1ScoreMessage = gameManager.player.playerName.Split(' ')[1] + " SCORES";
+        _player2ScoreMessage = gameManager.aiPlayer.playerName.Split(' ')[1] + " SCORES";
     }
 
     public void SetPlayerGameScore(List<Vector2Int> setsScores, Vector2Int gameScores, int setCount, bool player1Serving)
@@ -99,6 +105,12 @@ public class UIManager : MonoBehaviour
     {
         switch (msgType)
         {
+            case MessageType.Player1Score:
+                eventText.text = _player1ScoreMessage;
+                break;
+            case MessageType.Player2Score:
+                eventText.text = _player2ScoreMessage;
+                break;
             case MessageType.Game:
                 eventText.text = gameMessage;
                 break;
@@ -123,9 +135,11 @@ public class UIManager : MonoBehaviour
 
     public enum MessageType
     {
-        Game = 0,
-        Set = 1,
-        Defeat = 2,
-        Victory = 3
+        Player1Score = 0,
+        Player2Score = 1,
+        Game = 2,
+        Set = 3,
+        Defeat = 4,
+        Victory = 5
     }
 }
