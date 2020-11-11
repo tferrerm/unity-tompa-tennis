@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class SoundManager : MonoBehaviour
 {
@@ -16,6 +18,11 @@ public class SoundManager : MonoBehaviour
     
     public AudioSource ballAudioSource;
     public AudioSource sceneAudioSource;
+
+    private void Start()
+    {
+        sceneAudioSource.volume = 0.3f;
+    }
 
     public void PlayCrowdSounds()
     {
