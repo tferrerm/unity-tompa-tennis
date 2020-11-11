@@ -97,7 +97,6 @@ public class AIPlayer : MonoBehaviour
         if (_movingToCenter)
         {
             // Move player to center
-            Debug.Log(_lastZDifference);
             var currentZDifference = Mathf.Abs(transform.position.z - _targetZ.Value);
             Move();
             if (currentZDifference > _lastZDifference)
@@ -323,6 +322,8 @@ public class AIPlayer : MonoBehaviour
     {
         _movingToCenter = true;
         _targetZ = Center;
+        _moveUpDownValue = 0;
+        _moveLeftRightValue = _targetZ - transform.position.z > 0 ? 1 : -1;
     }
     
     private void ResetHittingServiceBall() // Called as animation event
