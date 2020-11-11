@@ -46,6 +46,8 @@ public class GameManager : MonoBehaviour
     {
         pauseMenu.SetActive(false);
         Time.timeScale = 1;
+        AudioListener.pause = false;
+        player._movementBlocked = false;
     }
     
     public void GoToMainMenu()
