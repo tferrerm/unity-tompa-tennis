@@ -27,6 +27,7 @@ public class AIPlayer : MonoBehaviour
     private int _serviceEndHash;
     private int _driveHash;
     private int _backhandHash;
+    private int _cheerHash;
 
     private float _moveLeftRightValue;
     private float _moveUpDownValue;
@@ -86,6 +87,7 @@ public class AIPlayer : MonoBehaviour
         _serviceEndHash = Animator.StringToHash("Service End");
         _driveHash = Animator.StringToHash("Drive Trigger");
         _backhandHash = Animator.StringToHash("Backhand Trigger");
+        _cheerHash = Animator.StringToHash("Cheer Trigger");
     }
     
     void Update()
@@ -337,6 +339,11 @@ public class AIPlayer : MonoBehaviour
         _soundManager.PlayService(_audioSource);
         _hitDirectionHoriz = null;
         _hitMethod = null;
+    }
+    
+    public void Cheer()
+    {
+        _animator.SetTrigger(_cheerHash);
     }
     
     public void ToggleCharacterController()

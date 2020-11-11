@@ -46,6 +46,7 @@ public class Player : MonoBehaviour
     private int _serviceEndHash;
     private int _driveHash;
     private int _backhandHash;
+    private int _cheerHash;
     private bool _reachedServingBound;
 
     private float _moveLeftRightValue;
@@ -108,7 +109,8 @@ public class Player : MonoBehaviour
         _serviceStartHash = Animator.StringToHash("Service Start");
         _serviceEndHash = Animator.StringToHash("Service End");
         _driveHash = Animator.StringToHash("Drive Trigger");
-        _backhandHash = Animator.StringToHash("Backhand Trigger");   
+        _backhandHash = Animator.StringToHash("Backhand Trigger");  
+        _cheerHash = Animator.StringToHash("Cheer Trigger");  
     }
     
     void Update()
@@ -157,7 +159,7 @@ public class Player : MonoBehaviour
                 manhattanNorm = 1;
             
             var spd = (ActionMapper.IsSprinting() ? sprintSpeed : runSpeed) * movingDir.magnitude;
-            var dx = dt * (_moveUpDownValue < 0 ? backSpeed : spd) * _moveUpDownValue / manhattanNorm;
+            var dx = transform.position.x < 0 ? dt * (_moveUpDownValue < 0 ? backSpeed : spd) * _moveUpDownValue / manhattanNorm : 0;
             var dz = dt * spd * _moveLeftRightValue / manhattanNorm;
             
             _characterController.SimpleMove(Vector3.zero);
@@ -379,6 +381,11 @@ public class Player : MonoBehaviour
     {
         _animator.SetFloat(_strafeHash, 0);
         _animator.SetFloat(_forwardHash, 0);
+    }
+
+    public void Cheer()
+    {
+        _animator.SetTrigger(_cheerHash);
     }
 
     public void ToggleCharacterController()
