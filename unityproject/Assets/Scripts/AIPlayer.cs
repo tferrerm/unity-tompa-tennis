@@ -12,8 +12,8 @@ public class AIPlayer : MonoBehaviour
     public float runSpeed = 8;
     public float sprintSpeed = 10;
     public float backSpeed = 5.5f;
-    public float ballTargetRadius = 8f;
-    public float serveBallTargetRadius = 4f;
+    public float ballTargetRadius = 3.5f;
+    public float serveBallTargetRadius = 3f;
 
     private CharacterController _characterController;
 
@@ -60,6 +60,8 @@ public class AIPlayer : MonoBehaviour
     private bool waitingForBall;
 
     private const float ServiceWaitTime = 1f;
+    private const float MaxReactionTime = 0.75f;
+    private float _reactionWaitTimer;
 
     void Start()
     {
@@ -71,6 +73,7 @@ public class AIPlayer : MonoBehaviour
         _animator = GetComponent<Animator>();
         CalculateAnimatorHashes();
         maxXBallHit = transform.position.x - 2;
+        _reactionWaitTimer = Random.Range(0f, MaxReactionTime);
     }
 
     private void CalculateAnimatorHashes()
@@ -88,12 +91,21 @@ public class AIPlayer : MonoBehaviour
     {
         if (_targetZ != null)
         {
+            // Reset if target behind player
             if (!ballInsideHitZone && ball.GetPosition().x > maxXBallHit)
             {
                 ResetTargetMovementVariables();
                 return;
             }
+
+            // Wait for player reaction after opponent hits ball
+            if (_reactionWaitTimer > 0)
+            {
+                _reactionWaitTimer -= Time.deltaTime;
+                return;
+            }
             
+            // Move player to target position
             var currentZDifference = Mathf.Abs(transform.position.z - _targetZ.Value);
             Move();
             if (currentZDifference > _lastZDifference)
@@ -123,6 +135,7 @@ public class AIPlayer : MonoBehaviour
         _lastZDifference = float.MaxValue;
         _animator.SetFloat(_strafeHash, 0);
         _animator.SetFloat(_forwardHash, 0);
+        _reactionWaitTimer = Random.Range(0f, MaxReactionTime);
     }
 
     // private void Move()
@@ -187,7 +200,15 @@ public class AIPlayer : MonoBehaviour
         var targetPosition = _courtManager.GetHitTargetPosition(playerId, _hitDirectionVert, _hitDirectionHoriz);
         targetPosition = RandomizeBallTarget(targetPosition, ballTargetRadius);
         _soundManager.PlayRacquetHit(_audioSource);
-        ball.HitBall(targetPosition, 35f, true, 200f);
+        
+        var speed = _hitDirectionVert == HitDirectionVertical.Back
+            ? TennisVariables.DeepHitSpeed
+            : TennisVariables.FrontHitSpeed;
+        var speedYAtt = _hitDirectionVert == HitDirectionVertical.Back
+            ? TennisVariables.DeepHitYAttenuation
+            : TennisVariables.FrontHitYAttenuation;
+        
+        ball.HitBall(targetPosition, speed, true, speedYAtt);
         _hitDirectionVert = null;
         _hitDirectionHoriz = null;
         _hitMethod = null;
@@ -234,8 +255,6 @@ public class AIPlayer : MonoBehaviour
         _characterController.SimpleMove(Vector3.zero);
         
         Vector3 move = new Vector3(dx, 0, dz);
-        
-        Debug.Log($"MOVE {move}");
 
         _animator.SetFloat(_strafeHash, dx);
         _animator.SetFloat(_forwardHash, dz);
@@ -308,7 +327,7 @@ public class AIPlayer : MonoBehaviour
     {
         var targetPosition = _courtManager.GetServiceTargetPosition(playerId, _hitDirectionHoriz);
         targetPosition = RandomizeBallTarget(targetPosition, serveBallTargetRadius);
-        ball.HitBall(targetPosition, 200f, true, 250f);
+        ball.HitBall(targetPosition, TennisVariables.ServiceSpeed, true, TennisVariables.ServiceYAttenuation);
         _soundManager.PlayService(_audioSource);
         _hitDirectionHoriz = null;
         _hitMethod = null;

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,14 +11,24 @@ public class CourtManager : MonoBehaviour
     private const float ServingAreaLength = 21.0f;
 
     [Header("Deep Hit Targets - AI Player Side")]
-    public Transform player2BackCenterHit;
     public Transform player2BackLeftHit;
+    public Transform player2BackCenterHit;
     public Transform player2BackRightHit;
     
     [Header("Deep Hit Targets - Player Side")]
-    public Transform player1BackCenterHit;
     public Transform player1BackLeftHit;
+    public Transform player1BackCenterHit;
     public Transform player1BackRightHit;
+    
+    [Header("Front Hit Targets - AI Player Side")]
+    public Transform player2FrontLeftHit;
+    public Transform player2FrontCenterHit;
+    public Transform player2FrontRightHit;
+    
+    [Header("Front Hit Targets - Player Side")]
+    public Transform player1FrontLeftHit;
+    public Transform player1FrontCenterHit;
+    public Transform player1FrontRightHit;
     
     [Header("Service Hit Spots")]
     public Transform player1ServiceSpotLeft;
@@ -65,32 +76,39 @@ public class CourtManager : MonoBehaviour
         _scoreManager = GetComponent<ScoreManager>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public Vector3 GetHitTargetPosition(int playerId, HitDirectionVertical? vertical, HitDirectionHorizontal? horiz)
     {
-        if (playerId == 0)
+        switch (playerId)
         {
-            if (vertical == HitDirectionVertical.Back)
-            {
-                return (horiz == HitDirectionHorizontal.Center) ? player2BackCenterHit.position :
-                    (horiz == HitDirectionHorizontal.Left) ? player2BackLeftHit.position : player2BackRightHit.position;
-            }
+            case 0:
+                switch (vertical)
+                {
+                    case null:
+                    case HitDirectionVertical.Back:
+                        return (horiz == HitDirectionHorizontal.Center) ? player2BackCenterHit.position :
+                            (horiz == HitDirectionHorizontal.Left) ? player2BackLeftHit.position : player2BackRightHit.position;
+                    case HitDirectionVertical.Front:
+                        return (horiz == HitDirectionHorizontal.Center) ? player2FrontCenterHit.position :
+                            (horiz == HitDirectionHorizontal.Left) ? player2FrontLeftHit.position : player2FrontRightHit.position;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            case 1:
+                switch (vertical)
+                {
+                    case null:
+                    case HitDirectionVertical.Back:
+                        return (horiz == HitDirectionHorizontal.Center) ? player1BackCenterHit.position :
+                            (horiz == HitDirectionHorizontal.Left) ? player1BackLeftHit.position : player1BackRightHit.position;
+                    case HitDirectionVertical.Front:
+                        return (horiz == HitDirectionHorizontal.Center) ? player1FrontCenterHit.position :
+                            (horiz == HitDirectionHorizontal.Left) ? player1FrontLeftHit.position : player1FrontRightHit.position;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            default:
+                throw new ArgumentOutOfRangeException();
         }
-        else
-        {
-            if (vertical == HitDirectionVertical.Back)
-            {
-                return (horiz == HitDirectionHorizontal.Center) ? player1BackCenterHit.position :
-                    (horiz == HitDirectionHorizontal.Left) ? player1BackLeftHit.position : player1BackRightHit.position;
-            }
-        }
-        
-        return Vector3.zero;
     }
 
     public Vector3 GetServiceTargetPosition(int playerId, HitDirectionHorizontal? horiz)

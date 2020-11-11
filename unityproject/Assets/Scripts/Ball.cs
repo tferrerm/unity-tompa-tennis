@@ -13,7 +13,7 @@ public class Ball : MonoBehaviour
     private const float Radius = 0.15f;
     
     // Ball bounciness
-    private float bounciness = 0.85f;
+    private float bounciness;
     
     // Ball basic information
     private BallInfo ballInfo;
@@ -24,34 +24,29 @@ public class Ball : MonoBehaviour
     // Ball Physics
     private BallPhysics ballPhysics;
 
-    // Latest Y position of the ball
-    private float[] ballPrevPosY;
-
     public PointManager pointManager;
     public SoundManager soundManager;
 
     public LayerMask layerMask;
     private int _netLayer;
     private int _groundLayer;
-    public float netBounceCoef = 0.25f;
+    private float _netBounceCoef;
+    private float _defaultBounceCoef;
 
     ///////////////////
     public Player player1;
     public AIPlayer player2;
     public Transform ground;
-    public Transform ballThrower; // TODO DELETE
-    public Vector3 ballThrowerForce = new Vector3(-1, 0, 0);
     
     void Start()
     {
+        bounciness = TennisVariables.BallBounciness;
+        _netBounceCoef = TennisVariables.NetBounceFrictionMultiplier;
+        _defaultBounceCoef = TennisVariables.DefaultBounceFrictionMultiplier;
+        
         ballInfo.Position = transform.position;
         
         ballPhysics = new BallPhysics(Radius, bounciness, ground.position.y, soundManager, pointManager);
-        
-        // Array to store the latests positions of the ball
-        ballPrevPosY = new float[2];
-        //Vector3 targetPosition = GameObject.FindWithTag("GameController").GetComponent<GameManager>().courtManager.GetHitTargetPosition(1, HitDirectionVertical.Back, HitDirectionHorizontal.Center);
-        //HitBall(targetPosition);
 
         _netLayer = LayerMask.NameToLayer("Net");
         _groundLayer = LayerMask.NameToLayer("Ground");
@@ -64,33 +59,7 @@ public class Ball : MonoBehaviour
         CheckCollisions();
 
         UpdateFromBallInfo();
-        
-        /*if (Input.GetKeyDown(KeyCode.P))
-        {
-            transform.position = ballThrower.position;
-            ResetVelocity();
-            _rigidBody.AddForce(ballThrowerForce, ForceMode.Impulse);
-        }
-
-        ApplyTargetVelocity();*/
     }
-
-    /*private void ApplyTargetVelocity()
-    {
-        velocity += new Vector3(0.0f, Physics.gravity.y * Time.deltaTime, 0.0f);
-        transform.position += velocity * Time.deltaTime;
-        /*
-        var pStart = transform.position;
-        var pEnd = targetPosition.position;
-        var time = Vector3.Distance(pStart, pEnd) / speed;
-        var velocity = new Vector3(
-            (pEnd.x - pStart.x) / time,
-                ((pEnd.y - pStart.y) - 0.5f * gravity * (float)Math.Pow(Time.deltaTime, 2)) / time,
-                (pEnd.z - pStart.z) / time
-            );
-        Debug.Log(velocity);
-        transform.position += velocity * Time.deltaTime;//
-    }*/
     
     public float GetRadius()
     {
@@ -139,8 +108,6 @@ public class Ball : MonoBehaviour
 
         TelePort(posStart);
         ballInfo.velocity = new Vector3(velx, velocity.y, velz);
-        
-        //SoundManager.Instance.PlaySound("ThrowWhoosh");
     }
 
     void CheckCollisions()
@@ -169,13 +136,14 @@ public class Ball : MonoBehaviour
             if (_netLayer == hitLayer)
             {
                 soundManager.PlayNetHit(ballInfo.velocity);
-                bounceVelocity *= netBounceCoef;
+                bounceVelocity *= _netBounceCoef;
             }
             else
             {
                 if (hitLayer != _groundLayer)
                 {
                     pointManager.HandleBallBounce(null);
+                    bounceVelocity *= _defaultBounceCoef;
                 }
                 soundManager.PlayBallBounce(ballInfo.velocity);
             }

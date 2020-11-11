@@ -19,7 +19,7 @@ public enum HitDirectionHorizontal
 
 public enum HitDirectionVertical
 {
-    Back = 0
+    Back = 0, Front = 1
 }
 
 public class Player : MonoBehaviour
@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
     public float runSpeed = 8;
     public float sprintSpeed = 10;
     public float backSpeed = 5.5f;
-    public float ballTargetRadius = 4f;
+    public float ballTargetRadius = 3f;
     public float serveBallTargetRadius = 2f;
 
     private CharacterController _characterController;
@@ -58,7 +58,7 @@ public class Player : MonoBehaviour
     private PointManager _pointManager;
     private SoundManager _soundManager;
     
-    private readonly Dictionary<HitMethod, TechniqueAttributes> _techniqueAttrs = new Dictionary<HitMethod, TechniqueAttributes>();
+    //private readonly Dictionary<HitMethod, TechniqueAttributes> _techniqueAttrs = new Dictionary<HitMethod, TechniqueAttributes>();
 
     // Ball interaction variables
     public Collider ballCollider;
@@ -83,16 +83,16 @@ public class Player : MonoBehaviour
         _animator = GetComponent<Animator>();
         CalculateAnimatorHashes();
 
-        InitTechniqueAttrs();
+        //InitTechniqueAttrs();
         _movementBlocked = _pointManager.IsServing(playerId);
     }
 
-    private void InitTechniqueAttrs()
+    /*private void InitTechniqueAttrs()
     {
         _techniqueAttrs.Add(HitMethod.Drive, new TechniqueAttributes(0.1f, 2.25f));
         _techniqueAttrs.Add(HitMethod.Backhand, new TechniqueAttributes(0.1f, 2.25f));
         _techniqueAttrs.Add(HitMethod.Serve, new TechniqueAttributes(0.1f, 1f));
-    }
+    }*/
 
     private void CalculateAnimatorHashes()
     {
@@ -216,12 +216,17 @@ public class Player : MonoBehaviour
         if (_hitMethod == null) return;
         
         var hittingStraight = ActionMapper.GetForward();
+        var hittingDropshot = ActionMapper.GetBackward();
         var hittingLeft = ActionMapper.GetLeft();
         var hittingRight = ActionMapper.GetRight();
         
         if (hittingStraight) // Vertical input resets horizontal input
         {
             _hitDirectionVert = HitDirectionVertical.Back;
+            _hitDirectionHoriz = HitDirectionHorizontal.Center;
+        } else if (hittingDropshot)
+        {
+            _hitDirectionVert = HitDirectionVertical.Front;
             _hitDirectionHoriz = HitDirectionHorizontal.Center;
         }
 
@@ -267,7 +272,7 @@ public class Player : MonoBehaviour
     {
         var targetPosition = _courtManager.GetServiceTargetPosition(playerId, _hitDirectionHoriz);
         targetPosition = RandomizeBallTarget(targetPosition, serveBallTargetRadius);
-        ball.HitBall(targetPosition, 200f, true, 250f);
+        ball.HitBall(targetPosition, TennisVariables.ServiceSpeed, true, TennisVariables.ServiceYAttenuation);
         _soundManager.PlayService(_audioSource);
         _hitDirectionHoriz = null;
         _hitMethod = null;
@@ -296,7 +301,15 @@ public class Player : MonoBehaviour
         var targetPosition = _courtManager.GetHitTargetPosition(playerId, _hitDirectionVert, _hitDirectionHoriz);
         targetPosition = RandomizeBallTarget(targetPosition, ballTargetRadius);
         _soundManager.PlayRacquetHit(_audioSource);
-        ball.HitBall(targetPosition, 35f, true, 200f);
+        
+        var speed = _hitDirectionVert == HitDirectionVertical.Back
+            ? TennisVariables.DeepHitSpeed
+            : TennisVariables.FrontHitSpeed;
+        var speedYAtt = _hitDirectionVert == HitDirectionVertical.Back
+            ? TennisVariables.DeepHitYAttenuation
+            : TennisVariables.FrontHitYAttenuation;
+        
+        ball.HitBall(targetPosition, speed, true, speedYAtt);
         _hitDirectionVert = null;
         _hitDirectionHoriz = null;
         _hitMethod = null;

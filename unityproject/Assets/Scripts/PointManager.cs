@@ -60,14 +60,6 @@ public class PointManager : MonoBehaviour
 
     public void HandleBallBounce(Vector2? bounceCoordinates)
     {
-        //if (ballCollidedWithCourt)
-        //{
-            /*
-             * Set collision coordinates
-             */
-        //    bounceCoordinates = new Vector2Int();
-        //}
-        Debug.Log(_pointState);
         switch (_pointState)
         {
             case PointState.FirstServe:

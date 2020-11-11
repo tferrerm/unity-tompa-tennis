@@ -69,7 +69,8 @@ public class BallPhysics
             {
                 float bounceSpeed = bi.velocity.y * -bounciness;
                 bounceSpeed = (bounceSpeed > 0.001f ? bounceSpeed : 0.0f);
-                bi.velocity = new Vector3(bi.velocity.x * 0.85f, bounceSpeed, bi.velocity.z * 0.85f);
+                bi.velocity = new Vector3(bi.velocity.x * TennisVariables.BallBounceFrictionMultiplier, 
+                    bounceSpeed, bi.velocity.z * TennisVariables.BallBounceFrictionMultiplier);
                 
                 _pointManager.SetCourtBallBounce();
                 _pointManager.HandleBallBounce(new Vector2(bi.Position.x, bi.Position.z));
