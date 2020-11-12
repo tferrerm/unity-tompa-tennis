@@ -195,6 +195,7 @@ public class AIPlayer : MonoBehaviour
             }
             else
             {
+                PlayerGrunt();
                 _animator.SetTrigger(_fastDriveHash);
             }
             _hitMethod = HitMethod.Drive;
@@ -207,6 +208,7 @@ public class AIPlayer : MonoBehaviour
             }
             else
             {
+                PlayerGrunt();
                 _animator.SetTrigger(_fastBackhandHash);
             }
             _hitMethod = HitMethod.Backhand;
@@ -349,5 +351,12 @@ public class AIPlayer : MonoBehaviour
     public void ToggleCharacterController()
     {
         _characterController.enabled = !_characterController.enabled;
+    }
+
+    private void PlayerGrunt()
+    {
+        var rand = Random.value;
+        if (rand > 0.85f)
+            _soundManager.PlayGrunt(_audioSource);
     }
 }
