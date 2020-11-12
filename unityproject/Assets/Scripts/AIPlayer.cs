@@ -60,7 +60,6 @@ public class AIPlayer : MonoBehaviour
     private bool _sprinting = false;
     private float _lastZDifference = float.MaxValue;
     private const float HitDistanceToBall = 3f;
-    private bool _waitingForBall;
     private Vector3 waitingForBallPos = new Vector3(39.75f, -3.067426f, 1.59f);
 
     private const float ServiceWaitTime = 1f;
@@ -109,7 +108,6 @@ public class AIPlayer : MonoBehaviour
                 // Reached target
                 _targetZ = null;
                 ResetTargetMovementVariables();
-                _waitingForBall = true;
                 _movingToCenter = false;
             }
             else
@@ -140,7 +138,6 @@ public class AIPlayer : MonoBehaviour
             {
                 // Reached target
                 ResetTargetMovementVariables();
-                _waitingForBall = true;
             }
             else
             {
@@ -151,7 +148,6 @@ public class AIPlayer : MonoBehaviour
         if (CanHitBall())
         {
             SelectHitMethod();
-            _waitingForBall = false;
         }
         // reset waiting for ball
         // hit ball
@@ -164,7 +160,6 @@ public class AIPlayer : MonoBehaviour
         _animator.SetFloat(_strafeHash, 0);
         _animator.SetFloat(_forwardHash, 0);
         _reactionWaitTimer = Random.Range(0f, MaxReactionTime);
-        _waitingForBall = false;
     }
     
     private void Move()
@@ -285,13 +280,12 @@ public class AIPlayer : MonoBehaviour
         _moveUpDownValue = 0;
         _moveLeftRightValue = _targetZ - transform.position.z > 0 ? 1 : -1;
         _movingToCenter = false;
-        _waitingForBall = true;
     }
     
     // Ball entered collision zone (sphere) and is in front of the player
     private bool CanHitBall()
     {
-        return ballInsideHitZone && _waitingForBall && !_movementBlocked && _pointManager.CanHitBall(playerId) &&
+        return ballInsideHitZone && _hitMethod == null && !_movementBlocked && _pointManager.CanHitBall(playerId) &&
                ball.transform.position.x < transform.position.x - TennisVariables.BallColliderFrontDelta;
     }
     
