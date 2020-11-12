@@ -205,6 +205,8 @@ public class PointManager : MonoBehaviour
         {
             player2.SwitchBallType(true);
         }
+        
+        player2.ResetTargetMovementVariables();
 
         TogglePlayerCharacterControllers();
     }
@@ -222,8 +224,10 @@ public class PointManager : MonoBehaviour
 
     public bool CanHitBall(int playerId)
     {
-        return _pointState == (_scoreManager.GetServingPlayerId() == playerId ? 
-            PointState.ServerTurn : PointState.ReceiverTurn);
+        var isServing = _scoreManager.GetServingPlayerId() == playerId;
+        return _pointState == (isServing ? 
+            PointState.ServerTurn : PointState.ReceiverTurn) || _pointState == (isServing ? 
+            PointState.ReceiverHit : PointState.ServerHit);
     }
 
     public void SetPlayerHitBall(int playerId)

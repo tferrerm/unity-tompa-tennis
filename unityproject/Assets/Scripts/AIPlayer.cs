@@ -12,8 +12,8 @@ public class AIPlayer : MonoBehaviour
     public float runSpeed = 8;
     public float sprintSpeed = 10;
     public float backSpeed = 5.5f;
-    private float ballTargetRadius = 3.5f;
-    private float serveBallTargetRadius = 2.5f;
+    private float ballTargetRadius = 3f;
+    private float serveBallTargetRadius = 2f;
 
     private CharacterController _characterController;
 
@@ -66,6 +66,7 @@ public class AIPlayer : MonoBehaviour
     private float _reactionWaitTimer;
     private const float Center = 0.0f;
     private bool _movingToCenter = false;
+    private bool _movementBlocked;
 
     void Start()
     {
@@ -143,7 +144,7 @@ public class AIPlayer : MonoBehaviour
             }
         }
 
-        if (_waitingForBall && ballInsideHitZone)
+        if (_waitingForBall && ballInsideHitZone && !_movementBlocked)
         {
             SelectHitMethod();
             _waitingForBall = false;
@@ -152,28 +153,15 @@ public class AIPlayer : MonoBehaviour
         // hit ball
     }
 
-    private void ResetTargetMovementVariables()
+    public void ResetTargetMovementVariables()
     {
         _targetZ = null;
         _lastZDifference = float.MaxValue;
         _animator.SetFloat(_strafeHash, 0);
         _animator.SetFloat(_forwardHash, 0);
         _reactionWaitTimer = Random.Range(0f, MaxReactionTime);
+        _waitingForBall = false;
     }
-
-    // private void Move()
-    // {
-    //     if (!ball.gameObject.activeSelf)
-    //         return;
-    //     
-    //     var position = transform.position;
-    //     if (position.x <= desiredDistance)
-    //         StayInNet();
-    //     else if (DistanceToBall().magnitude <= desiredDistance)
-    //         PrepareToHit();
-    //     else
-    //         MoveTowardsBall();
-    // }
     
     private void Move()
     {
@@ -212,6 +200,7 @@ public class AIPlayer : MonoBehaviour
 
         _hitDirectionHoriz = (HitDirectionHorizontal)Random.Range(0, 3);
         _hitDirectionVert = (HitDirectionVertical)Random.Range(0, 2);
+        _movementBlocked = true;
     }
     
     public void HitBall() // Called as animation event
@@ -255,40 +244,6 @@ public class AIPlayer : MonoBehaviour
         }
     }
 
-    private void StayInNet()
-    {
-        
-    }
-
-    private void PrepareToHit()
-    {
-        
-    }
-
-    private void MoveTowardsBall()
-    {
-        float dt = Time.deltaTime;
-        var distance = DistanceToBall();
-        float spd = (distance.magnitude > 5 ? sprintSpeed : runSpeed);
-        float dx = dt * (distance.x < 0 ? backSpeed : spd) * Math.Sign(distance.x * -1);
-        float dz = dt * spd * Math.Sign(distance.z * -1);
-        if (Math.Abs(distance.z) < 0.25f)
-            dz = 0;
-
-        _characterController.SimpleMove(Vector3.zero);
-        
-        Vector3 move = new Vector3(dx, 0, dz);
-
-        _animator.SetFloat(_strafeHash, dx);
-        _animator.SetFloat(_forwardHash, dz);
-        _characterController.Move(move);
-    }
-
-    private Vector3 DistanceToBall()
-    {
-        return transform.position - ball.transform.position;
-    }
-
     private void Step(AnimationEvent animationEvent)
     {
         if (animationEvent.animatorClipInfo.weight > 0.5)
@@ -304,11 +259,14 @@ public class AIPlayer : MonoBehaviour
         var ratio = zDiff / xDiff;
 
         var playerBallTargetXDiff = Mathf.Abs(transform.position.x - ballTargetPos.x);
-        
+
+        ResetTargetMovementVariables();
         _targetZ = ballTargetPos.z + (ballTargetPos.z > startPos.z ? 1 : -1) * playerBallTargetXDiff * ratio 
                                    + (ballTargetPos.z > startPos.z ? -1 : 1) * HitDistanceToBall;
         _moveUpDownValue = 0;
         _moveLeftRightValue = _targetZ - transform.position.z > 0 ? 1 : -1;
+        _movingToCenter = false;
+        _waitingForBall = true;
     }
     
     // Ball entered collision zone (sphere) and is in front of the player
@@ -324,6 +282,7 @@ public class AIPlayer : MonoBehaviour
         _targetZ = Center;
         _moveUpDownValue = 0;
         _moveLeftRightValue = _targetZ - transform.position.z > 0 ? 1 : -1;
+        _movementBlocked = false;
     }
     
     private void ResetHittingServiceBall() // Called as animation event
