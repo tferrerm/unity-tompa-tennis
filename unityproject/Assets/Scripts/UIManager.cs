@@ -11,6 +11,10 @@ public class UIManager : MonoBehaviour
     public Transform pastSetPrefab;
     public Transform currentSetContainer;
     public Transform currentGameContainer;
+    public Transform player1Name;
+    public Transform player2Name;
+    private TMP_Text _player1NameText;
+    private TMP_Text _player2NameText;
     private TMP_Text _player1CurrentSetScore;
     private TMP_Text _player2CurrentSetScore;
     private TMP_Text _player1CurrentGameScore;
@@ -35,6 +39,9 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        _player1NameText = player1Name.GetComponent<TMP_Text>();
+        _player2NameText = player2Name.GetComponent<TMP_Text>();
+        
         _player1CurrentSetScore = currentSetContainer.Find("Player 1/Player 1 Score").GetComponent<TMP_Text>();
         _player2CurrentSetScore = currentSetContainer.Find("Player 2/Player 2 Score").GetComponent<TMP_Text>();
         _player1CurrentGameScore = currentGameContainer.Find("Player 1/Player 1 Score").GetComponent<TMP_Text>();
@@ -45,6 +52,12 @@ public class UIManager : MonoBehaviour
         var gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
         _player1ScoreMessage = gameManager.player.playerName.Split(' ')[1] + " SCORES";
         _player2ScoreMessage = gameManager.aiPlayer.playerName.Split(' ')[1] + " SCORES";
+    }
+
+    public void SetPlayerNames(string player1, string player2)
+    {
+        _player1NameText.text = player1;
+        _player2NameText.text = player2;
     }
 
     public void SetPlayerGameScore(List<Vector2Int> setsScores, Vector2Int gameScores, int setCount, bool player1Serving)
