@@ -34,6 +34,7 @@ public class ScoreManager : MonoBehaviour
     [HideInInspector] public ServingSide currentServingSide = ServingSide.Even;
     private int _servingPlayerId;
 
+    private GameManager gameManager;
     private SoundManager _soundManager;
 
     private void Awake()
@@ -48,13 +49,13 @@ public class ScoreManager : MonoBehaviour
         {
             sets.Add(new Vector2Int(0, 0));
         }
-
-        _soundManager = GetComponent<SoundManager>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        gameManager = GetComponent<GameManager>();
+        _soundManager = gameManager.soundManager;
         //StartCoroutine(ExampleCoroutine());
     }
 
@@ -245,12 +246,21 @@ public class ScoreManager : MonoBehaviour
             _matchFinished = true;
             currentServingSide = ServingSide.Even;
             _gameWon = false;
-            uiManager.ShowEventMessage(_player1SetsWon == setsNeededToWin ? UIManager.MessageType.Victory : UIManager.MessageType.Defeat);
+            var player1Won = _player1SetsWon == setsNeededToWin;
+            IEnumerator coroutine = MatchFinishedCoroutine(player1Won);
+            StartCoroutine(coroutine);
         }
         else
         {
             uiManager.ShowEventMessage(setWon ? UIManager.MessageType.Set : UIManager.MessageType.Game);
         }
+    }
+
+    private IEnumerator MatchFinishedCoroutine(bool player1Won)
+    {
+        uiManager.ShowEventMessage(player1Won ? UIManager.MessageType.Victory : UIManager.MessageType.Defeat);
+        yield return new WaitForSeconds(5f);
+        gameManager.GameFinished();
     }
 
     public ServingSide GetServingSide()

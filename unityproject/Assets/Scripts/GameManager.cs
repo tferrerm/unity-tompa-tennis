@@ -58,6 +58,11 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
+    public void GameFinished()
+    {
+        SceneManager.LoadScene(0);
+    }
+
     public void PlayerHitBall(Vector3 startPos, Vector3 ballTargetPos)
     {
         TriggerAIPlayerMovement(startPos, ballTargetPos);
