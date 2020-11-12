@@ -229,7 +229,7 @@ public class Player : MonoBehaviour
     private bool CanHitBall()
     {
         return ballInsideHitZone && _pointManager.CanHitBall(playerId) &&
-               ball.transform.position.x > transform.position.x + 4;
+               ball.transform.position.x > transform.position.x + TennisVariables.BallColliderFrontDelta;
     }
 
     private void SelectHitMethod()

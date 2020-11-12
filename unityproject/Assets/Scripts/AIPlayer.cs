@@ -46,7 +46,6 @@ public class AIPlayer : MonoBehaviour
     public Transform hitBallSpawn;
     public Transform hitServiceBallSpawn;
     private float serviceTossSpeed = 20f;
-    private float maxXBallHit;
 
     public GameManager gameManager;
     private CourtManager _courtManager;
@@ -80,7 +79,6 @@ public class AIPlayer : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
         _animator = GetComponent<Animator>();
         CalculateAnimatorHashes();
-        maxXBallHit = transform.position.x - 2;
         _reactionWaitTimer = Random.Range(0f, MaxReactionTime);
     }
 
@@ -122,7 +120,7 @@ public class AIPlayer : MonoBehaviour
         else if (_targetZ != null)
         {
             // Reset if target behind player
-            if (!ballInsideHitZone && ball.GetPosition().x > maxXBallHit)
+            if (!ballInsideHitZone && ball.GetPosition().x > transform.position.x - TennisVariables.BallColliderFrontDelta)
             {
                 ResetTargetMovementVariables();
                 return;
@@ -150,7 +148,7 @@ public class AIPlayer : MonoBehaviour
             }
         }
 
-        if (_waitingForBall && ballInsideHitZone && !_movementBlocked)
+        if (CanHitBall())
         {
             SelectHitMethod();
             _waitingForBall = false;
@@ -293,8 +291,8 @@ public class AIPlayer : MonoBehaviour
     // Ball entered collision zone (sphere) and is in front of the player
     private bool CanHitBall()
     {
-        return ballInsideHitZone && _pointManager.CanHitBall(playerId) &&
-               ball.transform.position.x < maxXBallHit;
+        return ballInsideHitZone && _waitingForBall && !_movementBlocked && _pointManager.CanHitBall(playerId) &&
+               ball.transform.position.x < transform.position.x - TennisVariables.BallColliderFrontDelta;
     }
     
     private void ResetHittingBall() // Called as animation event
