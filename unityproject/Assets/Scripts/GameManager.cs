@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
             Time.timeScale = pauseMenu.activeSelf ? 1 : 0;
             pauseMenu.SetActive(!pauseMenu.activeSelf);
             AudioListener.pause = pauseMenu.activeSelf;
-            player._movementBlocked = !pauseMenu.activeSelf;
+            // player._movementBlocked = !pauseMenu.activeSelf;
         }
 
     }
@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
         pauseMenu.SetActive(false);
         Time.timeScale = 1;
         AudioListener.pause = false;
-        player._movementBlocked = false;
+        // player._movementBlocked = false;
     }
     
     public void GoToMainMenu()
