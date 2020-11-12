@@ -85,7 +85,7 @@ public class ScoreManager : MonoBehaviour
             {
                 case 40 when _currentGame[1] < 40:
                     _gameWon = true;
-                    player1.Cheer();
+                    // player1.Cheer();
                     break;
                 case 40 when _currentGame[1] == 40:
                     // 40 40 to AD 40
@@ -98,9 +98,10 @@ public class ScoreManager : MonoBehaviour
                 case 45:
                     // AD 40 to game
                     _gameWon = true;
-                    player1.Cheer();
+                    // player1.Cheer();
                     break;
             }
+            player1.Cheer();
         }
         else if(player2Id == playerId)
         {
@@ -112,7 +113,7 @@ public class ScoreManager : MonoBehaviour
             {
                 case 40 when _currentGame[0] < 40:
                     _gameWon = true;
-                    player2.Cheer();
+                    // player2.Cheer();
                     break;
                 case 40 when _currentGame[0] == 40:
                     // 40 40 to 40 AD
@@ -124,9 +125,10 @@ public class ScoreManager : MonoBehaviour
                     break;
                 case 45:
                     _gameWon = true;
-                    player2.Cheer();
+                    // player2.Cheer();
                     break;
             }
+            player2.Cheer();
         }
 
         if (_gameWon)
