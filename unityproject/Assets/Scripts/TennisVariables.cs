@@ -15,4 +15,5 @@ public static class TennisVariables
     public const float BallBounciness = 0.8f;
     public const float NetBounceFrictionMultiplier = 0.25f;
     public const float DefaultBounceFrictionMultiplier = 0.3f;
+    public const float FastHitAnimationThresholdSpeed = 25f;
 }

@@ -71,6 +71,11 @@ public class Ball : MonoBehaviour
     {
         return transform.position;
     }
+
+    public float GetSpeed()
+    {
+        return ballInfo.velocity.magnitude;
+    }
     
     bool UpdateFromBallInfo()
     {

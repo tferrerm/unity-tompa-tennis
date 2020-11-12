@@ -48,6 +48,9 @@ public class Player : MonoBehaviour
     private int _backhandHash;
     private int _cheerHash;
     private int _defeatedHash;
+    private int _fastDriveHash;
+    private int _fastBackhandHash;
+    
     private bool _reachedServingBound;
 
     private float _moveLeftRightValue;
@@ -113,6 +116,8 @@ public class Player : MonoBehaviour
         _backhandHash = Animator.StringToHash("Backhand Trigger");
         _cheerHash = Animator.StringToHash("Cheer Trigger");
         _defeatedHash = Animator.StringToHash("Defeated Trigger");
+        _fastDriveHash = Animator.StringToHash("Fast Drive Trigger");
+        _fastBackhandHash = Animator.StringToHash("Fast Backhand Trigger");
     }
     
     void Update()
@@ -230,14 +235,30 @@ public class Player : MonoBehaviour
     private void SelectHitMethod()
     {
         var ballPosition = ball.transform.position;
+        var ballSpeed = ball.GetSpeed();
         if (ballPosition.z < transform.position.z) // Should take into account ball direction
         {
-            _animator.SetTrigger(_driveHash);
+            if (ballSpeed < TennisVariables.FastHitAnimationThresholdSpeed)
+            {
+                _animator.SetTrigger(_driveHash);
+            }
+            else
+            {
+                _animator.SetTrigger(_fastDriveHash);
+            }
+            
             _hitMethod = HitMethod.Drive;
         }
         else
         {
-            _animator.SetTrigger(_backhandHash);
+            if (ballSpeed < TennisVariables.FastHitAnimationThresholdSpeed)
+            {
+                _animator.SetTrigger(_backhandHash);
+            }
+            else
+            {
+                _animator.SetTrigger(_fastBackhandHash);
+            }
             _hitMethod = HitMethod.Backhand;
         }
         _hitDirectionHoriz = HitDirectionHorizontal.Center; // Default value if no keys pressed
