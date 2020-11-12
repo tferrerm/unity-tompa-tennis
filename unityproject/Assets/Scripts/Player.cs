@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
     public float runSpeed = 8;
     public float sprintSpeed = 10;
     public float backSpeed = 5.5f;
-    public float walkingSpeed = 3;
+    public float walkingSpeed = 5f;
     private float ballTargetRadius = 2.5f;
     private float serveBallTargetRadius = 2f;
 
@@ -47,6 +47,7 @@ public class Player : MonoBehaviour
     private int _driveHash;
     private int _backhandHash;
     private int _cheerHash;
+    private int _defeatedHash;
     private bool _reachedServingBound;
 
     private float _moveLeftRightValue;
@@ -109,8 +110,9 @@ public class Player : MonoBehaviour
         _serviceStartHash = Animator.StringToHash("Service Start");
         _serviceEndHash = Animator.StringToHash("Service End");
         _driveHash = Animator.StringToHash("Drive Trigger");
-        _backhandHash = Animator.StringToHash("Backhand Trigger");  
-        _cheerHash = Animator.StringToHash("Cheer Trigger");  
+        _backhandHash = Animator.StringToHash("Backhand Trigger");
+        _cheerHash = Animator.StringToHash("Cheer Trigger");
+        _defeatedHash = Animator.StringToHash("Defeated Trigger");
     }
     
     void Update()
@@ -386,6 +388,11 @@ public class Player : MonoBehaviour
     public void Cheer()
     {
         _animator.SetTrigger(_cheerHash);
+    }
+    
+    public void Defeated()
+    {
+        _animator.SetTrigger(_defeatedHash);
     }
 
     public void ToggleCharacterController()

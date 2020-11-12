@@ -42,7 +42,7 @@ public class ScoreManager : MonoBehaviour
         player1Id = player1.playerId;
         player2Id = player2.playerId;
         
-        _servingPlayerId = player2Id;
+        _servingPlayerId = player1Id;
         
         var totalSets = setsNeededToWin == 3 ? 5 : 3;
         for (int i = 0; i < totalSets; i++)
@@ -129,6 +129,7 @@ public class ScoreManager : MonoBehaviour
                     // player2.Cheer();
                     break;
             }
+            player1.Defeated();
             player2.Cheer();
         }
 
