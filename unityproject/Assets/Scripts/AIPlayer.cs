@@ -28,6 +28,7 @@ public class AIPlayer : MonoBehaviour
     private int _driveHash;
     private int _backhandHash;
     private int _cheerHash;
+    private int _defeatedHash;
 
     private float _moveLeftRightValue;
     private float _moveUpDownValue;
@@ -91,6 +92,7 @@ public class AIPlayer : MonoBehaviour
         _driveHash = Animator.StringToHash("Drive Trigger");
         _backhandHash = Animator.StringToHash("Backhand Trigger");
         _cheerHash = Animator.StringToHash("Cheer Trigger");
+        _defeatedHash = Animator.StringToHash("Defeated Trigger");
     }
     
     void Update()
@@ -326,6 +328,11 @@ public class AIPlayer : MonoBehaviour
     public void Cheer()
     {
         _animator.SetTrigger(_cheerHash);
+    }
+    
+    public void Defeated()
+    {
+        _animator.SetTrigger(_defeatedHash);
     }
     
     public void ToggleCharacterController()
