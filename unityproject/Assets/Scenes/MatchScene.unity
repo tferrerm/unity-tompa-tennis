@@ -798,8 +798,8 @@ GameObject:
   - component: {fileID: 67222787}
   - component: {fileID: 67222789}
   - component: {fileID: 67222788}
-  - component: {fileID: 67222790}
   - component: {fileID: 67222791}
+  - component: {fileID: 67222790}
   m_Layer: 10
   m_Name: Net
   m_TagString: Untagged
@@ -871,19 +871,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 67222786}
   m_Mesh: {fileID: 4300004, guid: 73d75ac5c7d7bc34fa35410ae9ed8d1c, type: 3}
---- !u!65 &67222790
-BoxCollider:
+--- !u!64 &67222790
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 67222786}
-  m_Material: {fileID: 13400000, guid: aee79d29ae4851b41a450eb5af8a7303, type: 2}
-  m_IsTrigger: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 19.709303, y: 3.4, z: 0.1}
-  m_Center: {x: -9.850415, y: -1.6, z: 0}
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300004, guid: 73d75ac5c7d7bc34fa35410ae9ed8d1c, type: 3}
 --- !u!54 &67222791
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5718,8 +5719,8 @@ GameObject:
   - component: {fileID: 651598163}
   - component: {fileID: 651598165}
   - component: {fileID: 651598164}
-  - component: {fileID: 651598166}
   - component: {fileID: 651598167}
+  - component: {fileID: 651598166}
   m_Layer: 10
   m_Name: Net
   m_TagString: Untagged
@@ -5791,19 +5792,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 651598162}
   m_Mesh: {fileID: 4300004, guid: 73d75ac5c7d7bc34fa35410ae9ed8d1c, type: 3}
---- !u!65 &651598166
-BoxCollider:
+--- !u!64 &651598166
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 651598162}
-  m_Material: {fileID: 13400000, guid: aee79d29ae4851b41a450eb5af8a7303, type: 2}
-  m_IsTrigger: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 19.709303, y: 3.4, z: 0.1}
-  m_Center: {x: -9.850415, y: -1.6, z: 0}
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300004, guid: 73d75ac5c7d7bc34fa35410ae9ed8d1c, type: 3}
 --- !u!54 &651598167
 Rigidbody:
   m_ObjectHideFlags: 0
