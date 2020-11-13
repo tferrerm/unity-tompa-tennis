@@ -21156,6 +21156,16 @@ PrefabInstance:
       propertyPath: playerName
       value: MARCOS LUND
       objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: cheerClip
+      value: 
+      objectReference: {fileID: 7400000, guid: 90acabb881dbb0a42bf0fd6167335201, type: 2}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: defeatedClip
+      value: 
+      objectReference: {fileID: 7400000, guid: e6082ef100dd3da4185695ad1e7b2f0a, type: 2}
     - target: {fileID: 7372489402264249969, guid: 1accc87c261a23f4cb5b0ef26871e32b,
         type: 3}
       propertyPath: m_Enabled
