@@ -24,7 +24,8 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        player.playerName = PlayerPrefs.GetString("PlayerName", "Tompa Player");
+        aiPlayer.playerName = PlayerPrefs.GetString("AIPlayerName", "AI Player");
     }
 
     public void GameFinished()

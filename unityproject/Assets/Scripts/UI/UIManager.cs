@@ -42,6 +42,9 @@ namespace UI
         {
             _player1NameText = player1Name.GetComponent<TMP_Text>();
             _player2NameText = player2Name.GetComponent<TMP_Text>();
+            var player1NameStr = PlayerPrefs.GetString("PlayerName", "Tompa Player").ToUpper();
+            var player2NameStr = PlayerPrefs.GetString("AIPlayerName", "AI Player").ToUpper();
+            SetPlayerNames(player1NameStr, player2NameStr);
         
             _player1CurrentSetScore = currentSetContainer.Find("Player 1/Player 1 Score").GetComponent<TMP_Text>();
             _player2CurrentSetScore = currentSetContainer.Find("Player 2/Player 2 Score").GetComponent<TMP_Text>();
@@ -50,9 +53,9 @@ namespace UI
         
             _scoreManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<ScoreManager>();
 
-            var gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
-            _player1ScoreMessage = gameManager.player.playerName.Split(' ')[1] + " SCORES";
-            _player2ScoreMessage = gameManager.aiPlayer.playerName.Split(' ')[1] + " SCORES";
+            var player1NameStrSplit = player1NameStr.Split(' ');
+            _player1ScoreMessage = player1NameStrSplit[player1NameStrSplit.Length - 1] + " SCORES";
+            _player2ScoreMessage = player2NameStr + " SCORES";
         }
 
         public void SetPlayerNames(string player1, string player2)
@@ -115,7 +118,7 @@ namespace UI
             return score == 45 && !_scoreManager.currentlyInTiebreak ? "AD" : score.ToString();
         }
 
-        public void ShowEventMessage(MessageType msgType) // TODO ADD QUEUE
+        public void ShowEventMessage(MessageType msgType)
         {
             switch (msgType)
             {

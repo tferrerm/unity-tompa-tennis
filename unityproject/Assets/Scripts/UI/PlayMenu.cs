@@ -17,12 +17,6 @@ namespace UI
         {
             playerNameInput.text = PlayerPrefs.GetString("PlayerName", playerNameInput.text);
         }
-
-        // Update is called once per frame
-        void Update()
-        {
-            PlayerPrefs.SetString("PlayerName", playerNameInput.text);
-        }
     
         public void ReturnToMainMenu()
         {
@@ -33,6 +27,15 @@ namespace UI
     
         public void PlayGame()
         {
+            var playerName = playerNameInput.text;
+            PlayerPrefs.SetString("PlayerName", playerName);
+            if (string.IsNullOrWhiteSpace(playerName))
+            {
+                PlayerPrefs.SetString("PlayerName", "Tompa Player");
+            }
+
+            PlayerPrefs.SetString("AIPlayerName", "AI Player");
+            
             PlayerPrefs.Save();
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }

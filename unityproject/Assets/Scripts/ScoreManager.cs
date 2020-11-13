@@ -26,7 +26,7 @@ public class ScoreManager : MonoBehaviour
     [HideInInspector] public int player1Id;
     [HideInInspector] public int player2Id;
     
-    public int setsNeededToWin = 3; // TODO HARDCODED
+    private int _setsNeededToWin = 0;
     private int _player1SetsWon = 0;
     private int _player2SetsWon = 0;
 
@@ -48,8 +48,9 @@ public class ScoreManager : MonoBehaviour
         player2Id = _player2.playerId;
         
         _servingPlayerId = player1Id;
-        
-        var totalSets = setsNeededToWin == 3 ? 5 : 3; // TODO HARDCODED
+
+        var totalSets = PlayerPrefs.GetInt("SetNumber", 1);//setsNeededToWin == 3 ? 5 : 3; // TODO HARDCODED
+        _setsNeededToWin = totalSets / 2 + 1;
         for (var i = 0; i < totalSets; i++)
         {
             _sets.Add(new Vector2Int(0, 0));
@@ -231,12 +232,12 @@ public class ScoreManager : MonoBehaviour
             setWon = true;
         }
         
-        if (_player1SetsWon == setsNeededToWin || _player2SetsWon == setsNeededToWin)
+        if (_player1SetsWon == _setsNeededToWin || _player2SetsWon == _setsNeededToWin)
         {
             _matchFinished = true;
             currentServingSide = ServingSide.Even;
             _gameWon = false;
-            var player1Won = _player1SetsWon == setsNeededToWin;
+            var player1Won = _player1SetsWon == _setsNeededToWin;
             IEnumerator coroutine = MatchFinishedCoroutine(player1Won);
             StartCoroutine(coroutine);
         }

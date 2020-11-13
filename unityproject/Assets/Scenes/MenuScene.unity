@@ -7197,7 +7197,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 710211598}
   m_OnClick:
     m_PersistentCalls:
@@ -12802,7 +12802,7 @@ MonoBehaviour:
   m_CharacterValidation: 0
   m_RegexValue: 
   m_GlobalPointSize: 14
-  m_CharacterLimit: 0
+  m_CharacterLimit: 18
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
@@ -14374,6 +14374,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   setNumberText: {fileID: 455285126}
+  decrementButton: {fileID: 710211597}
+  incrementButton: {fileID: 42709069}
 --- !u!1 &1428407729
 GameObject:
   m_ObjectHideFlags: 0
