@@ -11310,8 +11310,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1688545063}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+      - m_Target: {fileID: 1264575182}
+        m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
         m_MethodName: GoToMainMenu
         m_Mode: 1
         m_Arguments:
@@ -12011,6 +12011,7 @@ GameObject:
   - component: {fileID: 1264575178}
   - component: {fileID: 1264575177}
   - component: {fileID: 1264575181}
+  - component: {fileID: 1264575182}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -12127,6 +12128,20 @@ MonoBehaviour:
   setMessage: SET
   defeatMessage: GAME OVER
   victoryMessage: VICTORY
+--- !u!114 &1264575182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1264575176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3fdf581ba55444b5a8f8e1e8fccc427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pauseMenu: {fileID: 1100821511}
+  canOpenPauseMenu: 1
 --- !u!1 &1268910806
 GameObject:
   m_ObjectHideFlags: 0
@@ -16013,8 +16028,6 @@ MonoBehaviour:
   soundManager: {fileID: 0}
   aiPlayer: {fileID: 1168141960}
   player: {fileID: 114571766}
-  pauseMenu: {fileID: 1100821511}
-  canOpenPauseMenu: 1
 --- !u!114 &1688545064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20749,8 +20762,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1688545063}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+      - m_Target: {fileID: 1264575182}
+        m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
         m_MethodName: PauseMenuResume
         m_Mode: 1
         m_Arguments:
