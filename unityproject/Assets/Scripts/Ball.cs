@@ -26,6 +26,7 @@ public class Ball : MonoBehaviour
 
     public PointManager pointManager;
     public SoundManager soundManager;
+    public TennisVariables tv;
 
     public LayerMask layerMask;
     private int _netLayer;
@@ -41,13 +42,13 @@ public class Ball : MonoBehaviour
     
     void Start()
     {
-        bounciness = TennisVariables.BallBounciness;
-        _netBounceCoef = TennisVariables.NetBounceFrictionMultiplier;
-        _defaultBounceCoef = TennisVariables.DefaultBounceFrictionMultiplier;
+        bounciness = tv.BallBounciness;
+        _netBounceCoef = tv.NetBounceFrictionMultiplier;
+        _defaultBounceCoef = tv.DefaultBounceFrictionMultiplier;
         
         ballInfo.Position = transform.position;
         
-        ballPhysics = new BallPhysics(Radius, bounciness, ground.position.y, soundManager, pointManager);
+        ballPhysics = new BallPhysics(Radius, bounciness, ground.position.y, soundManager, pointManager, tv);
 
         _netLayer = LayerMask.NameToLayer("Net");
         _groundLayer = LayerMask.NameToLayer("Ground");

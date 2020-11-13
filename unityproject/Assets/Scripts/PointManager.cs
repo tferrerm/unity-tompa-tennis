@@ -255,7 +255,8 @@ public class PointManager : MonoBehaviour
     public bool ServicePositionOutOfBounds(int playerId, float posZ)
     {
         var serviceSide = _scoreManager.currentServingSide;
-        if ((playerId == 0 && serviceSide == ScoreManager.ServingSide.Even) || (playerId == 1 && serviceSide == ScoreManager.ServingSide.Odd))
+        if ((playerId == _player1.playerId && serviceSide == ScoreManager.ServingSide.Even) || 
+            (playerId == _player2.playerId && serviceSide == ScoreManager.ServingSide.Odd))
         {
             // Right boundaries
             return !courtSectionMapper.PositionInHorizontalArea(posZ, CourtSectionMapper.Horizontal.Right);
@@ -265,5 +266,11 @@ public class PointManager : MonoBehaviour
             // Left boundaries
             return !courtSectionMapper.PositionInHorizontalArea(posZ, CourtSectionMapper.Horizontal.Left);
         }
+    }
+
+    public bool PositionInVolleyArea(int playerId, float posX)
+    {
+        return courtSectionMapper.PositionInVolleyArea(posX, playerId == _player1.playerId ? 
+            CourtSectionMapper.Depth.Front : CourtSectionMapper.Depth.Back);
     }
 }

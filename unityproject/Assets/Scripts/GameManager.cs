@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public SoundManager soundManager;
     public AIPlayer aiPlayer;
     public Player player;
+    [HideInInspector] public TennisVariables tennisVariables;
 
     public GameObject pauseMenu;
     [HideInInspector] public bool canOpenPauseMenu = true;
@@ -21,6 +22,7 @@ public class GameManager : MonoBehaviour
         courtManager = GetComponent<CourtManager>();
         pointManager = GetComponent<PointManager>();
         soundManager = GetComponent<SoundManager>();
+        tennisVariables = GetComponent<TennisVariables>();
     }
 
     // Start is called before the first frame update

@@ -39,11 +39,14 @@ public class AIPlayer : MonoBehaviour
     private HitDirectionVertical? _hitDirectionVert;
     public Transform hitBallSpawn;
     public Transform hitServiceBallSpawn;
+    public Transform driveVolleyHitBallSpawn;
+    public Transform backhandVolleyHitBallSpawn;
 
     public GameManager gameManager;
     private CourtManager _courtManager;
     private PointManager _pointManager;
     private SoundManager _soundManager;
+    private TennisVariables _tv;
     
     private bool _serveBallReleased = false;
     
@@ -71,6 +74,8 @@ public class AIPlayer : MonoBehaviour
         _animator = GetComponent<Animator>();
         CalculateAnimatorHashes();
         _reactionWaitTimer = Random.Range(0f, MaxReactionTime);
+        
+        _tv = gameManager.tennisVariables;
     }
 
     private void CalculateAnimatorHashes()
@@ -110,7 +115,7 @@ public class AIPlayer : MonoBehaviour
         else if (_targetZ != null)
         {
             // Reset if target behind player
-            if (!ballInsideHitZone && ball.GetPosition().x > transform.position.x - TennisVariables.BallColliderFrontDelta)
+            if (!ballInsideHitZone && ball.GetPosition().x > transform.position.x - _tv.BallColliderFrontDelta)
             {
                 ResetTargetMovementVariables();
                 return;
@@ -162,8 +167,8 @@ public class AIPlayer : MonoBehaviour
         float manhattanNorm = Math.Abs(movingDir[0]) + Math.Abs(movingDir[1]);
         if (manhattanNorm == 0)
             manhattanNorm = 1;
-        float spd = (_sprinting ? TennisVariables.SprintSpeed : TennisVariables.RunSpeed) * movingDir.magnitude;
-        float dx = dt * (_moveUpDownValue < 0 ? TennisVariables.BackSpeed : spd) * _moveUpDownValue / manhattanNorm;
+        float spd = (_sprinting ? _tv.SprintSpeed : _tv.RunSpeed) * movingDir.magnitude;
+        float dx = dt * (_moveUpDownValue < 0 ? _tv.BackSpeed : spd) * _moveUpDownValue / manhattanNorm;
         float dz = dt * spd * _moveLeftRightValue / manhattanNorm;
 
         _characterController.SimpleMove(Vector3.zero);
@@ -181,7 +186,7 @@ public class AIPlayer : MonoBehaviour
         var ballSpeed = ball.GetSpeed();
         if (ballPosition.z >= transform.position.z) // Should take into account ball direction
         {
-            if (ballSpeed < TennisVariables.FastHitAnimationThresholdSpeed)
+            if (ballSpeed < _tv.FastHitAnimationThresholdSpeed)
             {
                 _animator.SetTrigger(_driveHash);
             }
@@ -194,7 +199,7 @@ public class AIPlayer : MonoBehaviour
         }
         else
         {
-            if (ballSpeed < TennisVariables.FastHitAnimationThresholdSpeed)
+            if (ballSpeed < _tv.FastHitAnimationThresholdSpeed)
             {
                 _animator.SetTrigger(_backhandHash);
             }
@@ -215,18 +220,43 @@ public class AIPlayer : MonoBehaviour
     {
         _pointManager.SetPlayerHitBall(playerId);
         _pointManager.HandleBallBounce(null);
+        
+        var isVolley = _pointManager.PositionInVolleyArea(playerId, transform.position.x);
+        ball.Teleport(isVolley ? (_hitMethod == HitMethod.Drive ? 
+            driveVolleyHitBallSpawn.position : backhandVolleyHitBallSpawn.position) : hitBallSpawn.position);
 
-        ball.Teleport(hitBallSpawn.position);
         var targetPosition = _courtManager.GetHitTargetPosition(playerId, _hitDirectionVert, _hitDirectionHoriz);
-        targetPosition = RandomizeBallTarget(targetPosition, TennisVariables.BallHitTargetRadius);
+        targetPosition = RandomizeBallTarget(targetPosition, _tv.BallHitTargetRadius);
         _soundManager.PlayRacquetHit(_audioSource);
         
-        var speed = _hitDirectionVert == HitDirectionVertical.Deep
-            ? TennisVariables.DeepHitSpeed
-            : TennisVariables.FrontHitSpeed;
-        var speedYAtt = _hitDirectionVert == HitDirectionVertical.Deep
-            ? TennisVariables.DeepHitYAttenuation
-            : TennisVariables.FrontHitYAttenuation;
+        float speed;
+        float speedYAtt;
+        if (_hitDirectionVert == HitDirectionVertical.Deep)
+        {
+            if (isVolley)
+            {
+                speed = _tv.DeepVolleyHitSpeed;
+                speedYAtt = _tv.DeepVolleyHitYAttenuation;
+            }
+            else
+            {
+                speed = _tv.DeepHitSpeed;
+                speedYAtt = _tv.DeepHitYAttenuation;
+            }
+        }
+        else
+        {
+            if (isVolley)
+            {
+                speed = _tv.DropshotVolleyHitSpeed;
+                speedYAtt = _tv.DropshotVolleyHitYAttenuation;
+            }
+            else
+            {
+                speed = _tv.DropshotHitSpeed;
+                speedYAtt = _tv.DropshotHitYAttenuation;
+            }
+        }
         
         ball.HitBall(targetPosition, speed, _hitDirectionVert == HitDirectionVertical.Dropshot, true, speedYAtt);
         _hitDirectionVert = null;
@@ -280,7 +310,7 @@ public class AIPlayer : MonoBehaviour
     private bool CanHitBall()
     {
         return ballInsideHitZone && _hitMethod == null && !_movementBlocked && _pointManager.CanHitBall(playerId) &&
-               ball.transform.position.x < transform.position.x - TennisVariables.BallColliderFrontDelta;
+               ball.transform.position.x < transform.position.x - _tv.BallColliderFrontDelta;
     }
     
     private void ResetHittingBall() // Called as animation event
@@ -310,7 +340,7 @@ public class AIPlayer : MonoBehaviour
     {
         ball.Teleport(attachedBallParent.position);
         SwitchBallType(false);
-        ball.HitBall(hitServiceBallSpawn.position, TennisVariables.ServiceTossSpeed, false, false);
+        ball.HitBall(hitServiceBallSpawn.position, _tv.ServiceTossSpeed, false, false);
     }
     
     public void SwitchBallType(bool attachBall) 
@@ -323,8 +353,8 @@ public class AIPlayer : MonoBehaviour
     private void HitServiceBall() // Called as animation event
     {
         var targetPosition = _courtManager.GetServiceTargetPosition(playerId, _hitDirectionHoriz);
-        targetPosition = RandomizeBallTarget(targetPosition, TennisVariables.BallServeTargetRadius);
-        ball.HitBall(targetPosition, TennisVariables.ServiceSpeed, false, true, TennisVariables.ServiceYAttenuation);
+        targetPosition = RandomizeBallTarget(targetPosition, _tv.BallServeTargetRadius);
+        ball.HitBall(targetPosition, _tv.ServiceSpeed, false, true, _tv.ServiceYAttenuation);
         _soundManager.PlayService(_audioSource);
         _hitDirectionHoriz = null;
         _hitMethod = null;

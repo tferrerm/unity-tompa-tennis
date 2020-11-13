@@ -19,6 +19,9 @@ public class CourtSectionMapper
     private readonly CourtArea _frontFullArea;
     private readonly CourtArea _backFullArea;
     
+    private readonly float _frontVolleyAreaStart;
+    private readonly float _backVolleyAreaLimit;
+    
     private ScoreManager _scoreManager;
 
     public CourtSectionMapper(ScoreManager scoreManager)
@@ -29,11 +32,16 @@ public class CourtSectionMapper
         _frontLeftServingSquare = GenerateCourtArea(AreaType.ServingSquare, Depth.Front, Horizontal.Left);
         _frontFullArea = GenerateCourtArea(AreaType.Full, Depth.Front, null);
         _backFullArea = GenerateCourtArea(AreaType.Full, Depth.Back, null);
+
+        var frontServingSquareDepth = Mathf.Abs(_frontLeftServingSquare.DepthLimit - _frontLeftServingSquare.DepthStart);
+        _frontVolleyAreaStart = _frontLeftServingSquare.DepthLimit - frontServingSquareDepth * 0.6f;
+        var backServingSquareDepth = Mathf.Abs(_backLeftServingSquare.DepthLimit - _backLeftServingSquare.DepthStart);
+        _backVolleyAreaLimit = _backLeftServingSquare.DepthStart + backServingSquareDepth * 0.6f;
         
         _scoreManager = scoreManager;
     }
 
-    private enum Depth
+    public enum Depth
     {
         Front = 0,
         Back = 1,
@@ -179,6 +187,19 @@ public class CourtSectionMapper
         else
         {
             return posZ > _backRightServingSquare.HorizontalStart && posZ < _backRightServingSquare.HorizontalLimit;
+        }
+    }
+    
+    // Used to change volley dropshot speed
+    public bool PositionInVolleyArea(float posX, Depth depth)
+    {
+        if (depth == Depth.Front)
+        {
+            return posX > _frontVolleyAreaStart && posX < _frontLeftServingSquare.DepthLimit;
+        }
+        else
+        {
+            return posX > _backLeftServingSquare.DepthStart && posX < _backVolleyAreaLimit;
         }
     }
 }

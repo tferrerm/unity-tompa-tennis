@@ -17,17 +17,19 @@ public class BallPhysics
 
     private PointManager _pointManager;
     private SoundManager _soundManager;
+    private TennisVariables _tv;
     
     /// <summary>
     /// Constructor
     /// </summary>
-    public BallPhysics(float radius, float bounciness, float grndY, SoundManager sndManager, PointManager pointManager)
+    public BallPhysics(float radius, float bounciness, float grndY, SoundManager sndManager, PointManager pointManager, TennisVariables tv)
     {
         this.radius = radius;
         this.bounciness = bounciness;
         this.groundY = grndY;
         _pointManager = pointManager;
         _soundManager = sndManager;
+        _tv = tv;
     }
     
     // --------------------------------------------------------------------------------
@@ -70,8 +72,8 @@ public class BallPhysics
                 float bounceSpeed = bi.velocity.y * -bounciness;
                 bounceSpeed = (bounceSpeed > 0.001f ? bounceSpeed : 0.0f);
                 var frictionMultiplier = isDropshot
-                    ? TennisVariables.DropshotBallBounceFrictionMultiplier
-                    : TennisVariables.DeepBallBounceFrictionMultiplier;
+                    ? _tv.DropshotBallBounceFrictionMultiplier
+                    : _tv.DeepBallBounceFrictionMultiplier;
                 
                 bi.velocity = new Vector3(bi.velocity.x * frictionMultiplier, bounceSpeed, bi.velocity.z * frictionMultiplier);
                 

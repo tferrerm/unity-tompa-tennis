@@ -125,6 +125,36 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &11554652
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 11554653}
+  m_Layer: 8
+  m_Name: DriveVolleyHitSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &11554653
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 11554652}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.435, y: 2.91, z: 0.119}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2121333811}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &17218877
 GameObject:
   m_ObjectHideFlags: 0
@@ -502,6 +532,12 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 28345141}
   m_Mesh: {fileID: 4300030, guid: 159263652fffa0c4495db95afe24cb7a, type: 3}
+--- !u!4 &36256753 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3657980967166643869, guid: 7837e3c02f0bf39409f01516872eeb16,
+    type: 3}
+  m_PrefabInstance: {fileID: 2725633280641101274}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &43430909
 GameObject:
   m_ObjectHideFlags: 0
@@ -2937,6 +2973,36 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300010, guid: 159263652fffa0c4495db95afe24cb7a, type: 3}
+--- !u!1 &392101596
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 392101597}
+  m_Layer: 8
+  m_Name: BackhandVolleyHitSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &392101597
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 392101596}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.435, y: 2.91, z: 0.12}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2121333811}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &401786200
 GameObject:
   m_ObjectHideFlags: 0
@@ -5228,6 +5294,36 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 590595419}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &601979910
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 601979911}
+  m_Layer: 8
+  m_Name: BackhandVolleyHitSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &601979911
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 601979910}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalPosition: {x: -3.77, y: 14.51, z: 0.12}
+  m_LocalScale: {x: 5.161291, y: 5.1612906, z: 5.161291}
+  m_Children: []
+  m_Father: {fileID: 36256753}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &605883676
 GameObject:
   m_ObjectHideFlags: 0
@@ -6498,6 +6594,36 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 702879708}
   m_Mesh: {fileID: 4300016, guid: 159263652fffa0c4495db95afe24cb7a, type: 3}
+--- !u!1 &708366201
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 708366202}
+  m_Layer: 8
+  m_Name: DriveVolleyHitSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &708366202
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708366201}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalPosition: {x: 6.09, y: 14.51, z: 2.96}
+  m_LocalScale: {x: 5.161291, y: 5.1612906, z: 5.161291}
+  m_Children: []
+  m_Father: {fileID: 36256753}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &714128532
 GameObject:
   m_ObjectHideFlags: 0
@@ -8263,7 +8389,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 891900769}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 39.074, y: -0.382, z: -0.919}
+  m_LocalPosition: {x: 0.021, y: 3.317, z: -0.919}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_Children:
   - {fileID: 2014107645}
@@ -8300,6 +8426,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pointManager: {fileID: 1688545062}
   soundManager: {fileID: 1688545064}
+  tv: {fileID: 1688545066}
   layerMask:
     serializedVersion: 2
     m_Bits: 768
@@ -15945,6 +16072,7 @@ GameObject:
   - component: {fileID: 1688545060}
   - component: {fileID: 1688545062}
   - component: {fileID: 1688545064}
+  - component: {fileID: 1688545066}
   m_Layer: 0
   m_Name: GameController
   m_TagString: GameController
@@ -16013,6 +16141,7 @@ MonoBehaviour:
   soundManager: {fileID: 0}
   aiPlayer: {fileID: 1168141960}
   player: {fileID: 114571766}
+  tennisVariables: {fileID: 0}
   pauseMenu: {fileID: 1100821511}
   canOpenPauseMenu: 1
 --- !u!114 &1688545064
@@ -16117,6 +16246,42 @@ MonoBehaviour:
   player1ServiceRightLeft: {fileID: 680119056}
   player1ServiceRightCenter: {fileID: 2126198453}
   player1ServiceRightRight: {fileID: 513403823}
+--- !u!114 &1688545066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1688545059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8deb22c12e46a74785735bfbd7d5b55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WalkSpeed: 5
+  RunSpeed: 10
+  SprintSpeed: 15
+  BackSpeed: 7
+  ServiceTossSpeed: 20
+  ServiceSpeed: 65
+  ServiceYAttenuation: 325
+  DeepHitSpeed: 55
+  DeepHitYAttenuation: 225
+  DropshotHitSpeed: 30
+  DropshotHitYAttenuation: 150
+  DeepVolleyHitSpeed: 55
+  DeepVolleyHitYAttenuation: 375
+  DropshotVolleyHitSpeed: 20
+  DropshotVolleyHitYAttenuation: 100
+  BallHitTargetRadius: 2
+  BallServeTargetRadius: 2
+  DeepBallBounceFrictionMultiplier: 0.75
+  DropshotBallBounceFrictionMultiplier: 0.3
+  BallBounciness: 0.8
+  NetBounceFrictionMultiplier: 0.25
+  DefaultBounceFrictionMultiplier: 0.3
+  FastHitAnimationThresholdSpeed: 25
+  BallColliderFrontDelta: 2
 --- !u!1 &1694755938
 GameObject:
   m_ObjectHideFlags: 0
@@ -20799,6 +20964,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2118142502}
   m_CullTransparentMesh: 0
+--- !u!4 &2121333811 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7372489401241645090, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+    type: 3}
+  m_PrefabInstance: {fileID: 7372489402327860111}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2126198452
 GameObject:
   m_ObjectHideFlags: 0
@@ -21016,6 +21187,21 @@ PrefabInstance:
       propertyPath: playerName
       value: TOMAS FERRER
       objectReference: {fileID: 0}
+    - target: {fileID: 3657980968641044636, guid: 7837e3c02f0bf39409f01516872eeb16,
+        type: 3}
+      propertyPath: driveVolleyHitBallSpawn
+      value: 
+      objectReference: {fileID: 708366202}
+    - target: {fileID: 3657980968641044636, guid: 7837e3c02f0bf39409f01516872eeb16,
+        type: 3}
+      propertyPath: backhandVolleyHitBallSpawn
+      value: 
+      objectReference: {fileID: 601979911}
+    - target: {fileID: 4191871945251647008, guid: 7837e3c02f0bf39409f01516872eeb16,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7837e3c02f0bf39409f01516872eeb16, type: 3}
 --- !u!1001 &7372489402327860111
@@ -21032,6 +21218,10 @@ PrefabInstance:
     - target: {fileID: 314472912, guid: 1accc87c261a23f4cb5b0ef26871e32b, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1202848114, guid: 1accc87c261a23f4cb5b0ef26871e32b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1880786979685979717, guid: 1accc87c261a23f4cb5b0ef26871e32b,
         type: 3}
@@ -21143,6 +21333,16 @@ PrefabInstance:
       propertyPath: playerName
       value: MARCOS LUND
       objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: driveVolleyHitBallSpawn
+      value: 
+      objectReference: {fileID: 11554653}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: backhandVolleyHitBallSpawn
+      value: 
+      objectReference: {fileID: 392101597}
     - target: {fileID: 7372489402264249969, guid: 1accc87c261a23f4cb5b0ef26871e32b,
         type: 3}
       propertyPath: m_Enabled
