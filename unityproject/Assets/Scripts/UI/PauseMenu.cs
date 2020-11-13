@@ -1,39 +1,40 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PauseMenu : MonoBehaviour
+namespace UI
 {
-    public GameObject pauseMenu;
-    [HideInInspector] public bool canOpenPauseMenu = true;
-    
-    // Update is called once per frame
-    void Update()
+    public class PauseMenu : MonoBehaviour
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && canOpenPauseMenu)
+        public GameObject pauseMenu;
+        [HideInInspector] public bool canOpenPauseMenu = true;
+    
+        // Update is called once per frame
+        void Update()
         {
-            Time.timeScale = pauseMenu.activeSelf ? 1 : 0;
-            pauseMenu.SetActive(!pauseMenu.activeSelf);
-            AudioListener.pause = pauseMenu.activeSelf;
-            // player._movementBlocked = !pauseMenu.activeSelf;
+            if (Input.GetKeyDown(KeyCode.Escape) && canOpenPauseMenu)
+            {
+                Time.timeScale = pauseMenu.activeSelf ? 1 : 0;
+                pauseMenu.SetActive(!pauseMenu.activeSelf);
+                AudioListener.pause = pauseMenu.activeSelf;
+                // player._movementBlocked = !pauseMenu.activeSelf;
+            }
+
         }
 
-    }
-
-    public void PauseMenuResume()
-    {
-        pauseMenu.SetActive(false);
-        Time.timeScale = 1;
-        AudioListener.pause = false;
-        // player._movementBlocked = false;
-    }
+        public void PauseMenuResume()
+        {
+            pauseMenu.SetActive(false);
+            Time.timeScale = 1;
+            AudioListener.pause = false;
+            // player._movementBlocked = false;
+        }
     
-    public void GoToMainMenu()
-    {
-        pauseMenu.SetActive(false);
-        Time.timeScale = 1;
-        AudioListener.pause = false;
-        SceneManager.LoadScene(0);
+        public void GoToMainMenu()
+        {
+            pauseMenu.SetActive(false);
+            Time.timeScale = 1;
+            AudioListener.pause = false;
+            SceneManager.LoadScene(0);
+        }
     }
 }
