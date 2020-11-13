@@ -32,6 +32,8 @@ public class Player : MonoBehaviour
     private AudioSource _audioSource;
     
     private Animator _animator;
+    public AnimationClip cheerClip;
+    public AnimationClip defeatedClip;
     private int _strafeHash;
     private int _forwardHash;
     private int _serviceTriggerHash;
@@ -427,12 +429,22 @@ public class Player : MonoBehaviour
 
     public void Cheer()
     {
-        _animator.SetTrigger(_cheerHash);
+        var coroutine = PointReactionCoroutine(_cheerHash);
+        StartCoroutine(coroutine);
     }
     
     public void Defeated()
     {
-        _animator.SetTrigger(_defeatedHash);
+        var coroutine = PointReactionCoroutine(_defeatedHash);
+        StartCoroutine(coroutine);
+    }
+
+    private IEnumerator PointReactionCoroutine(int animationHash)
+    {
+        _movementBlocked = true;
+        _animator.SetTrigger(animationHash);
+        yield return new WaitForSeconds(animationHash == _cheerHash ? cheerClip.length : defeatedClip.length);
+        _movementBlocked = false;
     }
 
     public void ToggleCharacterController()

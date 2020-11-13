@@ -11437,8 +11437,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1688545063}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+      - m_Target: {fileID: 1264575182}
+        m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
         m_MethodName: GoToMainMenu
         m_Mode: 1
         m_Arguments:
@@ -12138,6 +12138,7 @@ GameObject:
   - component: {fileID: 1264575178}
   - component: {fileID: 1264575177}
   - component: {fileID: 1264575181}
+  - component: {fileID: 1264575182}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -12254,6 +12255,20 @@ MonoBehaviour:
   setMessage: SET
   defeatMessage: GAME OVER
   victoryMessage: VICTORY
+--- !u!114 &1264575182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1264575176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3fdf581ba55444b5a8f8e1e8fccc427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pauseMenu: {fileID: 1100821511}
+  canOpenPauseMenu: 1
 --- !u!1 &1268910806
 GameObject:
   m_ObjectHideFlags: 0
@@ -16142,8 +16157,6 @@ MonoBehaviour:
   aiPlayer: {fileID: 1168141960}
   player: {fileID: 114571766}
   tennisVariables: {fileID: 0}
-  pauseMenu: {fileID: 1100821511}
-  canOpenPauseMenu: 1
 --- !u!114 &1688545064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16161,7 +16174,7 @@ MonoBehaviour:
   crowdSounds:
   - {fileID: 8300000, guid: 4bcccf36bfb4b408dbe59bdfc2ebee03, type: 3}
   - {fileID: 8300000, guid: 79a76706627ea4debad6aac76ddda197, type: 3}
-  - {fileID: 8300000, guid: a8c9c9207dfad4539988010bfceb32cb, type: 3}
+  - {fileID: 8300000, guid: 7fd7adaf8a1f2433797135b440155fa6, type: 3}
   - {fileID: 8300000, guid: 6b165598f45c74186842bc06b665378a, type: 3}
   - {fileID: 8300000, guid: 2170bd40532ad42e498477e42f18b4a0, type: 3}
   - {fileID: 8300000, guid: be716fe7b393241eaab819760ddf1840, type: 3}
@@ -20914,8 +20927,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1688545063}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+      - m_Target: {fileID: 1264575182}
+        m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
         m_MethodName: PauseMenuResume
         m_Mode: 1
         m_Arguments:
