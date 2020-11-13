@@ -143,7 +143,15 @@ public class Ball : MonoBehaviour
             if (_netLayer == hitLayer)
             {
                 soundManager.PlayNetHit(ballInfo.velocity);
-                bounceVelocity *= _netBounceCoef;
+                if (ballHits[0].normal == Vector3.up)
+                {
+                    // Add X noise to prevent infinite bounces
+                    bounceVelocity += new Vector3(ballInfo.velocity.x > 0 ? 1 : -1, 0, 0);
+                }
+                else
+                {
+                    bounceVelocity *= _netBounceCoef;
+                }
             }
             else
             {
