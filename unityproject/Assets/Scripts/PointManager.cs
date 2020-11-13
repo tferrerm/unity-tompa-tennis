@@ -8,15 +8,14 @@ public class PointManager : MonoBehaviour
     private bool _ballCollidedWithCourt;
     private bool _ballCollidedWithServerRacket;
     private bool _ballCollidedWithReceiverRacket;
-    private bool _ballCollidedOutOfBounds;
     
-    private const float NextPointWaitingTime = 3f;
+    private const float NextPointWaitingTime = 3f; // Waiting time before point reset
 
     private CourtManager _courtManager;
     private ScoreManager _scoreManager;
     public CourtSectionMapper courtSectionMapper;
-    public Player player1;
-    public AIPlayer player2;
+    private Player _player1;
+    private AIPlayer _player2;
 
     private enum PointState
     {
@@ -43,6 +42,9 @@ public class PointManager : MonoBehaviour
         _courtManager = GetComponent<CourtManager>();
         _scoreManager = GetComponent<ScoreManager>();
         courtSectionMapper = new CourtSectionMapper(_scoreManager);
+        var gameManager = GetComponent<GameManager>();
+        _player1 = gameManager.player;
+        _player2 = gameManager.aiPlayer;
     }
 
     // Start is called before the first frame update
@@ -159,7 +161,6 @@ public class PointManager : MonoBehaviour
         _ballCollidedWithCourt = false;
         _ballCollidedWithReceiverRacket = false;
         _ballCollidedWithServerRacket = false;
-        _ballCollidedOutOfBounds = false;
         
         var coroutine = WaitForNextServe(nextServeState);
         StartCoroutine(coroutine);
@@ -167,10 +168,10 @@ public class PointManager : MonoBehaviour
 
     private IEnumerator WaitForNextServe(PointState nextServeState)
     {
-        player1.StopMovementAnimation();
+        _player1.StopMovementAnimation();
         yield return new WaitForSeconds(NextPointWaitingTime);
 
-        player1.StopMovementAnimation();
+        _player1.StopMovementAnimation();
         ResetPlayerPositions();
         AIPlayerServiceCheck();
         _pointState = nextServeState;
@@ -178,9 +179,9 @@ public class PointManager : MonoBehaviour
 
     private void AIPlayerServiceCheck()
     {
-        if (_scoreManager.GetServingPlayerId() == player2.playerId)
+        if (_scoreManager.GetServingPlayerId() == _player2.playerId)
         {
-            var coroutine = player2.StartService();
+            var coroutine = _player2.StartService();
             StartCoroutine(coroutine);
         }
     }
@@ -190,31 +191,31 @@ public class PointManager : MonoBehaviour
         TogglePlayerCharacterControllers();
         
         var currentServingSide = _scoreManager.currentServingSide;
-        player1.transform.position = currentServingSide == ScoreManager.ServingSide.Even ? 
+        _player1.transform.position = currentServingSide == ScoreManager.ServingSide.Even ? 
             _courtManager.player1ServiceSpotRight.position : _courtManager.player1ServiceSpotLeft.position;
-        player2.transform.position = currentServingSide == ScoreManager.ServingSide.Even ? 
+        _player2.transform.position = currentServingSide == ScoreManager.ServingSide.Even ? 
             _courtManager.player2ServiceSpotLeft.position : _courtManager.player2ServiceSpotRight.position;
 
         if (_scoreManager.GetServingPlayerId() == 0)
         {
-            player1.SwitchBallType(true);
-            player1.serveDone = false;
-            player1.hitServiceBall = false;
+            _player1.SwitchBallType(true);
+            _player1.serveDone = false;
+            _player1.hitServiceBall = false;
         }
         else
         {
-            player2.SwitchBallType(true);
+            _player2.SwitchBallType(true);
         }
         
-        player2.ResetTargetMovementVariables();
+        _player2.ResetTargetMovementVariables();
 
         TogglePlayerCharacterControllers();
     }
 
     private void TogglePlayerCharacterControllers()
     {
-        player1.ToggleCharacterController();
-        player2.ToggleCharacterController();
+        _player1.ToggleCharacterController();
+        _player2.ToggleCharacterController();
     }
 
     public bool IsServing(int playerId)

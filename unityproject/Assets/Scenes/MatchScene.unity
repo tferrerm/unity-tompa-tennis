@@ -15965,8 +15965,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiManager: {fileID: 1264575181}
-  player1: {fileID: 114571766}
-  player2: {fileID: 1168141960}
   player1Id: 0
   player2Id: 1
   setsNeededToWin: 3
@@ -15998,8 +15996,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7144657b7d18d40d297f1d34b746bff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player1: {fileID: 114571766}
-  player2: {fileID: 1168141960}
 --- !u!114 &1688545063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21145,7 +21141,7 @@ PrefabInstance:
     - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
         type: 3}
       propertyPath: playerName
-      value: SANTIAGO SWINNEN
+      value: MARCOS LUND
       objectReference: {fileID: 0}
     - target: {fileID: 7372489402264249969, guid: 1accc87c261a23f4cb5b0ef26871e32b,
         type: 3}

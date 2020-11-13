@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,12 +8,6 @@ public class AIPlayer : MonoBehaviour
 {
     public int playerId;
     public string playerName;
-    
-    public float runSpeed = 8;
-    public float sprintSpeed = 10;
-    public float backSpeed = 5.5f;
-    private float ballTargetRadius = 3f;
-    private float serveBallTargetRadius = 2f;
 
     private CharacterController _characterController;
 
@@ -45,7 +39,6 @@ public class AIPlayer : MonoBehaviour
     private HitDirectionVertical? _hitDirectionVert;
     public Transform hitBallSpawn;
     public Transform hitServiceBallSpawn;
-    private float serviceTossSpeed = 20f;
 
     public GameManager gameManager;
     private CourtManager _courtManager;
@@ -53,21 +46,20 @@ public class AIPlayer : MonoBehaviour
     private SoundManager _soundManager;
     
     private bool _serveBallReleased = false;
-
-    private int desiredDistance = 1;
+    
+    private bool _sprinting = false;
+    private bool _movementBlocked;
     
     private float? _targetZ = null;
-    private bool _sprinting = false;
     private float _lastZDifference = float.MaxValue;
-    private const float HitDistanceToBall = 3f;
-    private Vector3 waitingForBallPos = new Vector3(39.75f, -3.067426f, 1.59f);
-
-    private const float ServiceWaitTime = 1f;
-    private const float MaxReactionTime = 0.75f;
-    private float _reactionWaitTimer;
-    private const float Center = 0.0f;
+    private const float HitDistanceToBall = 3f; // Z-Distance from ball target where AI will go
+    //private Vector3 waitingForBallPos = new Vector3(39.75f, -3.067426f, 1.59f);
+    private const float Center = 0.0f; // Z-Position where AI will return after hitting ball
     private bool _movingToCenter = false;
-    private bool _movementBlocked;
+
+    private const float ServiceWaitTime = 1f; // Waiting time before serve after point reset
+    private const float MaxReactionTime = 0.75f; // Waiting time before AI starts moving
+    private float _reactionWaitTimer;
 
     void Start()
     {
@@ -170,8 +162,8 @@ public class AIPlayer : MonoBehaviour
         float manhattanNorm = Math.Abs(movingDir[0]) + Math.Abs(movingDir[1]);
         if (manhattanNorm == 0)
             manhattanNorm = 1;
-        float spd = (_sprinting ? sprintSpeed : runSpeed) * movingDir.magnitude;
-        float dx = dt * (_moveUpDownValue < 0 ? backSpeed : spd) * _moveUpDownValue / manhattanNorm;
+        float spd = (_sprinting ? TennisVariables.SprintSpeed : TennisVariables.RunSpeed) * movingDir.magnitude;
+        float dx = dt * (_moveUpDownValue < 0 ? TennisVariables.BackSpeed : spd) * _moveUpDownValue / manhattanNorm;
         float dz = dt * spd * _moveLeftRightValue / manhattanNorm;
 
         _characterController.SimpleMove(Vector3.zero);
@@ -224,9 +216,9 @@ public class AIPlayer : MonoBehaviour
         _pointManager.SetPlayerHitBall(playerId);
         _pointManager.HandleBallBounce(null);
 
-        ball.TelePort(hitBallSpawn.position);
+        ball.Teleport(hitBallSpawn.position);
         var targetPosition = _courtManager.GetHitTargetPosition(playerId, _hitDirectionVert, _hitDirectionHoriz);
-        targetPosition = RandomizeBallTarget(targetPosition, ballTargetRadius);
+        targetPosition = RandomizeBallTarget(targetPosition, TennisVariables.BallHitTargetRadius);
         _soundManager.PlayRacquetHit(_audioSource);
         
         var speed = _hitDirectionVert == HitDirectionVertical.Deep
@@ -316,9 +308,9 @@ public class AIPlayer : MonoBehaviour
     
     private void TossServiceBall() // Called as animation event
     {
-        ball.TelePort(attachedBallParent.position);
+        ball.Teleport(attachedBallParent.position);
         SwitchBallType(false);
-        ball.HitBall(hitServiceBallSpawn.position, serviceTossSpeed, false, false);
+        ball.HitBall(hitServiceBallSpawn.position, TennisVariables.ServiceTossSpeed, false, false);
     }
     
     public void SwitchBallType(bool attachBall) 
@@ -331,7 +323,7 @@ public class AIPlayer : MonoBehaviour
     private void HitServiceBall() // Called as animation event
     {
         var targetPosition = _courtManager.GetServiceTargetPosition(playerId, _hitDirectionHoriz);
-        targetPosition = RandomizeBallTarget(targetPosition, serveBallTargetRadius);
+        targetPosition = RandomizeBallTarget(targetPosition, TennisVariables.BallServeTargetRadius);
         ball.HitBall(targetPosition, TennisVariables.ServiceSpeed, false, true, TennisVariables.ServiceYAttenuation);
         _soundManager.PlayService(_audioSource);
         _hitDirectionHoriz = null;

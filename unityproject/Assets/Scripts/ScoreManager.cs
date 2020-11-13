@@ -15,17 +15,17 @@ public class ScoreManager : MonoBehaviour
 
     public UIManager uiManager;
     
-    private List<Vector2Int> sets = new List<Vector2Int>();
+    private readonly List<Vector2Int> _sets = new List<Vector2Int>();
     private int _currentSetIndex = 0;
     private Vector2Int _currentGame = new Vector2Int(0, 0);
     private bool _gameWon = false;
 
-    public Player player1;
-    public AIPlayer player2;
+    private Player _player1;
+    private AIPlayer _player2;
     [HideInInspector] public int player1Id;
     [HideInInspector] public int player2Id;
-    public int setsNeededToWin = 3;
-
+    
+    public int setsNeededToWin = 3; // TODO HARDCODED
     private int _player1SetsWon = 0;
     private int _player2SetsWon = 0;
 
@@ -34,38 +34,31 @@ public class ScoreManager : MonoBehaviour
     [HideInInspector] public ServingSide currentServingSide = ServingSide.Even;
     private int _servingPlayerId;
 
-    private GameManager gameManager;
+    private GameManager _gameManager;
     private SoundManager _soundManager;
 
     private void Awake()
     {
-        player1Id = player1.playerId;
-        player2Id = player2.playerId;
+        _gameManager = GetComponent<GameManager>();
+        _player1 = _gameManager.player;
+        _player2 = _gameManager.aiPlayer;
+        
+        player1Id = _player1.playerId;
+        player2Id = _player2.playerId;
         
         _servingPlayerId = player1Id;
         
-        var totalSets = setsNeededToWin == 3 ? 5 : 3;
-        for (int i = 0; i < totalSets; i++)
+        var totalSets = setsNeededToWin == 3 ? 5 : 3; // TODO HARDCODED
+        for (var i = 0; i < totalSets; i++)
         {
-            sets.Add(new Vector2Int(0, 0));
+            _sets.Add(new Vector2Int(0, 0));
         }
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        gameManager = GetComponent<GameManager>();
-        _soundManager = gameManager.soundManager;
-        //StartCoroutine(ExampleCoroutine());
-    }
-
-    IEnumerator ExampleCoroutine()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(0.5f);
-            WinPoint(Random.Range(0,2) == 0? player1Id : player2Id);
-        }
+        _soundManager = _gameManager.soundManager;
     }
 
     public void WinPoint(int playerId)
@@ -75,7 +68,7 @@ public class ScoreManager : MonoBehaviour
         if (currentlyInTiebreak)
         {
             WinTiebreakPoint(playerId);
-            uiManager.SetPlayerGameScore(sets, _currentGame, _currentSetIndex + 1, _servingPlayerId == player1Id);
+            uiManager.SetPlayerGameScore(_sets, _currentGame, _currentSetIndex + 1, _servingPlayerId == player1Id);
             return;
         }
         if (player1Id == playerId)
@@ -137,7 +130,7 @@ public class ScoreManager : MonoBehaviour
         }
 
         _soundManager.PlayCrowdSounds();
-        uiManager.SetPlayerGameScore(sets, _currentGame, _currentSetIndex + 1, _servingPlayerId == player1Id);
+        uiManager.SetPlayerGameScore(_sets, _currentGame, _currentSetIndex + 1, _servingPlayerId == player1Id);
     }
 
     private void WinTiebreakPoint(int playerId)
@@ -153,17 +146,17 @@ public class ScoreManager : MonoBehaviour
         
         if (_currentGame[0] >= 7 && _currentGame[1] < _currentGame[0] - 1)
         {
-            sets[_currentSetIndex] = new Vector2Int(sets[_currentSetIndex][0] + 1, sets[_currentSetIndex][1]);
+            _sets[_currentSetIndex] = new Vector2Int(_sets[_currentSetIndex][0] + 1, _sets[_currentSetIndex][1]);
             currentlyInTiebreak = false;
             _currentGame = new Vector2Int(0, 0);
-            CheckSetWon(sets[_currentSetIndex]);
+            CheckSetWon(_sets[_currentSetIndex]);
         }
         else if (_currentGame[1] >= 7 && _currentGame[0] < _currentGame[1] - 1)
         {
-            sets[_currentSetIndex] = new Vector2Int(sets[_currentSetIndex][0], sets[_currentSetIndex][1] + 1);
+            _sets[_currentSetIndex] = new Vector2Int(_sets[_currentSetIndex][0], _sets[_currentSetIndex][1] + 1);
             currentlyInTiebreak = false;
             _currentGame = new Vector2Int(0, 0);
-            CheckSetWon(sets[_currentSetIndex]);
+            CheckSetWon(_sets[_currentSetIndex]);
         }
         else
         {
@@ -179,19 +172,19 @@ public class ScoreManager : MonoBehaviour
 
     private void WinGame(int playerId)
     {
-        var currentSet = sets[_currentSetIndex];
+        var currentSet = _sets[_currentSetIndex];
         if (player1Id == playerId)
         {
-            sets[_currentSetIndex] = new Vector2Int(sets[_currentSetIndex][0] + 1, sets[_currentSetIndex][1]);
+            _sets[_currentSetIndex] = new Vector2Int(_sets[_currentSetIndex][0] + 1, _sets[_currentSetIndex][1]);
         }
         else if (player2Id == playerId)
         {
-            sets[_currentSetIndex] = new Vector2Int(sets[_currentSetIndex][0], sets[_currentSetIndex][1] + 1);
+            _sets[_currentSetIndex] = new Vector2Int(_sets[_currentSetIndex][0], _sets[_currentSetIndex][1] + 1);
         }
         
-        CheckSetWon(sets[_currentSetIndex]);
+        CheckSetWon(_sets[_currentSetIndex]);
         
-        if (sets[_currentSetIndex][0] == 6 && sets[_currentSetIndex][1] == 6)
+        if (_sets[_currentSetIndex][0] == 6 && _sets[_currentSetIndex][1] == 6)
         {
             currentlyInTiebreak = true;
         }
@@ -256,7 +249,7 @@ public class ScoreManager : MonoBehaviour
     {
         uiManager.ShowEventMessage(player1Won ? UIManager.MessageType.Victory : UIManager.MessageType.Defeat);
         yield return new WaitForSeconds(5f);
-        gameManager.GameFinished();
+        _gameManager.GameFinished();
     }
 
     public ServingSide GetServingSide()
@@ -319,13 +312,13 @@ public class ScoreManager : MonoBehaviour
     {
         if (playerId == player1Id)
         {
-            player1.Cheer();
-            player2.Defeated();
+            _player1.Cheer();
+            _player2.Defeated();
         }
         else
         {
-            player1.Defeated();
-            player2.Cheer();
+            _player1.Defeated();
+            _player2.Cheer();
         }
     }
 }

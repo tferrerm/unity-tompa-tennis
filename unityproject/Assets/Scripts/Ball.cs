@@ -98,30 +98,30 @@ public class Ball : MonoBehaviour
     
     public void HitBall(Vector3 posStart, Vector3 posEnd, float speed, bool applySpeedYAtt, float speedYAttDivisor = 0f)
     {
-        float dis = Vector2.Distance(new Vector2(posStart.x, posStart.z), new Vector2(posEnd.x, posEnd.z));
+        var dis = Vector2.Distance(new Vector2(posStart.x, posStart.z), new Vector2(posEnd.x, posEnd.z));
 
-        float speedYAtt = applySpeedYAtt ? (dis / speedYAttDivisor) : 1f;
+        var speedYAtt = applySpeedYAtt ? (dis / speedYAttDivisor) : 1f;
         
-        Vector3 throwDir = new Vector3(posEnd.x - posStart.x, (posEnd.y - posStart.y) * speed * speedYAtt, posEnd.z - posStart.z);
+        var throwDir = new Vector3(posEnd.x - posStart.x, (posEnd.y - posStart.y) * speed * speedYAtt, posEnd.z - posStart.z);
 
-        float time = throwDir.magnitude / speed;
+        var time = throwDir.magnitude / speed;
      
-        float velx = (posEnd.x - posStart.x) / time;
-        float velz = (posEnd.z - posStart.z) / time;
+        var velx = (posEnd.x - posStart.x) / time;
+        var velz = (posEnd.z - posStart.z) / time;
         
-        float speedVertical = ((posEnd.y - posStart.y) - 0.5f * Physics.gravity.y * time * time ) / time;
-        Vector3 velocity = throwDir.normalized * speed;
+        var speedVertical = ((posEnd.y - posStart.y) - 0.5f * Physics.gravity.y * time * time ) / time;
+        var velocity = throwDir.normalized * speed;
         velocity.y = speedVertical;
 
-        TelePort(posStart);
+        Teleport(posStart);
         ballInfo.velocity = new Vector3(velx, velocity.y, velz);
     }
 
     void CheckCollisions()
     {
         var pos = ballInfo.Position;
-        var prevpos = ballInfo.PrevPosition;
-        var dir = pos - prevpos;
+        var prevPos = ballInfo.PrevPosition;
+        var dir = pos - prevPos;
         var distance = dir.magnitude;
 
         var ballIsMoving = distance > MinDistanceToConsiderBallStopped;
@@ -135,7 +135,7 @@ public class Ball : MonoBehaviour
         }
 
         // Check collisions against everything but player & ball layers
-        if (Physics.RaycastNonAlloc(prevpos, dir.normalized, ballHits, distance, ~layerMask) > 0)
+        if (Physics.RaycastNonAlloc(prevPos, dir.normalized, ballHits, distance, ~layerMask) > 0)
         {
             var hitLayer = ballHits[0].transform.gameObject.layer;
             var bounceVelocity = ballInfo.velocity.magnitude * bounciness * ballHits[0].normal;
@@ -160,7 +160,7 @@ public class Ball : MonoBehaviour
         }
     }
     
-    public void TelePort(Vector3 pos)
+    public void Teleport(Vector3 pos)
     {
         // Do not allow y position below the field
         if (pos.y < Radius) pos = new Vector3(pos.x, Radius, pos.z);
@@ -173,12 +173,6 @@ public class Ball : MonoBehaviour
 
         //if (trail != null) trail.StopTrail();
     }
-
-    /*public void ResetVelocity()
-    {
-        //_rigidBody.velocity = Vector3.zero;
-        //_rigidBody.angularVelocity = Vector3.zero;
-    }*/
 
     private void OnTriggerEnter(Collider other)
     {
@@ -204,8 +198,11 @@ public class Ball : MonoBehaviour
         }
     }
 
-    /*public bool IsInPlayer2Side()
+    public bool IsInPlayerSide(int playerId)
     {
-        return transform.position.x > 0;
-    }*/
+        if(playerId == 0)
+            return transform.position.x < 0;
+        else
+            return transform.position.x >= 0;
+    }
 }

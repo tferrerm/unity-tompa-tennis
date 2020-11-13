@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
@@ -26,13 +26,6 @@ public class Player : MonoBehaviour
 {
     public int playerId;
     public string playerName;
-    
-    public float runSpeed = 8;
-    public float sprintSpeed = 10;
-    public float backSpeed = 5.5f;
-    public float walkingSpeed = 5f;
-    private float ballTargetRadius = 2.5f;
-    private float serveBallTargetRadius = 2f;
 
     private CharacterController _characterController;
 
@@ -76,13 +69,8 @@ public class Player : MonoBehaviour
     private HitDirectionVertical? _hitDirectionVert;
     public Transform hitBallSpawn;
     public Transform hitServiceBallSpawn;
-    private float serviceTossSpeed = 20f;
-    // Prevents movement until serve animation is finished
-    [HideInInspector] public bool serveDone;
-    // Prevents serving twice in the same point
-    [HideInInspector] public bool hitServiceBall;
-    
-    public TrailRenderer ballTrailRenderer;
+    [HideInInspector] public bool serveDone; // Prevents movement until serve animation is finished
+    [HideInInspector] public bool hitServiceBall; // Prevents serving twice in the same point
 
     void Start()
     {
@@ -95,7 +83,6 @@ public class Player : MonoBehaviour
         CalculateAnimatorHashes();
 
         //InitTechniqueAttrs();
-        //_movementBlocked = _pointManager.IsServing(playerId);
     }
 
     /*private void InitTechniqueAttrs()
@@ -136,7 +123,7 @@ public class Player : MonoBehaviour
         if (_pointManager.IsServing(playerId) && !serveDone)
         {
             var posZ = transform.position.z;
-            var spd = walkingSpeed * movingDir.magnitude;
+            var spd = TennisVariables.WalkSpeed * movingDir.magnitude;
             var dz = dt * spd * _moveLeftRightValue;
             if (_pointManager.ServicePositionOutOfBounds(playerId, posZ + dz + 1 * Mathf.Sign(_moveLeftRightValue)))
             {
@@ -165,8 +152,8 @@ public class Player : MonoBehaviour
             if (manhattanNorm == 0)
                 manhattanNorm = 1;
             
-            var spd = (ActionMapper.IsSprinting() ? sprintSpeed : runSpeed) * movingDir.magnitude;
-            var dx = transform.position.x < 0 ? dt * (_moveUpDownValue < 0 ? backSpeed : spd) * _moveUpDownValue / manhattanNorm : 0;
+            var spd = (ActionMapper.IsSprinting() ? TennisVariables.SprintSpeed : TennisVariables.RunSpeed) * movingDir.magnitude;
+            var dx = transform.position.x < 0 ? dt * (_moveUpDownValue < 0 ? TennisVariables.BackSpeed : spd) * _moveUpDownValue / manhattanNorm : 0;
             var dz = dt * spd * _moveLeftRightValue / manhattanNorm;
             
             _characterController.SimpleMove(Vector3.zero);
@@ -326,15 +313,15 @@ public class Player : MonoBehaviour
 
     private void TossServiceBall() // Called as animation event
     {
-        ball.TelePort(attachedBallParent.position);
+        ball.Teleport(attachedBallParent.position);
         SwitchBallType(false);
-        ball.HitBall(hitServiceBallSpawn.position, serviceTossSpeed, false, false);
+        ball.HitBall(hitServiceBallSpawn.position, TennisVariables.ServiceTossSpeed, false, false);
     }
 
     private void HitServiceBall() // Called as animation event
     {
         var targetPosition = _courtManager.GetServiceTargetPosition(playerId, _hitDirectionHoriz);
-        targetPosition = RandomizeBallTarget(targetPosition, serveBallTargetRadius);
+        targetPosition = RandomizeBallTarget(targetPosition, TennisVariables.BallServeTargetRadius);
         ball.HitBall(targetPosition, TennisVariables.ServiceSpeed, false, true, TennisVariables.ServiceYAttenuation);
         _soundManager.PlayService(_audioSource);
         _hitDirectionHoriz = null;
@@ -361,9 +348,9 @@ public class Player : MonoBehaviour
         _pointManager.SetPlayerHitBall(playerId);
         _pointManager.HandleBallBounce(null);
         
-        ball.TelePort(hitBallSpawn.position);
+        ball.Teleport(hitBallSpawn.position);
         var targetPosition = _courtManager.GetHitTargetPosition(playerId, _hitDirectionVert, _hitDirectionHoriz);
-        targetPosition = RandomizeBallTarget(targetPosition, ballTargetRadius);
+        targetPosition = RandomizeBallTarget(targetPosition, TennisVariables.BallHitTargetRadius);
         _soundManager.PlayRacquetHit(_audioSource);
         
         var speed = _hitDirectionVert == HitDirectionVertical.Deep
