@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &11554652
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 11554653}
+  m_Layer: 8
+  m_Name: DriveVolleyHitSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &11554653
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 11554652}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.435, y: 2.91, z: 0.119}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7372489401241645090}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &314472912
 GameObject:
   m_ObjectHideFlags: 0
@@ -10,7 +40,7 @@ GameObject:
   m_Component:
   - component: {fileID: 314472913}
   m_Layer: 8
-  m_Name: ServiceHit
+  m_Name: ServiceHitSpawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,6 +59,36 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7372489401241645090}
   m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &392101596
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 392101597}
+  m_Layer: 8
+  m_Name: BackhandVolleyHitSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &392101597
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 392101596}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.435, y: 2.91, z: 0.12}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7372489401241645090}
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &453771571
 GameObject:
@@ -107,7 +167,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1202848115
 Transform:
   m_ObjectHideFlags: 0
@@ -253,8 +313,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1880786979685979717}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.21, z: 0}
-  m_LocalScale: {x: 6, y: 6, z: 11}
+  m_LocalPosition: {x: -0, y: 2.21, z: 1.91}
+  m_LocalScale: {x: 8, y: 6, z: 11}
   m_Children: []
   m_Father: {fileID: 7372489401241645090}
   m_RootOrder: 4
@@ -2723,6 +2783,8 @@ Transform:
   - {fileID: 1202848115}
   - {fileID: 7020418727434988733}
   - {fileID: 314472913}
+  - {fileID: 11554653}
+  - {fileID: 392101597}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
@@ -2776,19 +2838,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerId: 0
-  playerName: 
-  runSpeed: 10
-  sprintSpeed: 15
-  backSpeed: 7
+  playerName: MARCOS LUND
+  cheerClip: {fileID: 7400000, guid: 90acabb881dbb0a42bf0fd6167335201, type: 2}
+  defeatedClip: {fileID: 7400000, guid: e6082ef100dd3da4185695ad1e7b2f0a, type: 2}
   ball: {fileID: 0}
   attachedBall: {fileID: 1202848114}
   attachedBallParent: {fileID: 453771572}
   gameManager: {fileID: 0}
   ballCollider: {fileID: 1958057751}
   ballInsideHitZone: 0
+  _movementBlocked: 0
   hitBallSpawn: {fileID: 565067166}
-  ballTrailRenderer: {fileID: 0}
-  targetPosition: {fileID: 0}
+  hitServiceBallSpawn: {fileID: 314472913}
+  serveDone: 0
+  hitServiceBall: 0
+  driveVolleyHitBallSpawn: {fileID: 11554653}
+  backhandVolleyHitBallSpawn: {fileID: 392101597}
 --- !u!82 &7372489402327860113
 AudioSource:
   m_ObjectHideFlags: 0
