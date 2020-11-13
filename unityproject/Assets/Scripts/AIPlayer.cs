@@ -54,11 +54,13 @@ public class AIPlayer : MonoBehaviour
     private bool _movementBlocked;
     
     private Vector3? _target = null;
-    private float _lastZDifference = float.MaxValue;
+    private float _lastDifference = float.MaxValue;
     private const float HitDistanceToBall = 3f; // Z-Distance from ball target where AI will go
     //private Vector3 waitingForBallPos = new Vector3(39.75f, -3.067426f, 1.59f);
     private Vector3 _backCenter; // Z-Position where AI will return after hitting ball
     private bool _movingToCenter = false;
+    private const float DropShotBounceDeltaTarget = 1;
+    private const float BackShotBounceDeltaTarget = 6;
 
     private const float ServiceWaitTime = 1f; // Waiting time before serve after point reset
     private const float MaxReactionTime = 0.75f; // Waiting time before AI starts moving
@@ -96,25 +98,18 @@ public class AIPlayer : MonoBehaviour
     
     void Update()
     {
+        var currentDifference = _target != null ? 
+            Mathf.Sqrt(Mathf.Pow(Mathf.Abs(transform.position.z - _target.Value.z), 2) + 
+                       Mathf.Pow(Mathf.Abs(transform.position.x - _target.Value.x), 2)) : 0.0f;
+        
         if (_movingToCenter)
         {
             // Move player to center
-            var currentZDifference = Mathf.Abs(transform.position.z - _target.Value.z);
-            Move();
-            if (currentZDifference > _lastZDifference)
-            {
-                // Reached target
-                _target = null;
-                ResetTargetMovementVariables();
-                _movingToCenter = false;
-            }
-            else
-            {
-                _lastZDifference = currentZDifference;
-            }
+            MoveToTarget(currentDifference, false);
         } 
         else if (_target != null)
         {
+            
             // Reset if target behind player
             if (!ballInsideHitZone && ball.GetPosition().x > transform.position.x - _tv.BallColliderFrontDelta)
             {
@@ -130,19 +125,10 @@ public class AIPlayer : MonoBehaviour
             }
             
             // Move player to target position
-            var currentZDifference = Mathf.Abs(transform.position.z - _target.Value.z);
-            Move();
-            if (currentZDifference > _lastZDifference)
-            {
-                // Reached target
-                ResetTargetMovementVariables();
-            }
-            else
-            {
-                _lastZDifference = currentZDifference;
-            }
+            MoveToTarget(currentDifference, true);
         }
 
+        
         if (CanHitBall())
         {
             SelectHitMethod();
@@ -151,10 +137,29 @@ public class AIPlayer : MonoBehaviour
         // hit ball
     }
 
+    private void MoveToTarget(float currentDifference, bool isBall)
+    {
+        Move();
+        if (currentDifference > _lastDifference)
+        {
+            // Reached target
+            ResetTargetMovementVariables();
+            if (!isBall)
+            {
+                _target = null;
+                _movingToCenter = false;
+            }
+        }
+        else
+        {
+            _lastDifference = currentDifference;
+        }
+    }
+
     public void ResetTargetMovementVariables()
     {
         _target = null;
-        _lastZDifference = float.MaxValue;
+        _lastDifference = float.MaxValue;
         _animator.SetFloat(_strafeHash, 0);
         _animator.SetFloat(_forwardHash, 0);
         _reactionWaitTimer = Random.Range(0f, MaxReactionTime);
@@ -300,10 +305,14 @@ public class AIPlayer : MonoBehaviour
         var playerBallTargetXDiff = Mathf.Abs(transform.position.x - ballTargetPos.x);
 
         ResetTargetMovementVariables();
-        _target = new Vector3(0,0,ballTargetPos.z + (ballTargetPos.z > startPos.z ? 1 : -1) * playerBallTargetXDiff * ratio 
-                                   + (ballTargetPos.z > startPos.z ? -1 : 1) * HitDistanceToBall);
-        _moveUpDownValue = 0;
+
+        var targetX = ballTargetPos.x + DropShotBounceDeltaTarget;
+        var targetZ = ballTargetPos.z + (ballTargetPos.z > startPos.z ? 1 : -1) * (playerBallTargetXDiff) * ratio
+                                      + (ballTargetPos.z > startPos.z ? -1 : 1) * HitDistanceToBall;
+        
+        _target = new Vector3(_backCenter.x,0, targetZ);
         _moveLeftRightValue = _target.Value.z - transform.position.z > 0 ? 1 : -1;
+        _moveUpDownValue = _target.Value.x - transform.position.x > 0 ? 1 : -1;
         _movingToCenter = false;
     }
     
@@ -318,7 +327,7 @@ public class AIPlayer : MonoBehaviour
     {
         _movingToCenter = true;
         _target = _backCenter;
-        _moveUpDownValue = 0;
+        _moveUpDownValue = _target.Value.x - transform.position.x > 0 ? 1 : -1;
         _moveLeftRightValue = _target.Value.z - transform.position.z > 0 ? 1 : -1;
         _movementBlocked = false;
     }
