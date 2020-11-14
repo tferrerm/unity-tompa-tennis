@@ -308,7 +308,7 @@ public class AIPlayer : MonoBehaviour
                             //          + (ballTargetPos.z > startPos.z ? -1 : 1) * HitDistanceToBall;
         
         _target = new Vector3(targetX,0, targetZ);
-        Debug.Log(_target);
+        
         _moveLeftRightValue = _target.Value.z - transform.position.z > 0 ? 1 : -1;
         _moveUpDownValue = _target.Value.x - transform.position.x > 0 ? 1 : -1;
         _movingToCenter = false;
