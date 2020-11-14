@@ -10157,6 +10157,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a726341fb008465a979e84374c1f88c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioMixer: {fileID: 24100000, guid: 4f29ba673aaf14681940af88d7f8c65d, type: 2}
   title: {fileID: 881105885}
   mainMenu: {fileID: 894480569}
   playMenu: {fileID: 82070775}
@@ -17358,6 +17359,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioMixer: {fileID: 24100000, guid: 4f29ba673aaf14681940af88d7f8c65d, type: 2}
+  slider: {fileID: 1877729788}
   optionsMenu: {fileID: 1769383492}
   title: {fileID: 881105885}
   mainMenu: {fileID: 894480569}
