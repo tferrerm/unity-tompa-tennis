@@ -9,13 +9,11 @@ public struct BallInfo
     public Vector3 velocity;
     public Vector3 eulerAngles;
     public bool grounded;
-    int frameNumPositionUpdate;
     
     public BallInfo(Vector3 pos)
     {
         position = pos;
         prevPosition = pos;
-        frameNumPositionUpdate = -1;
         velocity = Vector3.zero;
         eulerAngles = Vector3.zero;
         grounded = false;
@@ -25,10 +23,18 @@ public struct BallInfo
     {
         position = pos;
         prevPosition = pos;
-        frameNumPositionUpdate = -1;
         velocity = vel;
         eulerAngles = eulerAng;
         grounded = grnd;
+    }
+
+    public BallInfo(BallInfo ballInfo)
+    {
+        position = ballInfo.position;
+        prevPosition = ballInfo.prevPosition;
+        velocity = ballInfo.velocity;
+        eulerAngles = ballInfo.eulerAngles;
+        grounded = ballInfo.grounded;
     }
 
     public Vector3 Position
@@ -36,12 +42,7 @@ public struct BallInfo
         get { return position; }
         set
         {
-            if (frameNumPositionUpdate != Time.frameCount)
-            {
-                prevPosition = position;
-                frameNumPositionUpdate = Time.frameCount;
-            }
-			
+            prevPosition = position;
             position = value;
         }
     }
@@ -55,7 +56,6 @@ public struct BallInfo
 
     public void Clear()
     {
-        frameNumPositionUpdate = -1;
         velocity = Vector3.zero;
         eulerAngles = Vector3.zero;
         grounded = false;

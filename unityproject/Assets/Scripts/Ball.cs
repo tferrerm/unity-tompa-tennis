@@ -53,10 +53,10 @@ public class Ball : MonoBehaviour
         _netLayer = LayerMask.NameToLayer("Net");
         _groundLayer = LayerMask.NameToLayer("Ground");
     }
-    
-    void Update()
+
+    void FixedUpdate()
     {
-        ballInfo = ballPhysics.UpdateBallInfo(ballInfo, Time.deltaTime, isDropshot);
+        ballInfo = ballPhysics.UpdateBallInfo(ballInfo, Time.fixedDeltaTime, isDropshot);
 		
         CheckCollisions();
 
@@ -77,8 +77,8 @@ public class Ball : MonoBehaviour
     {
         return ballInfo.velocity.magnitude;
     }
-    
-    bool UpdateFromBallInfo()
+
+    private void UpdateFromBallInfo()
     {
         var speed = Vector3.Distance(ballInfo.Position, transform.position) / Time.deltaTime;
 
@@ -87,8 +87,6 @@ public class Ball : MonoBehaviour
 
         transform.position = ballInfo.Position;
         transform.Rotate(ballInfo.eulerAngles);
-
-        return true;
     }
 
     public void HitBall(Vector3 posEnd, float speed, bool isDropshot, bool applySpeedYAtt, float speedYAttDivisor = 0f)
@@ -96,8 +94,8 @@ public class Ball : MonoBehaviour
         this.isDropshot = isDropshot;
         HitBall(ballInfo.Position, posEnd, speed, applySpeedYAtt, speedYAttDivisor);
     }
-    
-    public void HitBall(Vector3 posStart, Vector3 posEnd, float speed, bool applySpeedYAtt, float speedYAttDivisor = 0f)
+
+    private void HitBall(Vector3 posStart, Vector3 posEnd, float speed, bool applySpeedYAtt, float speedYAttDivisor = 0f)
     {
         var dis = Vector2.Distance(new Vector2(posStart.x, posStart.z), new Vector2(posEnd.x, posEnd.z));
 
@@ -107,15 +105,15 @@ public class Ball : MonoBehaviour
 
         var time = throwDir.magnitude / speed;
      
-        var velx = (posEnd.x - posStart.x) / time;
-        var velz = (posEnd.z - posStart.z) / time;
+        var velX = (posEnd.x - posStart.x) / time;
+        var velZ = (posEnd.z - posStart.z) / time;
         
         var speedVertical = ((posEnd.y - posStart.y) - 0.5f * Physics.gravity.y * time * time ) / time;
         var velocity = throwDir.normalized * speed;
         velocity.y = speedVertical;
 
         Teleport(posStart);
-        ballInfo.velocity = new Vector3(velx, velocity.y, velz);
+        ballInfo.velocity = new Vector3(velX, velocity.y, velZ);
     }
 
     void CheckCollisions()
@@ -214,4 +212,8 @@ public class Ball : MonoBehaviour
         else
             return transform.position.x >= 0;
     }
+
+    public BallPhysics BallPhysics => ballPhysics;
+
+    public BallInfo BallInfo => ballInfo;
 }

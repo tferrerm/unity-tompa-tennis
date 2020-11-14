@@ -18,6 +18,8 @@ public class BallPhysics
     private PointManager _pointManager;
     private SoundManager _soundManager;
     private TennisVariables _tv;
+
+    private bool _isPredictionBall;
     
     /// <summary>
     /// Constructor
@@ -30,6 +32,17 @@ public class BallPhysics
         _pointManager = pointManager;
         _soundManager = sndManager;
         _tv = tv;
+    }
+
+    public BallPhysics(BallPhysics ballPhysics)
+    {
+        radius = ballPhysics.radius;
+        bounciness = ballPhysics.bounciness;
+        groundY = ballPhysics.groundY;
+        _pointManager = ballPhysics._pointManager;
+        _soundManager = ballPhysics._soundManager;
+        _tv = ballPhysics._tv;
+        _isPredictionBall = true; // Constructor only called in this case
     }
     
     // --------------------------------------------------------------------------------
@@ -69,17 +82,20 @@ public class BallPhysics
         {
             if (!bi.grounded)
             {
-                float bounceSpeed = bi.velocity.y * -bounciness;
+                var bounceSpeed = bi.velocity.y * -bounciness;
                 bounceSpeed = (bounceSpeed > 0.001f ? bounceSpeed : 0.0f);
                 var frictionMultiplier = isDropshot
                     ? _tv.DropshotBallBounceFrictionMultiplier
                     : _tv.DeepBallBounceFrictionMultiplier;
                 
                 bi.velocity = new Vector3(bi.velocity.x * frictionMultiplier, bounceSpeed, bi.velocity.z * frictionMultiplier);
-                
-                _pointManager.SetCourtBallBounce();
-                _pointManager.HandleBallBounce(new Vector2(bi.Position.x, bi.Position.z));
-                _soundManager.PlayBallBounce(bi.velocity);
+
+                if (!_isPredictionBall)
+                {
+                    _pointManager.SetCourtBallBounce();
+                    _pointManager.HandleBallBounce(new Vector2(bi.Position.x, bi.Position.z));
+                    _soundManager.PlayBallBounce(bi.velocity);
+                }
             }
             else
             {

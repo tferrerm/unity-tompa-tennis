@@ -64,6 +64,8 @@ public class AIPlayer : MonoBehaviour
     private const float MaxReactionTime = 0.75f; // Waiting time before AI starts moving
     private float _reactionWaitTimer;
 
+    public PredictionBall predictionBall;
+
     void Start()
     {
         _courtManager = gameManager.courtManager;
@@ -271,8 +273,8 @@ public class AIPlayer : MonoBehaviour
             posEnd.y,
             posEnd.z + Random.Range(-randomRadius, randomRadius));
     }
-    
-    void CheckServiceStatus()
+
+    private void CheckServiceStatus()
     {
         var currentStateHash = _animator.GetCurrentAnimatorStateInfo(0).shortNameHash;
         if (currentStateHash == _serviceEndHash && !_serveBallReleased)
@@ -299,13 +301,15 @@ public class AIPlayer : MonoBehaviour
         var playerBallTargetXDiff = Mathf.Abs(transform.position.x - ballTargetPos.x);
 
         ResetTargetMovementVariables();
+        var closestPoint = RunBallPrediction(startPos);
+        // Set ball copy in hit position & loop until first & second collisions
         _targetZ = ballTargetPos.z + (ballTargetPos.z > startPos.z ? 1 : -1) * playerBallTargetXDiff * ratio 
                                    + (ballTargetPos.z > startPos.z ? -1 : 1) * HitDistanceToBall;
         _moveUpDownValue = 0;
         _moveLeftRightValue = _targetZ - transform.position.z > 0 ? 1 : -1;
         _movingToCenter = false;
     }
-    
+
     // Ball entered collision zone (sphere) and is in front of the player
     private bool CanHitBall()
     {
@@ -380,5 +384,52 @@ public class AIPlayer : MonoBehaviour
         var rand = Random.value;
         if (rand > 0.85f)
             _soundManager.PlayGrunt(_audioSource);
+    }
+    
+    private Vector3 RunBallPrediction(Vector3 startPos)
+    {
+        predictionBall.Teleport(startPos);
+        Vector2 firstBounce = Vector2.zero, secondBounce = Vector2.zero;
+        
+        predictionBall.SetupBall(ball.BallPhysics, ball.BallInfo);
+
+        var bouncedOnce = false;
+        var bouncedTwice = false;
+        
+        while (!bouncedTwice)
+        {
+            var bounced = predictionBall.UpdateBall();
+            
+            if (!bounced) continue;
+
+            var bouncePos = predictionBall.GetPosition();
+            
+            if (!bouncedOnce)
+            {
+                bouncedOnce = true;
+                firstBounce = new Vector2(bouncePos.x,bouncePos.z);
+            }
+            else
+            {
+                bouncedTwice = true;
+                secondBounce = new Vector2(bouncePos.x,bouncePos.z);
+            }
+        }
+
+        var position = transform.position;
+        return ClosestPoint(new Vector2(position.x, position.y), firstBounce, secondBounce);
+    }
+
+    private Vector2 ClosestPoint(Vector2 position, Vector2 firstBounce, Vector2 secondBounce)
+    {
+        var heading = (secondBounce - firstBounce);
+        var magnitudeMax = heading.magnitude;
+        heading.Normalize();
+
+        //Do projection from the point but clamp it
+        var lhs = position - firstBounce;
+        var dotP = Vector2.Dot(lhs, heading);
+        dotP = Mathf.Clamp(dotP, 0f, magnitudeMax);
+        return firstBounce + heading * dotP;
     }
 }
