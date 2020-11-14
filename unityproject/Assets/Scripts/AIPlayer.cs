@@ -69,6 +69,7 @@ public class AIPlayer : MonoBehaviour
     private float _reactionWaitTimer;
 
     public PredictionBall predictionBall;
+    private const float ReachedTargetEpsilon = 0.1f;
 
     void Start()
     {
@@ -82,7 +83,7 @@ public class AIPlayer : MonoBehaviour
         _reactionWaitTimer = Random.Range(0f, MaxReactionTime);
         
         _tv = gameManager.tennisVariables;
-        _backCenter = new Vector3(39.75f, -3.067426f, 1.59f);
+        _backCenter = new Vector3(39.75f, -3.067426f, 0);
     }
 
     private void CalculateAnimatorHashes()
@@ -102,14 +103,11 @@ public class AIPlayer : MonoBehaviour
     
     void Update()
     {
-        var currentDifference = _target != null ? 
-            Mathf.Sqrt(Mathf.Pow(Mathf.Abs(transform.position.z - _target.Value.z), 2) + 
-                       Mathf.Pow(Mathf.Abs(transform.position.x - _target.Value.x), 2)) : 0.0f;
         
         if (_movingToCenter)
         {
             // Move player to center
-            MoveToTarget(currentDifference, false);
+            MoveToTarget(false);
         } 
         else if (_target != null)
         {
@@ -129,7 +127,7 @@ public class AIPlayer : MonoBehaviour
             }
             
             // Move player to target position
-            MoveToTarget(currentDifference, true);
+            MoveToTarget(true);
         }
 
         
@@ -141,10 +139,10 @@ public class AIPlayer : MonoBehaviour
         // hit ball
     }
 
-    private void MoveToTarget(float currentDifference, bool isBall)
+    private void MoveToTarget(bool isBall)
     {
         Move();
-        if (currentDifference > _lastDifference)
+        if (Vector3.Distance(_target.GetValueOrDefault(), transform.position) < ReachedTargetEpsilon)
         {
             // Reached target
             ResetTargetMovementVariables();
@@ -153,10 +151,6 @@ public class AIPlayer : MonoBehaviour
                 _target = null;
                 _movingToCenter = false;
             }
-        }
-        else
-        {
-            _lastDifference = currentDifference;
         }
     }
 
@@ -171,22 +165,18 @@ public class AIPlayer : MonoBehaviour
     
     private void Move()
     {
-        
-        float dt = Time.deltaTime;
-        Vector2 movingDir = new Vector2(_moveLeftRightValue, _moveUpDownValue);
-        float manhattanNorm = Math.Abs(movingDir[0]) + Math.Abs(movingDir[1]);
-        if (manhattanNorm == 0)
-            manhattanNorm = 1;
-        float spd = (_sprinting ? _tv.SprintSpeed : _tv.RunSpeed) * movingDir.magnitude;
-        float dx = dt * (_moveUpDownValue < 0 ? _tv.BackSpeed : spd) * _moveUpDownValue / manhattanNorm;
-        float dz = dt * spd * _moveLeftRightValue / manhattanNorm;
-
         _characterController.SimpleMove(Vector3.zero);
+        _target = new Vector3(_target.GetValueOrDefault().x, transform.position.y, _target.GetValueOrDefault().z);
         
-        Vector3 move = new Vector3(dx, 0, dz);
+        var pos = transform.position;
+        var speed = (_sprinting ? _tv.SprintSpeed : _tv.RunSpeed);
+        var step =  speed * Time.deltaTime;
+        var frameTarget = Vector3.MoveTowards(pos, _target.Value, step);
 
-        _animator.SetFloat(_strafeHash, _moveLeftRightValue * -1);
-        _animator.SetFloat(_forwardHash, _moveUpDownValue);
+        var move = frameTarget - pos;
+
+        //_animator.SetFloat(_strafeHash, _moveLeftRightValue * -1); TODO FIX
+        //_animator.SetFloat(_forwardHash, _moveUpDownValue);
         _characterController.Move(move);
     }
     
@@ -318,6 +308,7 @@ public class AIPlayer : MonoBehaviour
                             //          + (ballTargetPos.z > startPos.z ? -1 : 1) * HitDistanceToBall;
         
         _target = new Vector3(targetX,0, targetZ);
+        Debug.Log(_target);
         _moveLeftRightValue = _target.Value.z - transform.position.z > 0 ? 1 : -1;
         _moveUpDownValue = _target.Value.x - transform.position.x > 0 ? 1 : -1;
         _movingToCenter = false;
