@@ -61,6 +61,8 @@ public class AIPlayer : MonoBehaviour
     private bool _movingToCenter = false;
     private const float DropShotBounceDeltaTarget = 1;
     private const float BackShotBounceDeltaTarget = 6;
+    private const float DepthMovementLimit = 50f;
+    private const float LateralMovementLimit = 25f;
 
     private const float ServiceWaitTime = 1f; // Waiting time before serve after point reset
     private const float MaxReactionTime = 0.75f; // Waiting time before AI starts moving
@@ -308,14 +310,16 @@ public class AIPlayer : MonoBehaviour
 
         ResetTargetMovementVariables();
 
-        var targetX = ballTargetPos.x + DropShotBounceDeltaTarget;
-        var targetZ = ballTargetPos.z + (ballTargetPos.z > startPos.z ? 1 : -1) * (playerBallTargetXDiff) * ratio
-                                      + (ballTargetPos.z > startPos.z ? -1 : 1) * HitDistanceToBall;
+        var closestPoint = RunBallPrediction(startPos); // Vector2
         
-        _target = new Vector3(_backCenter.x,0, targetZ);
+        var targetX = closestPoint.x > 0 ? Mathf.Min(closestPoint.x, DepthMovementLimit) : 0f; //ballTargetPos.x + DropShotBounceDeltaTarget;
+        var targetZ = closestPoint.y + (closestPoint.y > startPos.z ? -1 : 1) * HitDistanceToBall;
+        targetZ = targetZ > -LateralMovementLimit ? Math.Min(targetZ, LateralMovementLimit) : -LateralMovementLimit;//ballTargetPos.z + (ballTargetPos.z > startPos.z ? 1 : -1) * (playerBallTargetXDiff) * ratio
+                            //          + (ballTargetPos.z > startPos.z ? -1 : 1) * HitDistanceToBall;
+        
+        _target = new Vector3(targetX,0, targetZ);
         _moveLeftRightValue = _target.Value.z - transform.position.z > 0 ? 1 : -1;
         _moveUpDownValue = _target.Value.x - transform.position.x > 0 ? 1 : -1;
-        var closestPoint = RunBallPrediction(startPos);
         _movingToCenter = false;
     }
 
@@ -395,12 +399,12 @@ public class AIPlayer : MonoBehaviour
             _soundManager.PlayGrunt(_audioSource);
     }
     
-    private Vector3 RunBallPrediction(Vector3 startPos)
+    private Vector2 RunBallPrediction(Vector3 startPos)
     {
         predictionBall.Teleport(startPos);
         Vector2 firstBounce = Vector2.zero, secondBounce = Vector2.zero;
         
-        predictionBall.SetupBall(ball.BallPhysics, ball.BallInfo);
+        predictionBall.SetupBall(ball.BallPhysics, ball.BallInfo, ball.IsDropshot);
 
         var bouncedOnce = false;
         var bouncedTwice = false;

@@ -29,7 +29,7 @@ public class PredictionBall : MonoBehaviour
     private int _groundLayer;
     private float _netBounceCoef;
     private float _defaultBounceCoef;
-    [HideInInspector] public bool isDropshot;
+    private bool _isDropshot;
 
     
     public Transform ground;
@@ -45,17 +45,18 @@ public class PredictionBall : MonoBehaviour
         _groundLayer = LayerMask.NameToLayer("Ground");
     }
 
-    public void SetupBall(BallPhysics ballPhys, BallInfo ballInf)
+    public void SetupBall(BallPhysics ballPhys, BallInfo ballInf, bool isDropshot)
     {
         ballPhysics = new BallPhysics(ballPhys);
         ballInfo = new BallInfo(ballInf);
+        _isDropshot = isDropshot;
     }
 
     public bool UpdateBall()
     {
         var bounced = false;
         
-        ballInfo = ballPhysics.UpdateBallInfo(ballInfo, Time.fixedDeltaTime, isDropshot); // TODO CHANGE ISDROPSHOT
+        ballInfo = ballPhysics.UpdateBallInfo(ballInfo, Time.fixedDeltaTime, _isDropshot);
         if (ballInfo.grounded)
         {
             bounced = true;
