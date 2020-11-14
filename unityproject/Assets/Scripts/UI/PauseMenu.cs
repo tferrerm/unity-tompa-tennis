@@ -6,6 +6,8 @@ namespace UI
     public class PauseMenu : MonoBehaviour
     {
         public GameObject pauseMenu;
+        public GameObject optionsMenu;
+        public GameObject pauseMenuButtons;
         [HideInInspector] public bool canOpenPauseMenu = true;
     
         // Update is called once per frame
@@ -14,9 +16,10 @@ namespace UI
             if (Input.GetKeyDown(KeyCode.Escape) && canOpenPauseMenu)
             {
                 Time.timeScale = pauseMenu.activeSelf ? 1 : 0;
+                optionsMenu.SetActive(false);
                 pauseMenu.SetActive(!pauseMenu.activeSelf);
+                pauseMenuButtons.SetActive(true);
                 AudioListener.pause = pauseMenu.activeSelf;
-                // player._movementBlocked = !pauseMenu.activeSelf;
             }
 
         }
@@ -26,7 +29,12 @@ namespace UI
             pauseMenu.SetActive(false);
             Time.timeScale = 1;
             AudioListener.pause = false;
-            // player._movementBlocked = false;
+        }
+
+        public void OpenOptionsMenu()
+        {
+            pauseMenuButtons.SetActive(false);
+            optionsMenu.SetActive(true);
         }
     
         public void GoToMainMenu()
