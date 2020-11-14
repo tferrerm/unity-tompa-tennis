@@ -21408,6 +21408,11 @@ PrefabInstance:
       propertyPath: predictionBall
       value: 
       objectReference: {fileID: 1487216710}
+    - target: {fileID: 3657980968641044637, guid: 7837e3c02f0bf39409f01516872eeb16,
+        type: 3}
+      propertyPath: m_Volume
+      value: 0.65
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7837e3c02f0bf39409f01516872eeb16, type: 3}
 --- !u!1001 &7372489402327860111
@@ -21487,5 +21492,10 @@ PrefabInstance:
       propertyPath: gameManager
       value: 
       objectReference: {fileID: 1688545063}
+    - target: {fileID: 7372489402327860113, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: m_Volume
+      value: 0.7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1accc87c261a23f4cb5b0ef26871e32b, type: 3}
