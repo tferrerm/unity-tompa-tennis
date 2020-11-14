@@ -11,13 +11,14 @@ namespace UI
         public GameObject optionsMenu;
         public GameObject title;
         public GameObject mainMenu;
+
+        public GameObject pauseMenuButtons;
     
         // Start is called before the first frame update
         void Start()
         {
             var volume = PlayerPrefs.GetFloat("Volume", 1);
             slider.value = volume;
-            SetAudioMixerVolume(audioMixer, volume);
         }
 
         public void ReturnToMainMenu()
@@ -26,6 +27,13 @@ namespace UI
             optionsMenu.SetActive(false);
             title.SetActive(true);
             mainMenu.SetActive(true);
+        }
+
+        public void ReturnToPauseMenu()
+        {
+            PlayerPrefs.Save();
+            optionsMenu.SetActive(false);
+            pauseMenuButtons.SetActive(true);
         }
 
         public void SetVolume(float volume)
