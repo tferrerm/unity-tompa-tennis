@@ -75,17 +75,21 @@ public class Player : MonoBehaviour
     public Transform driveVolleyHitBallSpawn;
     public Transform backhandVolleyHitBallSpawn;
 
+    private void Awake()
+    {
+        _characterController = GetComponent<CharacterController>();
+        _audioSource = GetComponent<AudioSource>();
+        _animator = GetComponent<Animator>();
+    }
+
     void Start()
     {
         _courtManager = gameManager.courtManager;
         _pointManager = gameManager.pointManager;
         _soundManager = gameManager.soundManager;
-        _characterController = GetComponent<CharacterController>();
-        _audioSource = GetComponent<AudioSource>();
-        _animator = GetComponent<Animator>();
-        CalculateAnimatorHashes();
-
         _tv = gameManager.tennisVariables;
+        
+        CalculateAnimatorHashes();
 
         //InitTechniqueAttrs();
     }

@@ -68,18 +68,23 @@ public class AIPlayer : MonoBehaviour
     private bool _volleyModeActivated;
     private readonly Vector3 _volleyCenterPos = new Vector3(5f, -3.067426f, 0f);
 
+    void Awake()
+    {
+        _characterController = GetComponent<CharacterController>();
+        _audioSource = GetComponent<AudioSource>();
+        _animator = GetComponent<Animator>();
+    }
+
     void Start()
     {
         _courtManager = gameManager.courtManager;
         _pointManager = gameManager.pointManager;
         _soundManager = gameManager.soundManager;
-        _characterController = GetComponent<CharacterController>();
-        _audioSource = GetComponent<AudioSource>();
-        _animator = GetComponent<Animator>();
-        CalculateAnimatorHashes();
-        _reactionWaitTimer = Random.Range(0f, MaxReactionTime);
-        
         _tv = gameManager.tennisVariables;
+        
+        CalculateAnimatorHashes();
+        
+        _reactionWaitTimer = Random.Range(0f, MaxReactionTime);
         _backCenter = new Vector3(39.75f, -3.067426f, 0);
     }
 
