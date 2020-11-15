@@ -1,7 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Numerics;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using Vector2 = UnityEngine.Vector2;
@@ -67,7 +65,7 @@ public class Player : MonoBehaviour
     public Collider ballCollider;
     [HideInInspector] public bool ballInsideHitZone;
     private HitMethod? _hitMethod;
-    public bool _movementBlocked;
+    private bool _movementBlocked;
     private HitDirectionHorizontal? _hitDirectionHoriz;
     private HitDirectionVertical? _hitDirectionVert;
     public Transform hitBallSpawn;

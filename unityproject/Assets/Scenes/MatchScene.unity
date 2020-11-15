@@ -17504,7 +17504,7 @@ MonoBehaviour:
   BackSpeed: 7
   ServiceTossSpeed: 20
   ServiceSpeed: 65
-  ServiceYAttenuation: 325
+  ServiceYAttenuation: 350
   DeepHitSpeed: 55
   DeepHitYAttenuation: 225
   DropshotHitSpeed: 30
@@ -17513,7 +17513,7 @@ MonoBehaviour:
   DeepVolleyHitYAttenuation: 375
   DropshotVolleyHitSpeed: 20
   DropshotVolleyHitYAttenuation: 100
-  BallHitTargetRadius: 2
+  BallHitTargetRadius: 3
   BallServeTargetRadius: 2
   DeepBallBounceFrictionMultiplier: 0.75
   DropshotBallBounceFrictionMultiplier: 0.3

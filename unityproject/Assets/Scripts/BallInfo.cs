@@ -9,24 +9,6 @@ public struct BallInfo
     public Vector3 velocity;
     public Vector3 eulerAngles;
     public bool grounded;
-    
-    public BallInfo(Vector3 pos)
-    {
-        position = pos;
-        prevPosition = pos;
-        velocity = Vector3.zero;
-        eulerAngles = Vector3.zero;
-        grounded = false;
-    }
-    
-    public BallInfo(Vector3 pos, Vector3 vel, Vector3 eulerAng, bool grnd)
-    {
-        position = pos;
-        prevPosition = pos;
-        velocity = vel;
-        eulerAngles = eulerAng;
-        grounded = grnd;
-    }
 
     public BallInfo(BallInfo ballInfo)
     {

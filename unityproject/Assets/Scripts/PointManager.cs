@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PointManager : MonoBehaviour
@@ -163,7 +162,9 @@ public class PointManager : MonoBehaviour
         _ballCollidedWithServerRacket = false;
         
         _player2.ResetTargetMovementVariables();
+        _player2.MovingToCenter = false;
         _player2.VolleyModeActivated = false;
+        
         
         var coroutine = WaitForNextServe(nextServeState);
         StartCoroutine(coroutine);

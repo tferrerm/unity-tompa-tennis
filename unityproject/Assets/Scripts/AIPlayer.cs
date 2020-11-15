@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -17,7 +16,6 @@ public class AIPlayer : MonoBehaviour
     private int _strafeHash;
     private int _forwardHash;
     private int _serviceTriggerHash;
-    private int _serviceStartHash;
     private int _serviceEndHash;
     private int _driveHash;
     private int _backhandHash;
@@ -48,31 +46,27 @@ public class AIPlayer : MonoBehaviour
     private SoundManager _soundManager;
     private TennisVariables _tv;
     
-    private bool _serveBallReleased = false;
+    private bool _serveBallReleased;
     
     private bool _sprinting = false;
     private bool _movementBlocked;
     
-    private Vector3? _target = null;
-    private float _lastDifference = float.MaxValue;
+    private Vector3? _target;
     private const float HitDistanceToBall = 3f; // Z-Distance from ball target where AI will go
-    //private Vector3 waitingForBallPos = new Vector3(39.75f, -3.067426f, 1.59f);
     private Vector3 _backCenter; // Z-Position where AI will return after hitting ball
-    private bool _movingToCenter = false;
-    private const float DropShotBounceDeltaTarget = 1;
-    private const float BackShotBounceDeltaTarget = 6;
+    private bool _movingToCenter;
     private const float DepthMovementLimit = 50f;
     private const float LateralMovementLimit = 25f;
 
     private const float ServiceWaitTime = 1f; // Waiting time before serve after point reset
-    private const float MaxReactionTime = 0.75f; // Waiting time before AI starts moving
+    private const float MaxReactionTime = 0.5f; // Waiting time before AI starts moving
     private float _reactionWaitTimer;
 
     public PredictionBall predictionBall;
     private const float ReachedTargetEpsilon = 0.1f;
     
     private bool _volleyModeActivated;
-    private Vector3 _volleyCenterPos = new Vector3(5f, -3.067426f, 0f);
+    private readonly Vector3 _volleyCenterPos = new Vector3(5f, -3.067426f, 0f);
 
     void Start()
     {
@@ -94,7 +88,6 @@ public class AIPlayer : MonoBehaviour
         _strafeHash = Animator.StringToHash("Strafe");
         _forwardHash = Animator.StringToHash("Forward");
         _serviceTriggerHash = Animator.StringToHash("Service Trigger");
-        _serviceStartHash = Animator.StringToHash("Service Start");
         _serviceEndHash = Animator.StringToHash("Service End");
         _driveHash = Animator.StringToHash("Drive Trigger");
         _backhandHash = Animator.StringToHash("Backhand Trigger");
@@ -107,7 +100,7 @@ public class AIPlayer : MonoBehaviour
     void Update()
     {
         
-        if (_movingToCenter)
+        if (_movingToCenter && _target != null)
         {
             // Move player to center
             MoveToTarget(false);
@@ -142,14 +135,14 @@ public class AIPlayer : MonoBehaviour
         // hit ball
     }
 
-    private void MoveToTarget(bool isBall)
+    private void MoveToTarget(bool targetIsBall)
     {
         Move();
         if (Vector3.Distance(_target.GetValueOrDefault(), transform.position) < ReachedTargetEpsilon)
         {
             // Reached target
             ResetTargetMovementVariables();
-            if (!isBall)
+            if (!targetIsBall)
             {
                 _target = null;
                 _movingToCenter = false;
@@ -160,7 +153,6 @@ public class AIPlayer : MonoBehaviour
     public void ResetTargetMovementVariables()
     {
         _target = null;
-        _lastDifference = float.MaxValue;
         _animator.SetFloat(_strafeHash, 0);
         _animator.SetFloat(_forwardHash, 0);
         _reactionWaitTimer = Random.Range(0f, MaxReactionTime);
@@ -296,10 +288,9 @@ public class AIPlayer : MonoBehaviour
     {
         ResetTargetMovementVariables();
         
-        if (/*ball.IsDropshot &&*/ Random.Range(0f, 1f) < _tv.AIVolleyModeProbability) // Active volley mode
+        if (!_volleyModeActivated && Random.Range(0f, 1f) < _tv.AIVolleyModeProbability) // Active volley mode
         {
             _volleyModeActivated = true;
-            Debug.Log("VOLLEY MODE ACTIVATE!");
         }
 
         var closestPoint = RunBallPrediction(startPos); // Vector2
@@ -444,5 +435,10 @@ public class AIPlayer : MonoBehaviour
     public bool VolleyModeActivated
     {
         set => _volleyModeActivated = value;
+    }
+
+    public bool MovingToCenter
+    {
+        set => _movingToCenter = value;
     }
 }

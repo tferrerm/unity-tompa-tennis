@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Random = UnityEngine.Random;
+﻿using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
@@ -181,7 +177,6 @@ public class Ball : MonoBehaviour
         ballInfo.ResetPrevPosition();
 
         trail.Clear();
-        //if (trail != null) trail.StopTrail();
     }
 
     private void OnTriggerEnter(Collider other)

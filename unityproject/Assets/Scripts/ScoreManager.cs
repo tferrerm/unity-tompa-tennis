@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UI;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -30,7 +27,6 @@ public class ScoreManager : MonoBehaviour
     private int _player1SetsWon = 0;
     private int _player2SetsWon = 0;
 
-    private bool _matchFinished;
     [HideInInspector] public bool currentlyInTiebreak;
     [HideInInspector] public ServingSide currentServingSide = ServingSide.Even;
     private int _servingPlayerId;
@@ -49,7 +45,7 @@ public class ScoreManager : MonoBehaviour
         
         _servingPlayerId = player1Id;
 
-        var totalSets = PlayerPrefs.GetInt("SetNumber", 1);//setsNeededToWin == 3 ? 5 : 3; // TODO HARDCODED
+        var totalSets = PlayerPrefs.GetInt("SetNumber", 1);
         _setsNeededToWin = totalSets / 2 + 1;
         for (var i = 0; i < totalSets; i++)
         {
@@ -240,7 +236,6 @@ public class ScoreManager : MonoBehaviour
         
         if (_player1SetsWon == _setsNeededToWin || _player2SetsWon == _setsNeededToWin)
         {
-            _matchFinished = true;
             currentServingSide = ServingSide.Even;
             _gameWon = false;
             var player1Won = _player1SetsWon == _setsNeededToWin;

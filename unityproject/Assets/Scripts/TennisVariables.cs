@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TennisVariables : MonoBehaviour
 {
@@ -11,7 +9,7 @@ public class TennisVariables : MonoBehaviour
 
     public float ServiceTossSpeed = 20f;
     public float ServiceSpeed = 65f;
-    public float ServiceYAttenuation = 325f;
+    public float ServiceYAttenuation = 350f;
     public float DeepHitSpeed = 55f;
     public float DeepHitYAttenuation = 225f;
     public float DropshotHitSpeed = 30f;
@@ -21,7 +19,7 @@ public class TennisVariables : MonoBehaviour
     public float DropshotVolleyHitSpeed = 20f;
     public float DropshotVolleyHitYAttenuation = 100f;
 
-    public float BallHitTargetRadius = 2f;
+    public float BallHitTargetRadius = 3f;
     public float BallServeTargetRadius = 2f;
     
     public float DeepBallBounceFrictionMultiplier = 0.75f;
