@@ -7,7 +7,7 @@ public class MenuCameraMovement : MonoBehaviour
     public Transform startPos;
     public Transform endPos;
     private float _t = 0f;
-    [Range(0,0.001f)] public float deltaT = 0.01f;
+    [Range(0,0.001f)] public float deltaT = 0.00025f;
     private bool _movingRight = true;
 
     // Start is called before the first frame update
