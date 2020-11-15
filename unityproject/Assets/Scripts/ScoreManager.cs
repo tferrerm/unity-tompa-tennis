@@ -183,13 +183,16 @@ public class ScoreManager : MonoBehaviour
         {
             _sets[_currentSetIndex] = new Vector2Int(_sets[_currentSetIndex][0], _sets[_currentSetIndex][1] + 1);
         }
-        
-        CheckSetWon(_sets[_currentSetIndex]);
-        
+
         if (_sets[_currentSetIndex][0] == 6 && _sets[_currentSetIndex][1] == 6)
         {
             currentlyInTiebreak = true;
         }
+        else
+        {
+            CheckSetWon(_sets[_currentSetIndex]);
+        }
+        
         _currentGame = new Vector2Int(0, 0);
         currentServingSide = ServingSide.Even;
         _gameWon = false;

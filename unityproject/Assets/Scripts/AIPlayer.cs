@@ -296,7 +296,7 @@ public class AIPlayer : MonoBehaviour
     {
         ResetTargetMovementVariables();
         
-        if (ball.IsDropshot && Random.Range(0, 1) < _tv.AIVolleyModeProbability) // Active volley mode
+        if (ball.IsDropshot && Random.Range(0f, 1f) < _tv.AIVolleyModeProbability) // Active volley mode
         {
             _volleyModeActivated = true;
             Debug.Log("VOLLEY MODE ACTIVATE!");
