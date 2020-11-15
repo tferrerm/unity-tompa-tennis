@@ -15,6 +15,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip[] racquetHits;
     public AudioClip[] racquetSwishes;
     public AudioClip[] netHits;
+    public AudioClip loudCrowd;
     
     public AudioSource ballAudioSource;
     public AudioSource sceneAudioSource;
@@ -27,6 +28,11 @@ public class SoundManager : MonoBehaviour
     public void PlayCrowdSounds()
     {
         sceneAudioSource.PlayOneShot(ChooseRandom(crowdSounds));
+    }
+    
+    public void PlayLoudCrowdSounds()
+    {
+        sceneAudioSource.PlayOneShot(loudCrowd);
     }
 
     public void PlayFootstep(AudioSource playerAudioSource)

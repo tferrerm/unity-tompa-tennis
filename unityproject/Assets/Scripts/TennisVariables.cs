@@ -34,5 +34,5 @@ public class TennisVariables : MonoBehaviour
     
     public float BallColliderFrontDelta = 2f;
 
-    [Range(0, 1)] public float AIVolleyModeProbability = 0.5f;
+    [Range(0, 1)] public float AIVolleyModeProbability = 0.4f;
 }

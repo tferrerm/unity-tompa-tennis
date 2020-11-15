@@ -124,14 +124,17 @@ public class ScoreManager : MonoBehaviour
         }
 
         if (_gameWon)
+        {
             WinGame(playerId);
+            _soundManager.PlayLoudCrowdSounds();
+        }
         else
         {
             uiManager.ShowEventMessage(playerId == player1Id ? UIManager.MessageType.Player1Score : UIManager.MessageType.Player2Score);
             SwapServingSide();
+            _soundManager.PlayCrowdSounds();
         }
-
-        _soundManager.PlayCrowdSounds();
+        
         uiManager.SetPlayerGameScore(_sets, _currentGame, _currentSetIndex + 1, _servingPlayerId == player1Id);
     }
 
