@@ -52,7 +52,7 @@ public class AIPlayer : MonoBehaviour
     private bool _movementBlocked;
     
     private Vector3? _target;
-    private const float HitDistanceToBall = 3f; // Z-Distance from ball target where AI will go
+    private const float HitDistanceToBall = 2.5f; // Z-Distance from ball target where AI will go
     private Vector3 _backCenter; // Z-Position where AI will return after hitting ball
     private bool _movingToCenter;
     private const float DepthMovementLimit = 50f;
