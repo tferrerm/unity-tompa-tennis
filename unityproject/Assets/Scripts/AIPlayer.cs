@@ -178,8 +178,8 @@ public class AIPlayer : MonoBehaviour
 
         var move = frameTarget - pos;
 
-        //_animator.SetFloat(_strafeHash, _moveLeftRightValue * -1); TODO FIX
-        //_animator.SetFloat(_forwardHash, _moveUpDownValue);
+        _animator.SetFloat(_strafeHash, _moveLeftRightValue * -1);
+        _animator.SetFloat(_forwardHash, _moveUpDownValue * -1);
         _characterController.Move(move);
     }
     

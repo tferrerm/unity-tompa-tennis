@@ -162,6 +162,9 @@ public class PointManager : MonoBehaviour
         _ballCollidedWithReceiverRacket = false;
         _ballCollidedWithServerRacket = false;
         
+        _player2.ResetTargetMovementVariables();
+        _player2.VolleyModeActivated = false;
+        
         var coroutine = WaitForNextServe(nextServeState);
         StartCoroutine(coroutine);
     }
@@ -206,9 +209,6 @@ public class PointManager : MonoBehaviour
         {
             _player2.SwitchBallType(true);
         }
-        
-        _player2.ResetTargetMovementVariables();
-        _player2.VolleyModeActivated = false;
 
         TogglePlayerCharacterControllers();
     }

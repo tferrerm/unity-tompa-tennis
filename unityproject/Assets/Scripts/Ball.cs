@@ -35,6 +35,8 @@ public class Ball : MonoBehaviour
     private float _defaultBounceCoef;
     private bool _isDropshot;
 
+    public TrailRenderer trail;
+
     ///////////////////
     public Player player1;
     public AIPlayer player2;
@@ -178,6 +180,7 @@ public class Ball : MonoBehaviour
 		
         ballInfo.ResetPrevPosition();
 
+        trail.Clear();
         //if (trail != null) trail.StopTrail();
     }
 

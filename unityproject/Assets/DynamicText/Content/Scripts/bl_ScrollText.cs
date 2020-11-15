@@ -28,6 +28,9 @@ public class bl_ScrollText : MonoBehaviour {
     protected bool mAvaible = true;
     protected float _timeStartedLerping;
 
+    private float _shortMessageScrollSpeed;
+    private float _longMessageScrollSpeed = 45;
+
     [HideInInspector] public Image background;
 
     [HideInInspector] public bool showMessage;
@@ -36,6 +39,8 @@ public class bl_ScrollText : MonoBehaviour {
     {
        isDone = true;
        background = GetComponent<Image>();
+
+       _shortMessageScrollSpeed = ScrollSpeed;
     }
     
     /// <summary>
@@ -178,6 +183,7 @@ public class bl_ScrollText : MonoBehaviour {
         mText.rectTransform.anchoredPosition = StartPosition;
         showMessage = false;
         gameObject.SetActive(false);
+        ScrollSpeed = _shortMessageScrollSpeed;
     }
     
     /// <summary>
@@ -200,6 +206,11 @@ public class bl_ScrollText : MonoBehaviour {
         }
         state = (state + 1) % 3;
         mAvaible = true;
+    }
+
+    public void SetLongMessage()
+    {
+        ScrollSpeed = _longMessageScrollSpeed;
     }
 
     [System.Serializable]

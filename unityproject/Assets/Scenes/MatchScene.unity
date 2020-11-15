@@ -8887,6 +8887,7 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 768
+  trail: {fileID: 2014107646}
   player1: {fileID: 114571766}
   player2: {fileID: 1168141960}
   ground: {fileID: 1724874829}

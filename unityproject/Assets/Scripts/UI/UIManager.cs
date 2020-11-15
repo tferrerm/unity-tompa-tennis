@@ -136,9 +136,11 @@ namespace UI
                     break;
                 case MessageType.Defeat:
                     eventText.text = defeatMessage;
+                    eventMessenger.SetLongMessage();
                     break;
                 case MessageType.Victory:
                     eventText.text = victoryMessage;
+                    eventMessenger.SetLongMessage();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
