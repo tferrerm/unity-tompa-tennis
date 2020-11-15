@@ -33,13 +33,13 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
-    public void PlayerHitBall(Vector3 startPos, Vector3 ballTargetPos)
+    public void PlayerHitBall(Vector3 startPos)
     {
-        TriggerAIPlayerMovement(startPos, ballTargetPos);
+        TriggerAIPlayerMovement(startPos);
     }
     
-    private void TriggerAIPlayerMovement(Vector3 startPos, Vector3 ballTargetPos)
+    private void TriggerAIPlayerMovement(Vector3 startPos)
     {
-        aiPlayer.UpdateTargetPosition(startPos, ballTargetPos);
+        aiPlayer.UpdateTargetPosition(startPos);
     }
 }

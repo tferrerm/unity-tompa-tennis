@@ -335,7 +335,7 @@ public class Player : MonoBehaviour
         _hitMethod = null;
         hitServiceBall = true;
         
-        gameManager.PlayerHitBall(ball.GetPosition(),targetPosition);
+        gameManager.PlayerHitBall(ball.GetPosition());
     }
 
     public void SwitchBallType(bool attachBall) 
@@ -397,7 +397,7 @@ public class Player : MonoBehaviour
         _hitDirectionHoriz = null;
         _hitMethod = null;
 
-        gameManager.PlayerHitBall(ball.GetPosition(),targetPosition);
+        gameManager.PlayerHitBall(ball.GetPosition());
     }
     
     private Vector3 RandomizeBallTarget(Vector3 posEnd, float randomRadius)

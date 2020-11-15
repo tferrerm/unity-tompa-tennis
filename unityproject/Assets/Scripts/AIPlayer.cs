@@ -70,6 +70,9 @@ public class AIPlayer : MonoBehaviour
 
     public PredictionBall predictionBall;
     private const float ReachedTargetEpsilon = 0.1f;
+    
+    private bool _volleyModeActivated;
+    private Vector3 _volleyCenterPos = new Vector3(5f, -3.067426f, 0f);
 
     void Start()
     {
@@ -289,23 +292,22 @@ public class AIPlayer : MonoBehaviour
     }
 
 
-    public void UpdateTargetPosition(Vector3 startPos, Vector3 ballTargetPos)
+    public void UpdateTargetPosition(Vector3 startPos)
     {
-        var xDiff = Mathf.Abs(ballTargetPos.x - startPos.x);
-        var zDiff = Mathf.Abs(ballTargetPos.z - startPos.z);
-
-        var ratio = zDiff / xDiff;
-
-        var playerBallTargetXDiff = Mathf.Abs(transform.position.x - ballTargetPos.x);
-
         ResetTargetMovementVariables();
+        
+        if (ball.IsDropshot && Random.Range(0, 1) < _tv.AIVolleyModeProbability) // Active volley mode
+        {
+            _volleyModeActivated = true;
+            Debug.Log("VOLLEY MODE ACTIVATE!");
+        }
 
         var closestPoint = RunBallPrediction(startPos); // Vector2
         
-        var targetX = closestPoint.x > 0 ? Mathf.Min(closestPoint.x, DepthMovementLimit) : 0f; //ballTargetPos.x + DropShotBounceDeltaTarget;
+        var targetX = closestPoint.x > 0 ? Mathf.Min(closestPoint.x, DepthMovementLimit) : 0f;
+        
         var targetZ = closestPoint.y + (closestPoint.y > startPos.z ? -1 : 1) * HitDistanceToBall;
-        targetZ = targetZ > -LateralMovementLimit ? Math.Min(targetZ, LateralMovementLimit) : -LateralMovementLimit;//ballTargetPos.z + (ballTargetPos.z > startPos.z ? 1 : -1) * (playerBallTargetXDiff) * ratio
-                            //          + (ballTargetPos.z > startPos.z ? -1 : 1) * HitDistanceToBall;
+        targetZ = targetZ > -LateralMovementLimit ? Math.Min(targetZ, LateralMovementLimit) : -LateralMovementLimit;
         
         _target = new Vector3(targetX,0, targetZ);
         
@@ -324,7 +326,7 @@ public class AIPlayer : MonoBehaviour
     private void ResetHittingBall() // Called as animation event
     {
         _movingToCenter = true;
-        _target = _backCenter;
+        _target = _volleyModeActivated ? _volleyCenterPos : _backCenter;
         _moveUpDownValue = _target.Value.x - transform.position.x > 0 ? 1 : -1;
         _moveLeftRightValue = _target.Value.z - transform.position.z > 0 ? 1 : -1;
         _movementBlocked = false;
@@ -421,7 +423,9 @@ public class AIPlayer : MonoBehaviour
         }
 
         var position = transform.position;
-        return ClosestPoint(new Vector2(position.x, position.y), firstBounce, secondBounce);
+        return _volleyModeActivated ? 
+            ClosestPoint(new Vector2(position.x, position.y), startPos, secondBounce) : 
+            ClosestPoint(new Vector2(position.x, position.y), firstBounce, secondBounce);
     }
 
     private Vector2 ClosestPoint(Vector2 position, Vector2 firstBounce, Vector2 secondBounce)
@@ -435,5 +439,10 @@ public class AIPlayer : MonoBehaviour
         var dotP = Vector2.Dot(lhs, heading);
         dotP = Mathf.Clamp(dotP, 0f, magnitudeMax);
         return firstBounce + heading * dotP;
+    }
+
+    public bool VolleyModeActivated
+    {
+        set => _volleyModeActivated = value;
     }
 }

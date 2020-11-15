@@ -50,7 +50,7 @@ public class PointManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ResetPlayerPositions();
+        ResetPlayers();
         AIPlayerServiceCheck();
     }
 
@@ -172,7 +172,7 @@ public class PointManager : MonoBehaviour
         yield return new WaitForSeconds(NextPointWaitingTime);
 
         _player1.StopMovementAnimation();
-        ResetPlayerPositions();
+        ResetPlayers();
         AIPlayerServiceCheck();
         _pointState = nextServeState;
     }
@@ -186,7 +186,7 @@ public class PointManager : MonoBehaviour
         }
     }
 
-    private void ResetPlayerPositions()
+    private void ResetPlayers()
     {
         TogglePlayerCharacterControllers();
         
@@ -208,6 +208,7 @@ public class PointManager : MonoBehaviour
         }
         
         _player2.ResetTargetMovementVariables();
+        _player2.VolleyModeActivated = false;
 
         TogglePlayerCharacterControllers();
     }
