@@ -9,7 +9,7 @@ public class TennisVariables : MonoBehaviour
 
     public float ServiceTossSpeed = 20f;
     public float ServiceSpeed = 65f;
-    public float ServiceYAttenuation = 350f;
+    public float ServiceYAttenuation = 325f;
     public float DeepHitSpeed = 55f;
     public float DeepHitYAttenuation = 225f;
     public float DropshotHitSpeed = 30f;
@@ -32,5 +32,5 @@ public class TennisVariables : MonoBehaviour
     
     public float BallColliderFrontDelta = 2f;
 
-    [Range(0, 1)] public float AIVolleyModeProbability = 0.4f;
+    [Range(0, 1)] public float AIVolleyModeProbability = 0.2f;
 }

@@ -17847,7 +17847,7 @@ MonoBehaviour:
   BackSpeed: 7
   ServiceTossSpeed: 20
   ServiceSpeed: 65
-  ServiceYAttenuation: 350
+  ServiceYAttenuation: 325
   DeepHitSpeed: 55
   DeepHitYAttenuation: 225
   DropshotHitSpeed: 30
@@ -17865,7 +17865,7 @@ MonoBehaviour:
   DefaultBounceFrictionMultiplier: 0.3
   FastHitAnimationThresholdSpeed: 25
   BallColliderFrontDelta: 2
-  AIVolleyModeProbability: 0.4
+  AIVolleyModeProbability: 0.2
 --- !u!1 &1691975651
 GameObject:
   m_ObjectHideFlags: 0
@@ -22921,6 +22921,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3167488409003464234, guid: 7837e3c02f0bf39409f01516872eeb16,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 46.45162
+      objectReference: {fileID: 0}
+    - target: {fileID: 3167488409003464234, guid: 7837e3c02f0bf39409f01516872eeb16,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 67.09678
+      objectReference: {fileID: 0}
     - target: {fileID: 3657980967166643869, guid: 7837e3c02f0bf39409f01516872eeb16,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -23016,6 +23026,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7020418727434988733, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7020418727434988733, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 7372489401241218498, guid: 1accc87c261a23f4cb5b0ef26871e32b,
         type: 3}
       propertyPath: m_Name
