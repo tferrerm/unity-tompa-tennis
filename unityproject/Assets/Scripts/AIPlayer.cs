@@ -59,7 +59,7 @@ public class AIPlayer : MonoBehaviour
     private const float LateralMovementLimit = 25f;
 
     private const float ServiceWaitTime = 1f; // Waiting time before serve after point reset
-    private const float MaxReactionTime = 0.5f; // Waiting time before AI starts moving
+    private const float MaxReactionTime = 1f; // Waiting time before AI starts moving
     private float _reactionWaitTimer;
 
     public PredictionBall predictionBall;
