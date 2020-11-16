@@ -2,6 +2,8 @@
 
 ## Tompa Tennis 2020
 
+For more information check out [this file](./docs/Informe.pdf).
+
 ### Controls
 
 Press UpArrow, DownArrow, LeftArrow, RightArrow to move.
