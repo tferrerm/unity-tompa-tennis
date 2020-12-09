@@ -15,7 +15,7 @@ namespace UI
         // Update is called once per frame
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Escape) && canOpenPauseMenu)
+            if (Input.GetButtonDown("Pause") && canOpenPauseMenu)
             {
                 Time.timeScale = pauseMenu.activeSelf ? 1 : 0;
                 optionsMenu.SetActive(false);
