@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.EventSystems;
 
 namespace UI
 {
@@ -13,10 +14,17 @@ namespace UI
         public GameObject playMenu;
         public GameObject optionsMenu;
 
+        public GameObject playButton;
+
         private void Start()
         {
             var volume = PlayerPrefs.GetFloat("Volume", 1);
             OptionsMenu.SetAudioMixerVolume(audioMixer, volume);
+        }
+
+        private void OnEnable()
+        {
+            EventSystem.current.SetSelectedGameObject(playButton);
         }
 
         public void OpenPlayMenu()

@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.EventSystems;
 
 namespace UI
 {
@@ -13,12 +15,18 @@ namespace UI
         public GameObject mainMenu;
 
         public GameObject pauseMenuButtons;
+        public GameObject resumeButton;
     
         // Start is called before the first frame update
         void Start()
         {
             var volume = PlayerPrefs.GetFloat("Volume", 1);
             slider.value = volume;
+        }
+
+        private void OnEnable()
+        {
+            EventSystem.current.SetSelectedGameObject(slider.gameObject);
         }
 
         public void ReturnToMainMenu()
@@ -34,6 +42,8 @@ namespace UI
             PlayerPrefs.Save();
             optionsMenu.SetActive(false);
             pauseMenuButtons.SetActive(true);
+            if (resumeButton)
+                EventSystem.current.SetSelectedGameObject(resumeButton);
         }
 
         public void SetVolume(float volume)

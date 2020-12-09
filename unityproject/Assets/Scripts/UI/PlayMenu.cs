@@ -1,5 +1,7 @@
-﻿using TMPro;
+﻿using System;
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 namespace UI
@@ -17,7 +19,12 @@ namespace UI
         {
             playerNameInput.text = PlayerPrefs.GetString("PlayerName", playerNameInput.text);
         }
-    
+
+        private void OnEnable()
+        {
+            EventSystem.current.SetSelectedGameObject(playerNameInput.gameObject);
+        }
+
         public void ReturnToMainMenu()
         {
             playMenu.SetActive(false);

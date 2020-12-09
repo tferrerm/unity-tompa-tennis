@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 namespace UI
@@ -8,6 +9,7 @@ namespace UI
         public GameObject pauseMenu;
         public GameObject optionsMenu;
         public GameObject pauseMenuButtons;
+        public GameObject resumeButton;
         [HideInInspector] public bool canOpenPauseMenu = true;
     
         // Update is called once per frame
@@ -20,6 +22,8 @@ namespace UI
                 pauseMenu.SetActive(!pauseMenu.activeSelf);
                 pauseMenuButtons.SetActive(true);
                 AudioListener.pause = pauseMenu.activeSelf;
+                if (pauseMenu.activeSelf)
+                    EventSystem.current.SetSelectedGameObject(resumeButton);
             }
 
         }
