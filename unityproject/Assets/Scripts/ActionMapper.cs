@@ -22,26 +22,30 @@ public class ActionMapper
 
     public static bool RacquetSwing()
     {
-        return Input.GetKeyDown(KeyCode.Space);
+        return Input.GetButton("Hit"); // Input.GetKeyDown(KeyCode.Space);
     }
 
+    // TODO: Add sensitivity to HitVertical and HitHorizontal, and maybe to Hit
     public static bool GetForward()
     {
-        return Input.GetKey(KeyCode.UpArrow);
+        return Input.GetAxis("HitVertical") > 0; // Input.GetKey(KeyCode.UpArrow);
     }
     
+    // TODO: Add sensitivity to HitVertical and HitHorizontal, and maybe to Hit
     public static bool GetBackward()
     {
-        return Input.GetKey(KeyCode.DownArrow);
+        return Input.GetAxis("HitVertical") < 0; // Input.GetKey(KeyCode.DownArrow);
     }
     
+    // TODO: Add sensitivity to HitVertical and HitHorizontal, and maybe to Hit
     public static bool GetLeft()
     {
-        return Input.GetKey(KeyCode.LeftArrow);
+        return Input.GetAxis("HitHorizontal") < 0; // Input.GetKey(KeyCode.LeftArrow);
     }
     
+    // TODO: Add sensitivity to HitVertical and HitHorizontal, and maybe to Hit
     public static bool GetRight()
     {
-        return Input.GetKey(KeyCode.RightArrow);
+        return Input.GetAxis("HitHorizontal") > 0; // Input.GetKey(KeyCode.RightArrow);
     }
 }
