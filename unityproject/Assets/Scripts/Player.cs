@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
@@ -75,11 +76,28 @@ public class Player : MonoBehaviour
     public Transform driveVolleyHitBallSpawn;
     public Transform backhandVolleyHitBallSpawn;
 
+    public InputAction wasd;
+    public InputAction hitBall;
+    private ActionMapper _actionMapper;
+
     private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
         _audioSource = GetComponent<AudioSource>();
         _animator = GetComponent<Animator>();
+        _actionMapper = new ActionMapper(wasd, hitBall);
+    }
+
+    private void OnEnable()
+    {
+        wasd.Enable();
+        hitBall.Enable();
+    }
+
+    private void OnDisable()
+    {
+        wasd.Disable();
+        hitBall.Disable();
     }
 
     void Start()
@@ -161,7 +179,7 @@ public class Player : MonoBehaviour
             if (manhattanNorm == 0)
                 manhattanNorm = 1;
             
-            var spd = (ActionMapper.IsSprinting() ? _tv.SprintSpeed : _tv.RunSpeed) * movingDir.magnitude;
+            var spd = (_actionMapper.IsSprinting() ? _tv.SprintSpeed : _tv.RunSpeed) * movingDir.magnitude;
             var dx = transform.position.x < 0 ? dt * (_moveUpDownValue < 0 ? _tv.BackSpeed : spd) * _moveUpDownValue / manhattanNorm : 0;
             var dz = dt * spd * _moveLeftRightValue / manhattanNorm;
             
@@ -176,7 +194,7 @@ public class Player : MonoBehaviour
 
     private void ReadInput()
     {
-        if (ActionMapper.RacquetSwing())
+        if (_actionMapper.RacquetSwing())
         {
             if (_pointManager.IsServing(playerId) && !hitServiceBall && _hitMethod == null)
             {
@@ -216,8 +234,8 @@ public class Player : MonoBehaviour
         }
         else
         {
-            _moveLeftRightValue = ActionMapper.GetMoveHorizontal(); 
-            _moveUpDownValue = ActionMapper.GetMoveVertical();
+            _moveLeftRightValue = _actionMapper.GetMoveHorizontal(); 
+            _moveUpDownValue = _actionMapper.GetMoveVertical();
         }
     }
 
@@ -274,10 +292,10 @@ public class Player : MonoBehaviour
     {
         if (_hitMethod == null) return;
         
-        var hittingStraight = ActionMapper.GetForward();
-        var hittingDropshot = ActionMapper.GetBackward();
-        var hittingLeft = ActionMapper.GetLeft();
-        var hittingRight = ActionMapper.GetRight();
+        var hittingStraight = _actionMapper.GetForward();
+        var hittingDropshot = _actionMapper.GetBackward();
+        var hittingLeft = _actionMapper.GetLeft();
+        var hittingRight = _actionMapper.GetRight();
         
         if (hittingStraight) // Vertical input resets horizontal input
         {
@@ -302,9 +320,9 @@ public class Player : MonoBehaviour
     {
         if (_hitMethod == null) return;
         
-        var hittingCenter = ActionMapper.GetForward();
-        var hittingLeft = ActionMapper.GetLeft();
-        var hittingRight = ActionMapper.GetRight();
+        var hittingCenter = _actionMapper.GetForward();
+        var hittingLeft = _actionMapper.GetLeft();
+        var hittingRight = _actionMapper.GetRight();
 
         if (hittingCenter)
         {

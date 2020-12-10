@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 namespace UI
@@ -11,11 +13,22 @@ namespace UI
         public GameObject pauseMenuButtons;
         public GameObject resumeButton;
         [HideInInspector] public bool canOpenPauseMenu = true;
-    
-        // Update is called once per frame
+
+        public InputAction pauseAction;
+
+        private void OnEnable()
+        {
+            pauseAction.Enable();
+        }
+
+        private void OnDisable()
+        {
+            pauseAction.Disable();
+        }
+
         void Update()
         {
-            if (Input.GetButtonDown("Pause") && canOpenPauseMenu)
+            if (pauseAction.triggered && canOpenPauseMenu)
             {
                 Time.timeScale = pauseMenu.activeSelf ? 1 : 0;
                 optionsMenu.SetActive(false);
