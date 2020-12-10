@@ -13389,6 +13389,14 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Pause
       m_Flags: 0
+    - m_Name: 
+      m_Id: 9459928b-19e5-4356-a069-385d43a5b81f
+      m_Path: <HID::USB Gamepad >/button10
+      m_Interactions: Press
+      m_Processors: 
+      m_Groups: 
+      m_Action: Pause
+      m_Flags: 0
 --- !u!1 &1268910806
 GameObject:
   m_ObjectHideFlags: 0
@@ -23144,12 +23152,12 @@ PrefabInstance:
     - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
         type: 3}
       propertyPath: wasd.m_SingletonActionBindings.Array.size
-      value: 15
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
         type: 3}
       propertyPath: hitBall.m_SingletonActionBindings.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
         type: 3}
@@ -23600,6 +23608,151 @@ PrefabInstance:
         type: 3}
       propertyPath: wasd.m_SingletonActionBindings.Array.data[14].m_Path
       value: <Gamepad>/dpad/right
+      objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: wasd.m_SingletonActionBindings.Array.data[15].m_Name
+      value: Joystick 2D Vector
+      objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: wasd.m_SingletonActionBindings.Array.data[15].m_Id
+      value: c52bceab-28d4-47f2-b606-70048ebfc46e
+      objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: wasd.m_SingletonActionBindings.Array.data[15].m_Path
+      value: 2DVector
+      objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: wasd.m_SingletonActionBindings.Array.data[15].m_Action
+      value: Wasd
+      objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: wasd.m_SingletonActionBindings.Array.data[15].m_Flags
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: wasd.m_SingletonActionBindings.Array.data[16].m_Name
+      value: up
+      objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: wasd.m_SingletonActionBindings.Array.data[16].m_Id
+      value: dc70fde0-14ee-43b6-acb9-bd02312f4da9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: wasd.m_SingletonActionBindings.Array.data[16].m_Action
+      value: Wasd
+      objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: wasd.m_SingletonActionBindings.Array.data[16].m_Flags
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: wasd.m_SingletonActionBindings.Array.data[17].m_Name
+      value: down
+      objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: wasd.m_SingletonActionBindings.Array.data[17].m_Id
+      value: 5f1bc076-6486-4fac-b40f-93b62503b0b9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: wasd.m_SingletonActionBindings.Array.data[17].m_Action
+      value: Wasd
+      objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: wasd.m_SingletonActionBindings.Array.data[17].m_Flags
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: wasd.m_SingletonActionBindings.Array.data[18].m_Name
+      value: left
+      objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: wasd.m_SingletonActionBindings.Array.data[18].m_Id
+      value: da9ec9d6-c7ab-4926-8d37-41bf06077b3f
+      objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: wasd.m_SingletonActionBindings.Array.data[18].m_Action
+      value: Wasd
+      objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: wasd.m_SingletonActionBindings.Array.data[18].m_Flags
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: wasd.m_SingletonActionBindings.Array.data[19].m_Name
+      value: right
+      objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: wasd.m_SingletonActionBindings.Array.data[19].m_Id
+      value: 1dd6a09b-6dbe-48c3-88a6-3f7e36a57b0e
+      objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: wasd.m_SingletonActionBindings.Array.data[19].m_Action
+      value: Wasd
+      objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: wasd.m_SingletonActionBindings.Array.data[19].m_Flags
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: wasd.m_SingletonActionBindings.Array.data[16].m_Path
+      value: <Joystick>/stick/up
+      objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: wasd.m_SingletonActionBindings.Array.data[17].m_Path
+      value: <Joystick>/stick/down
+      objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: wasd.m_SingletonActionBindings.Array.data[18].m_Path
+      value: <Joystick>/stick/left
+      objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: wasd.m_SingletonActionBindings.Array.data[19].m_Path
+      value: <Joystick>/stick/right
+      objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: hitBall.m_SingletonActionBindings.Array.data[2].m_Id
+      value: a1837e4e-e115-4e17-9415-7fb7418a9c75
+      objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: hitBall.m_SingletonActionBindings.Array.data[2].m_Action
+      value: Hit Ball
+      objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: hitBall.m_SingletonActionBindings.Array.data[2].m_Path
+      value: <Joystick>/trigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 7372489402264249968, guid: 1accc87c261a23f4cb5b0ef26871e32b,
+        type: 3}
+      propertyPath: hitBall.m_SingletonActionBindings.Array.data[2].m_Interactions
+      value: Press
       objectReference: {fileID: 0}
     - target: {fileID: 7372489402327860113, guid: 1accc87c261a23f4cb5b0ef26871e32b,
         type: 3}
