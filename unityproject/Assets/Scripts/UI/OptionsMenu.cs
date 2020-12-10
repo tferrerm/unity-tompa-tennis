@@ -46,6 +46,11 @@ namespace UI
                 EventSystem.current.SetSelectedGameObject(resumeButton);
         }
 
+        public void EditJoystickMappings()
+        {
+            
+        }
+
         public void SetVolume(float volume)
         {
             SetAudioMixerVolume(audioMixer, volume);
