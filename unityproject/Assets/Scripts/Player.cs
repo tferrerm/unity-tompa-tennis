@@ -76,6 +76,7 @@ public class Player : MonoBehaviour
     public Transform driveVolleyHitBallSpawn;
     public Transform backhandVolleyHitBallSpawn;
 
+    [Header("Input Actions")]
     public InputAction wasd;
     public InputAction hitBall;
     private ActionMapper _actionMapper;
