@@ -172,9 +172,13 @@ public class Player : MonoBehaviour
         }
     }
 
+    // TODO: fix animation when hitting ball. Store some hitting Ball variable in RecordedReplayInfo
     private void PlayRecording()
     {
         var recordedInfo = recordedReplayInfo[0];
+        var distance = recordedInfo.position - transform.position;
+        _animator.SetFloat(_strafeHash, distance.z / Time.fixedDeltaTime);
+        _animator.SetFloat(_forwardHash, distance.x / Time.fixedDeltaTime);
         transform.position = recordedInfo.position;
         transform.rotation = recordedInfo.rotation;
         recordedReplayInfo.RemoveAt(0);
@@ -183,6 +187,8 @@ public class Player : MonoBehaviour
     public void InitializeRecordingPlay()
     {
         _characterController.enabled = false;
+        _animator.SetFloat(_strafeHash, 0);
+        _animator.SetFloat(_forwardHash, 0);
         wasd.Disable();
         hitBall.Disable();
     }
@@ -190,6 +196,8 @@ public class Player : MonoBehaviour
     public void StopRecordingPlay()
     {
         _characterController.enabled = true;
+        _animator.SetFloat(_strafeHash, 0);
+        _animator.SetFloat(_forwardHash, 0);
         wasd.Enable();
         hitBall.Enable();
     }
