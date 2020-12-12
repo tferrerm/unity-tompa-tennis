@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
@@ -81,12 +82,17 @@ public class Player : MonoBehaviour
     public InputAction hitBall;
     private ActionMapper _actionMapper;
 
+    public List<RecordedReplayInfo> recordedReplayInfo;
+    private int _recordingLimit;
+
     private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
         _audioSource = GetComponent<AudioSource>();
         _animator = GetComponent<Animator>();
         _actionMapper = new ActionMapper(wasd, hitBall);
+        _recordingLimit = TennisVariables.RecordingLimit();
+        recordedReplayInfo = new List<RecordedReplayInfo>(_recordingLimit);
     }
 
     private void OnEnable()
@@ -137,8 +143,55 @@ public class Player : MonoBehaviour
     
     void Update()
     {
-        ReadInput();
-        Move();
+        if (!TennisVariables.isPlayingReplay)
+        {
+            ReadInput();
+            Move();
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (TennisVariables.isRecording)
+        {
+            RecordPosition();
+        }
+        else if (TennisVariables.isPlayingReplay && recordedReplayInfo.Count > 0)
+        {
+            PlayRecording();
+        }
+    }
+
+    private void RecordPosition()
+    {
+        var tf = transform;
+        recordedReplayInfo.Add(new RecordedReplayInfo(tf.position, tf.rotation));
+        if (recordedReplayInfo.Count > _recordingLimit)
+        {
+            recordedReplayInfo.RemoveAt(0);
+        }
+    }
+
+    private void PlayRecording()
+    {
+        var recordedInfo = recordedReplayInfo[0];
+        transform.position = recordedInfo.position;
+        transform.rotation = recordedInfo.rotation;
+        recordedReplayInfo.RemoveAt(0);
+    }
+
+    public void InitializeRecordingPlay()
+    {
+        _characterController.enabled = false;
+        wasd.Disable();
+        hitBall.Disable();
+    }
+
+    public void StopRecordingPlay()
+    {
+        _characterController.enabled = true;
+        wasd.Enable();
+        hitBall.Enable();
     }
 
     private void Move()
@@ -284,6 +337,7 @@ public class Player : MonoBehaviour
 
     private void StartService()
     {
+        TennisVariables.isRecording = true;
         _animator.SetTrigger(_serviceTriggerHash);
         _hitMethod = HitMethod.Serve;
         _hitDirectionHoriz = HitDirectionHorizontal.Center;

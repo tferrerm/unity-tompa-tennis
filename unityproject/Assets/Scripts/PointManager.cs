@@ -172,8 +172,17 @@ public class PointManager : MonoBehaviour
 
     private IEnumerator WaitForNextServe(PointState nextServeState)
     {
+        TennisVariables.isRecording = false;
         _player1.StopMovementAnimation();
         yield return new WaitForSeconds(NextPointWaitingTime);
+
+        TennisVariables.isPlayingReplay = true;
+        _player1.InitializeRecordingPlay();
+        _player2.InitializeRecordingPlay();
+        yield return new WaitForSeconds(TennisVariables.MaxRecordingTime);
+        TennisVariables.isPlayingReplay = false;
+        _player1.StopRecordingPlay();
+        _player2.StopRecordingPlay();
 
         _player1.StopMovementAnimation();
         ResetPlayers();

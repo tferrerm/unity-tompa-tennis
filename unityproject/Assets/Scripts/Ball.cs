@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
@@ -38,6 +40,15 @@ public class Ball : MonoBehaviour
     public AIPlayer player2;
     public Transform ground;
     
+    public List<RecordedReplayInfo> recordedReplayInfo;
+    private int _recordingLimit;
+
+    private void Awake()
+    {
+        _recordingLimit = TennisVariables.RecordingLimit();
+        recordedReplayInfo = new List<RecordedReplayInfo>(_recordingLimit);
+    }
+
     void Start()
     {
         bounciness = tv.BallBounciness;
@@ -54,11 +65,37 @@ public class Ball : MonoBehaviour
 
     void FixedUpdate()
     {
-        ballInfo = ballPhysics.UpdateBallInfo(ballInfo, Time.fixedDeltaTime, _isDropshot);
+        if (TennisVariables.isRecording)
+        {
+            RecordPosition();
+            ballInfo = ballPhysics.UpdateBallInfo(ballInfo, Time.fixedDeltaTime, _isDropshot);
 		
-        CheckCollisions();
+            CheckCollisions();
 
-        UpdateFromBallInfo();
+            UpdateFromBallInfo();
+        }
+        else if (TennisVariables.isPlayingReplay && recordedReplayInfo.Count > 0)
+        {
+            PlayRecording();
+        }
+    }
+    
+    private void RecordPosition()
+    {
+        var tf = transform;
+        recordedReplayInfo.Add(new RecordedReplayInfo(tf.position, tf.rotation));
+        if (recordedReplayInfo.Count > _recordingLimit)
+        {
+            recordedReplayInfo.RemoveAt(0);
+        }
+    }
+    
+    private void PlayRecording()
+    {
+        var recordedInfo = recordedReplayInfo[0];
+        transform.position = recordedInfo.position;
+        transform.rotation = recordedInfo.rotation;
+        recordedReplayInfo.RemoveAt(0);
     }
     
     public float GetRadius()

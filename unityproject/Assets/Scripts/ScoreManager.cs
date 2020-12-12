@@ -132,6 +132,7 @@ public class ScoreManager : MonoBehaviour
         }
         
         uiManager.SetPlayerGameScore(_sets, _currentGame, _currentSetIndex + 1, _servingPlayerId == player1Id);
+        
     }
 
     private void WinTiebreakPoint(int playerId)
