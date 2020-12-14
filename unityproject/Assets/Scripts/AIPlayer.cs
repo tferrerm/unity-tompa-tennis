@@ -45,6 +45,7 @@ public class AIPlayer : MonoBehaviour
     private CourtManager _courtManager;
     private PointManager _pointManager;
     private SoundManager _soundManager;
+    private ReplayManager _replayManager;
     private TennisVariables _tv;
     
     private bool _serveBallReleased;
@@ -68,17 +69,12 @@ public class AIPlayer : MonoBehaviour
     
     private bool _volleyModeActivated;
     private readonly Vector3 _volleyCenterPos = new Vector3(5f, -3.067426f, 0f);
-    
-    public List<RecordedReplayInfo> recordedReplayInfo;
-    private int _recordingLimit;
 
     void Awake()
     {
         _characterController = GetComponent<CharacterController>();
         _audioSource = GetComponent<AudioSource>();
         _animator = GetComponent<Animator>();
-        _recordingLimit = TennisVariables.RecordingLimit();
-        recordedReplayInfo = new List<RecordedReplayInfo>(_recordingLimit);
     }
 
     void Start()
@@ -86,6 +82,7 @@ public class AIPlayer : MonoBehaviour
         _courtManager = gameManager.courtManager;
         _pointManager = gameManager.pointManager;
         _soundManager = gameManager.soundManager;
+        _replayManager = gameManager.replayManager;
         _tv = gameManager.tennisVariables;
         
         CalculateAnimatorHashes();
@@ -107,41 +104,6 @@ public class AIPlayer : MonoBehaviour
         _fastDriveHash = Animator.StringToHash("Fast Drive Trigger");
         _fastBackhandHash = Animator.StringToHash("Fast Backhand Trigger");
     }
-
-    private void FixedUpdate()
-    {
-        if (TennisVariables.isRecording)
-        {
-            RecordPosition();
-        }
-        else if (TennisVariables.isPlayingReplay && recordedReplayInfo.Count > 0)
-        {
-            PlayRecording();
-        }
-    }
-    
-    private void RecordPosition()
-    {
-        var tf = transform;
-        recordedReplayInfo.Add(new RecordedReplayInfo(tf.position, tf.rotation));
-        if (recordedReplayInfo.Count > _recordingLimit)
-        {
-            recordedReplayInfo.RemoveAt(0);
-        }
-        
-    }
-    
-    // TODO: fix animation when hitting ball. Store some hitting Ball variable in RecordedReplayInfo
-    private void PlayRecording()
-    {
-        var recordedInfo = recordedReplayInfo[0];
-        var distance = recordedInfo.position - transform.position;
-        _animator.SetFloat(_strafeHash, distance.z / Time.fixedDeltaTime);
-        _animator.SetFloat(_forwardHash, distance.x / Time.fixedDeltaTime);
-        transform.position = recordedInfo.position;
-        transform.rotation = recordedInfo.rotation;
-        recordedReplayInfo.RemoveAt(0);
-    }
     
     public void InitializeRecordingPlay()
     {
@@ -159,7 +121,7 @@ public class AIPlayer : MonoBehaviour
 
     void Update()
     {
-        if (TennisVariables.isPlayingReplay)
+        if (_replayManager.isPlayingReplay)
             return;
         
         if (_movingToCenter && _target != null)
@@ -392,7 +354,7 @@ public class AIPlayer : MonoBehaviour
     
     public IEnumerator StartService()
     {
-        TennisVariables.isRecording = true;
+        _replayManager.isRecording = true;
         yield return new WaitForSeconds(ServiceWaitTime);
         
         _animator.SetTrigger(_serviceTriggerHash);
@@ -503,5 +465,14 @@ public class AIPlayer : MonoBehaviour
     public bool MovingToCenter
     {
         set => _movingToCenter = value;
+    }
+    
+    public void ReplayMove(Vector3 position, Quaternion rotation)
+    {
+        var distance = position - transform.position;
+        _animator.SetFloat(_strafeHash, distance.z / Time.fixedDeltaTime);
+        _animator.SetFloat(_forwardHash, distance.x / Time.fixedDeltaTime);
+        transform.position = position;
+        transform.rotation = rotation;
     }
 }

@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public CourtManager courtManager;
     [HideInInspector] public PointManager pointManager;
     [HideInInspector] public SoundManager soundManager;
+    [HideInInspector] public ReplayManager replayManager;
     public AIPlayer aiPlayer;
     public Player player;
     [HideInInspector] public TennisVariables tennisVariables;
@@ -15,6 +16,7 @@ public class GameManager : MonoBehaviour
         courtManager = GetComponent<CourtManager>();
         pointManager = GetComponent<PointManager>();
         soundManager = GetComponent<SoundManager>();
+        replayManager = GetComponent<ReplayManager>();
         tennisVariables = GetComponent<TennisVariables>();
     }
 

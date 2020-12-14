@@ -9087,15 +9087,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 529b76d9fb82c410abbb6de097946fe5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pointManager: {fileID: 1688545062}
-  soundManager: {fileID: 1688545064}
-  tv: {fileID: 1688545066}
   layerMask:
     serializedVersion: 2
     m_Bits: 768
   trail: {fileID: 2014107646}
-  player1: {fileID: 114571766}
-  player2: {fileID: 1168141960}
   ground: {fileID: 1724874829}
 --- !u!82 &891900776
 AudioSource:
@@ -12264,36 +12259,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1176902389}
   m_CullTransparentMesh: 0
---- !u!1 &1183299280
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1183299281}
-  m_Layer: 0
-  m_Name: Ball Thrower
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1183299281
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1183299280}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: 0.39}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1204176444
 GameObject:
   m_ObjectHideFlags: 0
@@ -15956,7 +15921,7 @@ Transform:
   m_Children:
   - {fileID: 798976297}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1510746308
 GameObject:
@@ -17711,6 +17676,7 @@ GameObject:
   - component: {fileID: 1688545062}
   - component: {fileID: 1688545064}
   - component: {fileID: 1688545066}
+  - component: {fileID: 1688545067}
   m_Layer: 0
   m_Name: GameController
   m_TagString: GameController
@@ -17776,6 +17742,7 @@ MonoBehaviour:
   courtManager: {fileID: 0}
   pointManager: {fileID: 0}
   soundManager: {fileID: 0}
+  replayManager: {fileID: 0}
   aiPlayer: {fileID: 1168141960}
   player: {fileID: 114571766}
   tennisVariables: {fileID: 0}
@@ -17919,6 +17886,21 @@ MonoBehaviour:
   FastHitAnimationThresholdSpeed: 25
   BallColliderFrontDelta: 2
   AIVolleyModeProbability: 0.2
+--- !u!114 &1688545067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1688545059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d44a354b37127c04aa07562c5891eb1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isRecording: 0
+  isPlayingReplay: 0
+  ball: {fileID: 891900775}
 --- !u!1 &1691975651
 GameObject:
   m_ObjectHideFlags: 0

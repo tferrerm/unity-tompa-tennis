@@ -15,6 +15,7 @@ public class PointManager : MonoBehaviour
     public CourtSectionMapper courtSectionMapper;
     private Player _player1;
     private AIPlayer _player2;
+    private ReplayManager _replayManager;
 
     private enum PointState
     {
@@ -44,6 +45,7 @@ public class PointManager : MonoBehaviour
         var gameManager = GetComponent<GameManager>();
         _player1 = gameManager.player;
         _player2 = gameManager.aiPlayer;
+        _replayManager = GetComponent<ReplayManager>();
     }
 
     // Start is called before the first frame update
@@ -175,14 +177,9 @@ public class PointManager : MonoBehaviour
         _player1.StopMovementAnimation();
         yield return new WaitForSeconds(NextPointWaitingTime);
         
-        TennisVariables.isRecording = false;
-        TennisVariables.isPlayingReplay = true;
-        _player1.InitializeRecordingPlay();
-        _player2.InitializeRecordingPlay();
-        yield return new WaitForSeconds(TennisVariables.MaxRecordingTime);
-        TennisVariables.isPlayingReplay = false;
-        _player1.StopRecordingPlay();
-        _player2.StopRecordingPlay();
+        _replayManager.InitializeReplay();
+        yield return new WaitForSeconds(ReplayManager.MaxRecordingTime);
+        _replayManager.StopReplay();
 
         _player1.StopMovementAnimation();
         ResetPlayers();

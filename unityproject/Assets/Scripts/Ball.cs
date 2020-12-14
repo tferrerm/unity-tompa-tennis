@@ -22,9 +22,10 @@ public class Ball : MonoBehaviour
     // Ball Physics
     private BallPhysics ballPhysics;
 
-    public PointManager pointManager;
-    public SoundManager soundManager;
-    public TennisVariables tv;
+    private PointManager _pointManager;
+    private SoundManager _soundManager;
+    private ReplayManager _replayManager;
+    private TennisVariables _tv;
 
     public LayerMask layerMask;
     private int _netLayer;
@@ -36,28 +37,27 @@ public class Ball : MonoBehaviour
     public TrailRenderer trail;
 
     ///////////////////
-    public Player player1;
-    public AIPlayer player2;
+    private Player _player1;
+    private AIPlayer _player2;
     public Transform ground;
-    
-    public List<RecordedReplayInfo> recordedReplayInfo;
-    private int _recordingLimit;
-
-    private void Awake()
-    {
-        _recordingLimit = TennisVariables.RecordingLimit();
-        recordedReplayInfo = new List<RecordedReplayInfo>(_recordingLimit);
-    }
 
     void Start()
     {
-        bounciness = tv.BallBounciness;
-        _netBounceCoef = tv.NetBounceFrictionMultiplier;
-        _defaultBounceCoef = tv.DefaultBounceFrictionMultiplier;
+        var gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
+        _pointManager = gameManager.pointManager;
+        _soundManager = gameManager.soundManager;
+        _replayManager = gameManager.replayManager;
+        _tv = gameManager.tennisVariables;
+        _player1 = gameManager.player;
+        _player2 = gameManager.aiPlayer;
+        
+        bounciness = _tv.BallBounciness;
+        _netBounceCoef = _tv.NetBounceFrictionMultiplier;
+        _defaultBounceCoef = _tv.DefaultBounceFrictionMultiplier;
         
         ballInfo.Position = transform.position;
         
-        ballPhysics = new BallPhysics(Radius, bounciness, ground.position.y, soundManager, pointManager, tv);
+        ballPhysics = new BallPhysics(Radius, bounciness, ground.position.y, _soundManager, _pointManager, _tv);
 
         _netLayer = LayerMask.NameToLayer("Net");
         _groundLayer = LayerMask.NameToLayer("Ground");
@@ -65,37 +65,14 @@ public class Ball : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (TennisVariables.isRecording)
+        if (_replayManager.isRecording)
         {
-            RecordPosition();
             ballInfo = ballPhysics.UpdateBallInfo(ballInfo, Time.fixedDeltaTime, _isDropshot);
 		
             CheckCollisions();
 
             UpdateFromBallInfo();
         }
-        else if (TennisVariables.isPlayingReplay && recordedReplayInfo.Count > 0)
-        {
-            PlayRecording();
-        }
-    }
-    
-    private void RecordPosition()
-    {
-        var tf = transform;
-        recordedReplayInfo.Add(new RecordedReplayInfo(tf.position, tf.rotation));
-        if (recordedReplayInfo.Count > _recordingLimit)
-        {
-            recordedReplayInfo.RemoveAt(0);
-        }
-    }
-    
-    private void PlayRecording()
-    {
-        var recordedInfo = recordedReplayInfo[0];
-        transform.position = recordedInfo.position;
-        transform.rotation = recordedInfo.rotation;
-        recordedReplayInfo.RemoveAt(0);
     }
     
     public float GetRadius()
@@ -176,7 +153,7 @@ public class Ball : MonoBehaviour
 
             if (_netLayer == hitLayer)
             {
-                soundManager.PlayNetHit(ballInfo.velocity);
+                _soundManager.PlayNetHit(ballInfo.velocity);
                 if (ballHits[0].normal == Vector3.up)
                 {
                     // Add X noise to prevent infinite bounces
@@ -191,10 +168,10 @@ public class Ball : MonoBehaviour
             {
                 if (hitLayer != _groundLayer)
                 {
-                    pointManager.HandleBallBounce(null);
+                    _pointManager.HandleBallBounce(null);
                     bounceVelocity *= _defaultBounceCoef;
                 }
-                soundManager.PlayBallBounce(ballInfo.velocity);
+                _soundManager.PlayBallBounce(ballInfo.velocity);
             }
 
             ballInfo.Position = ballHits[0].point + ballHits[0].normal * Radius;
@@ -218,25 +195,25 @@ public class Ball : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other == player1.BallCollider)
+        if (other == _player1.BallCollider)
         {
-            player1.ballInsideHitZone = true;
+            _player1.ballInsideHitZone = true;
         }
-        else if (other == player2.ballCollider)
+        else if (other == _player2.ballCollider)
         {
-            player2.ballInsideHitZone = true;
+            _player2.ballInsideHitZone = true;
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other == player1.BallCollider && player1.ballInsideHitZone)
+        if (other == _player1.BallCollider && _player1.ballInsideHitZone)
         {
-            player1.ballInsideHitZone = false;
+            _player1.ballInsideHitZone = false;
         }
-        else if (other == player2.ballCollider && player2.ballInsideHitZone)
+        else if (other == _player2.ballCollider && _player2.ballInsideHitZone)
         {
-            player2.ballInsideHitZone = false;
+            _player2.ballInsideHitZone = false;
         }
     }
 
@@ -253,4 +230,10 @@ public class Ball : MonoBehaviour
     public BallInfo BallInfo => ballInfo;
 
     public bool IsDropshot => _isDropshot;
+    
+    public void ReplayMove(Vector3 position, Quaternion rotation)
+    {
+        transform.position = position;
+        transform.rotation = rotation;
+    }
 }

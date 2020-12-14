@@ -33,13 +33,4 @@ public class TennisVariables : MonoBehaviour
     public float BallColliderFrontDelta = 2f;
 
     [Range(0, 1)] public float AIVolleyModeProbability = 0.2f;
-    
-    public const float MaxRecordingTime = 10;
-    public static bool isRecording;
-    public static bool isPlayingReplay;
-
-    public static int RecordingLimit()
-    {
-        return (int) Mathf.Round(MaxRecordingTime * (1f / Time.fixedDeltaTime));
-    }
 }
