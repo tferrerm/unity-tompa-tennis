@@ -208,11 +208,13 @@ public class AIPlayer : MonoBehaviour
             if (ballSpeed < _tv.FastHitAnimationThresholdSpeed)
             {
                 _animator.SetTrigger(_driveHash);
+                _replayManager.SetPlayerDriveHit(playerId, false);
             }
             else
             {
                 PlayerGrunt();
                 _animator.SetTrigger(_fastDriveHash);
+                _replayManager.SetPlayerDriveHit(playerId, true);
             }
             _hitMethod = HitMethod.Drive;
         }
@@ -221,11 +223,13 @@ public class AIPlayer : MonoBehaviour
             if (ballSpeed < _tv.FastHitAnimationThresholdSpeed)
             {
                 _animator.SetTrigger(_backhandHash);
+                _replayManager.SetPlayerBackhandHit(playerId, false);
             }
             else
             {
                 PlayerGrunt();
                 _animator.SetTrigger(_fastBackhandHash);
+                _replayManager.SetPlayerBackhandHit(playerId, true);
             }
             _hitMethod = HitMethod.Backhand;
         }
@@ -237,16 +241,24 @@ public class AIPlayer : MonoBehaviour
     
     public void HitBall() // Called as animation event
     {
+        _soundManager.PlayRacquetHit(_audioSource);
+        
+        if (_replayManager.isPlayingReplay)
+            return;
+        
         _pointManager.SetPlayerHitBall(playerId);
         _pointManager.HandleBallBounce(null);
         
         var isVolley = _pointManager.PositionInVolleyArea(playerId, transform.position.x);
-        ball.Teleport(isVolley ? (_hitMethod == HitMethod.Drive ? 
-            driveVolleyHitBallSpawn.position : backhandVolleyHitBallSpawn.position) : hitBallSpawn.position);
+
+        if (_replayManager.isRecording)
+        {
+            ball.Teleport(isVolley ? (_hitMethod == HitMethod.Drive ? 
+                driveVolleyHitBallSpawn.position : backhandVolleyHitBallSpawn.position) : hitBallSpawn.position);
+        }
 
         var targetPosition = _courtManager.GetHitTargetPosition(playerId, _hitDirectionVert, _hitDirectionHoriz);
         targetPosition = RandomizeBallTarget(targetPosition, _tv.BallHitTargetRadius);
-        _soundManager.PlayRacquetHit(_audioSource);
         
         float speed;
         float speedYAtt;
@@ -360,6 +372,8 @@ public class AIPlayer : MonoBehaviour
         _animator.SetTrigger(_serviceTriggerHash);
         _hitMethod = HitMethod.Serve;
         _hitDirectionHoriz = (HitDirectionHorizontal)Random.Range(0, 3);
+        
+        _replayManager.SetPlayerServeHit(playerId);
     }
     
     private void TossServiceBall() // Called as animation event
@@ -378,10 +392,14 @@ public class AIPlayer : MonoBehaviour
     
     private void HitServiceBall() // Called as animation event
     {
+        _soundManager.PlayService(_audioSource);
+
+        if (_replayManager.isPlayingReplay) return;
+        
         var targetPosition = _courtManager.GetServiceTargetPosition(playerId, _hitDirectionHoriz);
         targetPosition = RandomizeBallTarget(targetPosition, _tv.BallServeTargetRadius);
         ball.HitBall(targetPosition, _tv.ServiceSpeed, false, true, _tv.ServiceYAttenuation);
-        _soundManager.PlayService(_audioSource);
+        
         _hitDirectionHoriz = null;
         _hitMethod = null;
     }
@@ -467,12 +485,33 @@ public class AIPlayer : MonoBehaviour
         set => _movingToCenter = value;
     }
     
-    public void ReplayMove(Vector3 position, Quaternion rotation)
+    public void ReplayMove(Vector3 position, Quaternion rotation, BallHitReplayInfo ballHitInfo)
     {
         var distance = position - transform.position;
         _animator.SetFloat(_strafeHash, distance.z / Time.fixedDeltaTime);
         _animator.SetFloat(_forwardHash, distance.x / Time.fixedDeltaTime);
         transform.position = position;
         transform.rotation = rotation;
+        
+        if (ballHitInfo.Serve)
+        {
+            _animator.SetTrigger(_serviceTriggerHash);
+        }
+        else if (ballHitInfo.Drive)
+        {
+            _animator.SetTrigger(_driveHash);
+        }
+        else if (ballHitInfo.Backhand)
+        {
+            _animator.SetTrigger(_backhandHash);
+        }
+        else if (ballHitInfo.FastDrive)
+        {
+            _animator.SetTrigger(_fastDriveHash);
+        }
+        else if (ballHitInfo.FastBackhand)
+        {
+            _animator.SetTrigger(_fastBackhandHash);
+        }
     }
 }
