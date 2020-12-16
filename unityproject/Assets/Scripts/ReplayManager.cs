@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ReplayManager : MonoBehaviour
 {
-    public const float MaxRecordingTime = 15f;
+    public const float MaxRecordingTime = 10f;
     public bool isRecording;
     public bool isPlayingReplay;
     
@@ -17,6 +17,13 @@ public class ReplayManager : MonoBehaviour
     
     private BallHitReplayInfo player1BallHitInfo;
     private BallHitReplayInfo player2BallHitInfo;
+
+    private GameObject mainCamera;
+    public GameObject replayCamera;
+    private const float ReplayCameraDepth = 47f;
+    private const float ReplayCameraHeight = 1.5f;
+    private readonly Quaternion replayCameraRotFromPlayerPOV = Quaternion.Euler(new Vector3(0, 90, 0));
+    private readonly Quaternion replayCameraRotFromAIPlayerPOV = Quaternion.Euler(new Vector3(0, 270, 0));
     
     // Start is called before the first frame update
     void Start()
@@ -30,6 +37,8 @@ public class ReplayManager : MonoBehaviour
         
         player1BallHitInfo = new BallHitReplayInfo(_player.playerId);
         player2BallHitInfo = new BallHitReplayInfo(_aiPlayer.playerId);
+
+        mainCamera = GameObject.FindWithTag("MainCamera");
     }
 
     // Update is called once per frame
@@ -73,6 +82,8 @@ public class ReplayManager : MonoBehaviour
     {
         isRecording = false;
         isPlayingReplay = true;
+        mainCamera.SetActive(false);
+        replayCamera.SetActive(true);
         _player.InitializeRecordingPlay();
         _aiPlayer.InitializeRecordingPlay();
     }
@@ -81,6 +92,8 @@ public class ReplayManager : MonoBehaviour
     private void PlayRecording()
     {
         var recordedInfo = recordedReplayInfo[0];
+
+        MoveReplayCamera(recordedInfo.ballPosition);
         
         _player.ReplayMove(recordedInfo.player1Position, recordedInfo.player1Rotation, recordedInfo.player1BallHitInfo);
         _aiPlayer.ReplayMove(recordedInfo.player2Position, recordedInfo.player2Rotation, recordedInfo.player2BallHitInfo);
@@ -88,10 +101,19 @@ public class ReplayManager : MonoBehaviour
         
         recordedReplayInfo.RemoveAt(0);
     }
-    
+
+    private void MoveReplayCamera(Vector3 ballPosition)
+    {
+        var cameraPos = replayCamera.transform.position;
+        replayCamera.transform.position = new Vector3(cameraPos.x, cameraPos.y, ballPosition.z);
+    }
+
     public void StopReplay()
     {
+        // isRecording is set to true when service takes place
         isPlayingReplay = false;
+        mainCamera.SetActive(true);
+        replayCamera.SetActive(false);
         _player.StopRecordingPlay();
         _aiPlayer.StopRecordingPlay();
     }
@@ -148,5 +170,17 @@ public class ReplayManager : MonoBehaviour
     {
         player1BallHitInfo.Reset();
         player2BallHitInfo.Reset();
+    }
+
+    public void SetCameraPosition(int pointWinnerId)
+    {
+        //var ballVelocity = ball.BallInfo.velocity;
+        //Vector2 ballDirection = new Vector2(ballVelocity.x, ballVelocity.z);
+        
+        var replayCameraDepth = ReplayCameraDepth * (pointWinnerId == _player.playerId ? -1 : 1);
+        replayCamera.transform.position = new Vector3(replayCameraDepth, ReplayCameraHeight, recordedReplayInfo[0].ballPosition.z);
+        replayCamera.transform.rotation = pointWinnerId == _player.playerId
+            ? replayCameraRotFromPlayerPOV
+            : replayCameraRotFromAIPlayerPOV;
     }
 }
