@@ -18001,11 +18001,11 @@ MonoBehaviour:
   lastBallHitPosition: {x: 0, y: 0, z: 0}
   skipReplay:
     m_Name: Skip Replay
-    m_Type: 0
-    m_ExpectedControlType: 
+    m_Type: 1
+    m_ExpectedControlType: Button
     m_Id: 1bca93c6-7c69-4180-a166-2ac6bba43a7f
     m_Processors: 
-    m_Interactions: 
+    m_Interactions: Press(pressPoint=0.2)
     m_SingletonActionBindings:
     - m_Name: 
       m_Id: 910ff65f-0293-4925-8aca-8ff247ecc373
