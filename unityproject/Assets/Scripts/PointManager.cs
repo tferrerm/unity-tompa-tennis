@@ -17,16 +17,18 @@ public class PointManager : MonoBehaviour
     private AIPlayer _player2;
     private ReplayManager _replayManager;
 
-    private enum PointState
+    public enum PointState
     {
-        FirstServe = 0,
-        SecondServe = 1,
-        ReceiverTurn = 2,
-        ReceiverHit = 3,
-        ServerTurn = 4,
-        ServerHit = 5,
-        WaitingFirstServe = 6,
-        WaitingSecondServe = 7
+        FirstServeBallToss = 0,
+        FirstServe = 1,
+        SecondServeBallToss = 2,
+        SecondServe = 3,
+        ReceiverTurn = 4,
+        ReceiverHit = 5,
+        ServerTurn = 6,
+        ServerHit = 7,
+        WaitingFirstServe = 8,
+        WaitingSecondServe = 9
     }
 
     public enum CourtTarget
@@ -280,5 +282,10 @@ public class PointManager : MonoBehaviour
     {
         return courtSectionMapper.PositionInVolleyArea(posX, playerId == _player1.playerId ? 
             CourtSectionMapper.Depth.Front : CourtSectionMapper.Depth.Back);
+    }
+
+    public PointState GetPointState()
+    {
+        return _pointState;
     }
 }
