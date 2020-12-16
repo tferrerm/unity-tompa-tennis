@@ -5,14 +5,11 @@ using UnityEngine;
 
 public class ServeSpeedManager : MonoBehaviour
 {
-
-    public PointManager pointManager;
-
     private float _powerFactor;
     private readonly float _factorLowerBound = 0.5f;
     private readonly float _factorUpperBound = 1.5f;
     private bool _factorGrowing = true;
-    private bool _oscilating = false;
+    private bool _oscillating;
 
     // Start is called before the first frame update
     void Start()
@@ -23,30 +20,33 @@ public class ServeSpeedManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (pointManager.GetPointState()  == PointManager.PointState.FirstServeBallToss ||
-            pointManager.GetPointState()  == PointManager.PointState.SecondServeBallToss)
+        if (!_oscillating) return;
+        if (_factorGrowing)
         {
-            if (_factorGrowing)
+            _powerFactor += Time.deltaTime;
+            if (_powerFactor >= _factorUpperBound)
             {
-                _powerFactor += Time.deltaTime;
-                if (_powerFactor >= _factorUpperBound)
-                {
-                    _factorGrowing = false;
-                }
+                _factorGrowing = false;
             }
-            else
+        }
+        else
+        {
+            _powerFactor -= Time.deltaTime;
+            if (_powerFactor <= _factorLowerBound)
             {
-                _powerFactor -= Time.deltaTime;
-                if (_powerFactor <= _factorLowerBound)
-                {
-                    _factorGrowing = true;
-                }
+                _factorGrowing = true;
             }
         }
     }
 
-    void StopPowerOscilation()
+    public float StopPowerOscillation()
     {
-        _oscilating = false;
+        _oscillating = false;
+        return _powerFactor;
+    }
+    
+    public void StartPowerOscillation()
+    {
+        _oscillating = true;
     }
 }

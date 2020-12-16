@@ -47,20 +47,24 @@ public class Player : MonoBehaviour
     private int _fastBackhandHash;
     
     private bool _reachedServingBound;
+    private bool _servePowerOscillating;
 
     private float _moveLeftRightValue;
     private float _moveUpDownValue;
+    private float _servePowerFactor;
 
     public Ball ball;
     public GameObject attachedBall; // Ball copy attached to player's hand for service animation
     public Transform attachedBallParent;
 
     public GameManager gameManager;
+    public ServeSpeedManager serveSpeedManager;
     private CourtManager _courtManager;
     private PointManager _pointManager;
     private SoundManager _soundManager;
     private ReplayManager _replayManager;
     private TennisVariables _tv;
+    
     
     //private readonly Dictionary<HitMethod, TechniqueAttributes> _techniqueAttrs = new Dictionary<HitMethod, TechniqueAttributes>();
 
@@ -223,8 +227,18 @@ public class Player : MonoBehaviour
         {
             if (_pointManager.IsServing(playerId) && !hitServiceBall && _hitMethod == null)
             {
-                StartService();
-                _movementBlocked = true;
+                if (_servePowerOscillating)
+                {
+                    _servePowerFactor = serveSpeedManager.StopPowerOscillation();
+                    StartService();
+                    _movementBlocked = true;
+                }
+                else
+                {
+                    _servePowerOscillating  = true;
+                    _movementBlocked = true;
+                    serveSpeedManager.StartPowerOscillation();
+                }
             } else if (CanHitBall())
             {
                 ballInsideHitZone = false; // Cannot hit ball twice
@@ -385,7 +399,7 @@ public class Player : MonoBehaviour
         
         var targetPosition = _courtManager.GetServiceTargetPosition(playerId, _hitDirectionHoriz);
         targetPosition = RandomizeBallTarget(targetPosition, _tv.BallServeTargetRadius);
-        ball.HitBall(targetPosition, _tv.ServiceSpeed, false, true, _tv.ServiceYAttenuation);
+        ball.HitBall(targetPosition, _tv.ServiceSpeed * _servePowerFactor, false, true, _tv.ServiceYAttenuation);
         
         _hitDirectionHoriz = null;
         _hitMethod = null;
