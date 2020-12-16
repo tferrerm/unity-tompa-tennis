@@ -39,7 +39,9 @@ public class PointManager : MonoBehaviour
 
     private PointState _pointState = PointState.FirstServe;
 
-    private bool _isDoubleFault;
+    private bool _isServiceFault;
+    private PointState _nextState;
+    private IEnumerator _nextServeCoroutine;
 
     private void Awake()
     {
@@ -81,13 +83,14 @@ public class PointManager : MonoBehaviour
                     // Service is out
                     if (_pointState == PointState.FirstServe)
                     {
+                        _isServiceFault = true;
                         _pointState = PointState.WaitingSecondServe;
                         ResetPoint(PointState.SecondServe);
                     }
                     else
                     {
                         //Double fault
-                        _isDoubleFault = true;
+                        _isServiceFault = true;
                         _pointState = PointState.WaitingFirstServe;
                         _scoreManager.WinPoint(_scoreManager.GetReceivingPlayerId());
                         ResetPoint(PointState.FirstServe);
@@ -175,18 +178,18 @@ public class PointManager : MonoBehaviour
         _player2.ResetTargetMovementVariables();
         _player2.MovingToCenter = false;
         _player2.VolleyModeActivated = false;
-        
-        
-        var coroutine = WaitForNextServe(nextServeState);
-        StartCoroutine(coroutine);
+
+        _nextState = nextServeState;
+        _nextServeCoroutine = WaitForNextServe();
+        StartCoroutine(_nextServeCoroutine);
     }
 
-    private IEnumerator WaitForNextServe(PointState nextServeState)
+    private IEnumerator WaitForNextServe()
     {
         _player1.StopMovementAnimation();
         yield return new WaitForSeconds(NextPointWaitingTime);
 
-        if (!_isDoubleFault)
+        if (!_isServiceFault)
         {
             _replayManager.InitializeReplay();
             yield return new WaitForSeconds(ReplayManager.MaxRecordingTime); // TODO CHANGE WAITING TIME
@@ -194,13 +197,23 @@ public class PointManager : MonoBehaviour
         }
         else
         {
-            _isDoubleFault = false;
+            _isServiceFault = false;
         }
 
         _player1.StopMovementAnimation();
         ResetPlayers();
         AIPlayerServiceCheck();
-        _pointState = nextServeState;
+        _pointState = _nextState;
+    }
+
+    public void StopWaitForNextServe()
+    {
+        _replayManager.StopReplay();
+        StopCoroutine(_nextServeCoroutine);
+        _player1.StopMovementAnimation();
+        ResetPlayers();
+        AIPlayerServiceCheck();
+        _pointState = _nextState;
     }
 
     private void AIPlayerServiceCheck()

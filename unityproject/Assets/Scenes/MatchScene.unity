@@ -17999,6 +17999,30 @@ MonoBehaviour:
   - {fileID: 818513097}
   - {fileID: 1592325695}
   lastBallHitPosition: {x: 0, y: 0, z: 0}
+  skipReplay:
+    m_Name: Skip Replay
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 1bca93c6-7c69-4180-a166-2ac6bba43a7f
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 910ff65f-0293-4925-8aca-8ff247ecc373
+      m_Path: '*/{Submit}'
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Skip Replay
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 2cf74e2e-ae30-4c25-9641-b2b50f0812bf
+      m_Path: <Keyboard>/space
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Skip Replay
+      m_Flags: 0
 --- !u!1 &1691975651
 GameObject:
   m_ObjectHideFlags: 0
