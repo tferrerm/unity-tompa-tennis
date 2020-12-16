@@ -391,6 +391,8 @@ public class Player : MonoBehaviour
         _hitMethod = null;
         hitServiceBall = true;
         
+        _replayManager.lastBallHitPosition = ball.GetPosition();
+        
         gameManager.PlayerHitBall(ball.GetPosition());
     }
 
@@ -417,12 +419,9 @@ public class Player : MonoBehaviour
         _pointManager.HandleBallBounce(null);
         
         var isVolley = _pointManager.PositionInVolleyArea(playerId, transform.position.x);
-
-        if (_replayManager.isRecording)
-        {
-            ball.Teleport(isVolley ? (_hitMethod == HitMethod.Drive ? 
-                driveVolleyHitBallSpawn.position : backhandVolleyHitBallSpawn.position) : hitBallSpawn.position);
-        }
+        
+        ball.Teleport(isVolley ? (_hitMethod == HitMethod.Drive ? 
+            driveVolleyHitBallSpawn.position : backhandVolleyHitBallSpawn.position) : hitBallSpawn.position);
         
         var targetPosition = _courtManager.GetHitTargetPosition(playerId, _hitDirectionVert, _hitDirectionHoriz);
         targetPosition = RandomizeBallTarget(targetPosition, _tv.BallHitTargetRadius);
@@ -461,6 +460,8 @@ public class Player : MonoBehaviour
         _hitDirectionHoriz = null;
         _hitMethod = null;
 
+        _replayManager.lastBallHitPosition = ball.GetPosition();
+        
         gameManager.PlayerHitBall(ball.GetPosition());
     }
     

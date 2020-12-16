@@ -20,10 +20,12 @@ public class ReplayManager : MonoBehaviour
 
     private GameObject mainCamera;
     public GameObject replayCamera;
-    private const float ReplayCameraDepth = 47f;
-    private const float ReplayCameraHeight = 1.5f;
-    private readonly Quaternion replayCameraRotFromPlayerPOV = Quaternion.Euler(new Vector3(0, 90, 0));
-    private readonly Quaternion replayCameraRotFromAIPlayerPOV = Quaternion.Euler(new Vector3(0, 270, 0));
+    public Transform[] replayCameraPOVUp;
+    public Transform[] replayCameraPOVDown;
+    private const int Left = 0;
+    private const int Right = 1;
+    
+    [HideInInspector] public Vector3 lastBallHitPosition;
     
     // Start is called before the first frame update
     void Start()
@@ -93,7 +95,7 @@ public class ReplayManager : MonoBehaviour
     {
         var recordedInfo = recordedReplayInfo[0];
 
-        MoveReplayCamera(recordedInfo.ballPosition);
+        //MoveReplayCamera(recordedInfo.ballPosition);
         
         _player.ReplayMove(recordedInfo.player1Position, recordedInfo.player1Rotation, recordedInfo.player1BallHitInfo);
         _aiPlayer.ReplayMove(recordedInfo.player2Position, recordedInfo.player2Rotation, recordedInfo.player2BallHitInfo);
@@ -174,13 +176,18 @@ public class ReplayManager : MonoBehaviour
 
     public void SetCameraPosition(int pointWinnerId)
     {
-        //var ballVelocity = ball.BallInfo.velocity;
-        //Vector2 ballDirection = new Vector2(ballVelocity.x, ballVelocity.z);
+        var ballPosition = ball.GetPosition();
+
+        var parallelHit = lastBallHitPosition.z * ballPosition.z > 0;
+        var isEvenSide = ballPosition.x * ballPosition.z > 0;
+        var ballUpZAxis = pointWinnerId == _player.playerId? 
+            (isEvenSide ? Left : Right) : // Player won point
+            (isEvenSide ? (parallelHit? Right : Left) : (parallelHit? Left : Right)); // AI Player won point
+        var upPOV = replayCameraPOVUp[ballUpZAxis];
+        var downPOV = replayCameraPOVDown[(ballUpZAxis + (parallelHit? 0 : 1)) % 2];
         
-        var replayCameraDepth = ReplayCameraDepth * (pointWinnerId == _player.playerId ? -1 : 1);
-        replayCamera.transform.position = new Vector3(replayCameraDepth, ReplayCameraHeight, recordedReplayInfo[0].ballPosition.z);
-        replayCamera.transform.rotation = pointWinnerId == _player.playerId
-            ? replayCameraRotFromPlayerPOV
-            : replayCameraRotFromAIPlayerPOV;
+        var useUpPOV = Random.Range(0, 2) == 0;
+        replayCamera.transform.position = useUpPOV? upPOV.position : downPOV.position;
+        replayCamera.transform.rotation = useUpPOV? upPOV.rotation : downPOV.rotation;
     }
 }

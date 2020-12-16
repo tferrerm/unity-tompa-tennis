@@ -293,6 +293,8 @@ public class AIPlayer : MonoBehaviour
         _hitDirectionVert = null;
         _hitDirectionHoriz = null;
         _hitMethod = null;
+        
+        _replayManager.lastBallHitPosition = ball.GetPosition();
     }
     
     private Vector3 RandomizeBallTarget(Vector3 posEnd, float randomRadius)
@@ -402,6 +404,8 @@ public class AIPlayer : MonoBehaviour
         
         _hitDirectionHoriz = null;
         _hitMethod = null;
+        
+        _replayManager.lastBallHitPosition = ball.GetPosition();
     }
     
     public void Cheer()
