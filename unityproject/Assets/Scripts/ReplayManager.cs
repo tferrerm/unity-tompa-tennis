@@ -26,6 +26,8 @@ public class ReplayManager : MonoBehaviour
     private const int Right = 1;
     
     [HideInInspector] public Vector3 lastBallHitPosition;
+
+    private GameObject _scoreboard;
     
     // Start is called before the first frame update
     void Start()
@@ -41,6 +43,7 @@ public class ReplayManager : MonoBehaviour
         player2BallHitInfo = new BallHitReplayInfo(_aiPlayer.playerId);
 
         mainCamera = GameObject.FindWithTag("MainCamera");
+        _scoreboard = GameObject.FindGameObjectWithTag("Scoreboard");
     }
 
     // Update is called once per frame
@@ -88,6 +91,7 @@ public class ReplayManager : MonoBehaviour
         replayCamera.SetActive(true);
         _player.InitializeRecordingPlay();
         _aiPlayer.InitializeRecordingPlay();
+        _scoreboard.SetActive(false);
     }
 
     // TODO: fix animation when hitting ball. Store some hitting Ball variable in RecordedReplayInfo
@@ -118,6 +122,7 @@ public class ReplayManager : MonoBehaviour
         replayCamera.SetActive(false);
         _player.StopRecordingPlay();
         _aiPlayer.StopRecordingPlay();
+        _scoreboard.SetActive(true);
     }
     
     public void SetPlayerDriveHit(int playerId, bool isFastHit)

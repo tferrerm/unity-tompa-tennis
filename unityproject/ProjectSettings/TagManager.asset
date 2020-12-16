@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Ball
   - ReplayCamera
+  - Scoreboard
   layers:
   - Default
   - TransparentFX
