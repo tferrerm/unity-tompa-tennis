@@ -125,6 +125,9 @@ public class ReplayManager : MonoBehaviour
         _scoreboard.SetActive(false);
         skipReplay.Enable();
         _cameraRotationSpeed = CameraRotationInitialSpeed;
+        _replayInfoCounter = 0;
+        ball.ReplayMove(recordedReplayInfo[0].ballPosition, recordedReplayInfo[0].ballRotation);
+        ball.trail.Clear();
     }
 
     private void PlayRecording()
