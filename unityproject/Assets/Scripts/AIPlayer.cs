@@ -117,12 +117,13 @@ public class AIPlayer : MonoBehaviour
         _characterController.enabled = true;
         _animator.SetFloat(_strafeHash, 0);
         _animator.SetFloat(_forwardHash, 0);
+        _animator.Rebind();
         ResetTargetMovementVariables();
     }
 
     void Update()
     {
-        if (_replayManager.isPlayingReplay)
+        if (!_replayManager.isRecording)
             return;
         
         if (_movingToCenter && _target != null)
@@ -244,7 +245,7 @@ public class AIPlayer : MonoBehaviour
     {
         _soundManager.PlayRacquetHit(_audioSource);
         
-        if (_replayManager.isPlayingReplay)
+        if (!_replayManager.isRecording)
             return;
         
         _pointManager.SetPlayerHitBall(playerId);
@@ -296,6 +297,7 @@ public class AIPlayer : MonoBehaviour
         _hitMethod = null;
         
         _replayManager.lastBallHitPosition = ball.GetPosition();
+        _replayManager.SetHitCheckpoint();
     }
     
     private Vector3 RandomizeBallTarget(Vector3 posEnd, float randomRadius)
@@ -376,6 +378,7 @@ public class AIPlayer : MonoBehaviour
         _hitMethod = HitMethod.Serve;
         _hitDirectionHoriz = (HitDirectionHorizontal)Random.Range(0, 3);
         
+        _replayManager.SetHitCheckpoint();
         _replayManager.SetPlayerServeHit(playerId);
     }
     
@@ -397,7 +400,7 @@ public class AIPlayer : MonoBehaviour
     {
         _soundManager.PlayService(_audioSource);
 
-        if (_replayManager.isPlayingReplay) return;
+        if (!_replayManager.isRecording) return;
         
         var targetPosition = _courtManager.GetServiceTargetPosition(playerId, _hitDirectionHoriz);
         targetPosition = RandomizeBallTarget(targetPosition, _tv.BallServeTargetRadius);

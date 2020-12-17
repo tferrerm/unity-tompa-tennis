@@ -190,7 +190,7 @@ public class PointManager : MonoBehaviour
         if (!_isServiceFault)
         {
             _replayManager.InitializeReplay();
-            yield return new WaitForSeconds(ReplayManager.MaxRecordingTime); // TODO CHANGE WAITING TIME
+            yield return new WaitForSeconds(_replayManager.GetReplayTime());
             _replayManager.StopReplay();
         }
         else
@@ -206,8 +206,8 @@ public class PointManager : MonoBehaviour
 
     public void StopWaitForNextServe()
     {
-        _replayManager.StopReplay();
         StopCoroutine(_nextServeCoroutine);
+        _replayManager.StopReplay();
         _player1.StopMovementAnimation();
         ResetPlayers();
         AIPlayerServiceCheck();

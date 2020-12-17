@@ -167,6 +167,7 @@ public class Player : MonoBehaviour
         _characterController.enabled = true;
         _animator.SetFloat(_strafeHash, 0);
         _animator.SetFloat(_forwardHash, 0);
+        _animator.Rebind();
         wasd.Enable();
         hitBall.Enable();
     }
@@ -334,6 +335,7 @@ public class Player : MonoBehaviour
         _hitMethod = HitMethod.Serve;
         _hitDirectionHoriz = HitDirectionHorizontal.Center;
         
+        _replayManager.SetHitCheckpoint();
         _replayManager.SetPlayerServeHit(playerId);
     }
 
@@ -398,7 +400,7 @@ public class Player : MonoBehaviour
     {
         _soundManager.PlayService(_audioSource);
 
-        if (_replayManager.isPlayingReplay) return;
+        if (!_replayManager.isRecording) return;
         
         var targetPosition = _courtManager.GetServiceTargetPosition(playerId, _hitDirectionHoriz);
         targetPosition = RandomizeBallTarget(targetPosition, _tv.BallServeTargetRadius);
@@ -410,7 +412,7 @@ public class Player : MonoBehaviour
         hitServiceBall = true;
         
         _replayManager.lastBallHitPosition = ball.GetPosition();
-        
+
         gameManager.PlayerHitBall(ball.GetPosition());
     }
 
@@ -430,7 +432,7 @@ public class Player : MonoBehaviour
     {
         _soundManager.PlayRacquetHit(_audioSource);
         
-        if (_replayManager.isPlayingReplay)
+        if (!_replayManager.isRecording)
             return;
         
         _pointManager.SetPlayerHitBall(playerId);
@@ -479,6 +481,7 @@ public class Player : MonoBehaviour
         _hitMethod = null;
 
         _replayManager.lastBallHitPosition = ball.GetPosition();
+        _replayManager.SetHitCheckpoint();
         
         gameManager.PlayerHitBall(ball.GetPosition());
     }
