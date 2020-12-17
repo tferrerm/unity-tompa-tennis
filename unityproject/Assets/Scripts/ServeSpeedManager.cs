@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class ServeSpeedManager : MonoBehaviour
 {
-    private float _powerFactor;
-    private readonly float _factorLowerBound = 0.5f;
+    public Healthbar healthbar;
+    private float _powerFactor = 1f;
+    private readonly float _factorLowerBound = 1f;
     private readonly float _factorUpperBound = 1.5f;
     private bool _factorGrowing = true;
     private bool _oscillating;
@@ -23,7 +24,16 @@ public class ServeSpeedManager : MonoBehaviour
         if (!_oscillating) return;
         if (_factorGrowing)
         {
-            _powerFactor += Time.deltaTime;
+            if (_powerFactor + (float)(Time.deltaTime * 1.5) > _factorUpperBound)
+            {
+                _powerFactor = _factorUpperBound;
+            }
+            else
+            {
+                _powerFactor += (float)(Time.deltaTime * 1.5);
+            }
+            print(_powerFactor);
+            healthbar.SetHealth(GetPercentage(_powerFactor));
             if (_powerFactor >= _factorUpperBound)
             {
                 _factorGrowing = false;
@@ -31,7 +41,17 @@ public class ServeSpeedManager : MonoBehaviour
         }
         else
         {
-            _powerFactor -= Time.deltaTime;
+            if (_powerFactor - (float)(Time.deltaTime * 1.5) < _factorLowerBound)
+            {
+                _powerFactor = _factorLowerBound;
+            }
+            else
+            {
+                _powerFactor -= (float)(Time.deltaTime * 1.5);
+            }
+
+            print(_powerFactor);
+            healthbar.SetHealth(GetPercentage(_powerFactor));
             if (_powerFactor <= _factorLowerBound)
             {
                 _factorGrowing = true;
@@ -40,7 +60,7 @@ public class ServeSpeedManager : MonoBehaviour
     }
 
     public float StopPowerOscillation()
-    {
+    { 
         _oscillating = false;
         return _powerFactor;
     }
@@ -48,5 +68,10 @@ public class ServeSpeedManager : MonoBehaviour
     public void StartPowerOscillation()
     {
         _oscillating = true;
+    }
+    
+    private float GetPercentage(float powerFactor)
+    {
+        return (float)((powerFactor - _factorLowerBound) * 100 / (_factorUpperBound  - _factorLowerBound));
     }
 }

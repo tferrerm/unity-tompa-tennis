@@ -58,7 +58,7 @@ public class Player : MonoBehaviour
     public Transform attachedBallParent;
 
     public GameManager gameManager;
-    public ServeSpeedManager serveSpeedManager;
+    private ServeSpeedManager _serveSpeedManager;
     private CourtManager _courtManager;
     private PointManager _pointManager;
     private SoundManager _soundManager;
@@ -92,7 +92,9 @@ public class Player : MonoBehaviour
         _characterController = GetComponent<CharacterController>();
         _audioSource = GetComponent<AudioSource>();
         _animator = GetComponent<Animator>();
+        _serveSpeedManager = GetComponent<ServeSpeedManager>();
         _actionMapper = new ActionMapper(wasd, hitBall);
+        
     }
 
     private void OnEnable()
@@ -229,7 +231,7 @@ public class Player : MonoBehaviour
             {
                 if (_servePowerOscillating)
                 {
-                    _servePowerFactor = serveSpeedManager.StopPowerOscillation();
+                    _servePowerFactor = _serveSpeedManager.StopPowerOscillation();
                     StartService();
                     _movementBlocked = true;
                 }
@@ -237,7 +239,7 @@ public class Player : MonoBehaviour
                 {
                     _servePowerOscillating  = true;
                     _movementBlocked = true;
-                    serveSpeedManager.StartPowerOscillation();
+                    _serveSpeedManager.StartPowerOscillation();
                 }
             } else if (CanHitBall())
             {
@@ -399,7 +401,8 @@ public class Player : MonoBehaviour
         
         var targetPosition = _courtManager.GetServiceTargetPosition(playerId, _hitDirectionHoriz);
         targetPosition = RandomizeBallTarget(targetPosition, _tv.BallServeTargetRadius);
-        ball.HitBall(targetPosition, _tv.ServiceSpeed * _servePowerFactor, false, true, _tv.ServiceYAttenuation);
+        ball.HitBall(targetPosition, _tv.ServiceSpeed * _servePowerFactor, false, true, 
+            _tv.ServiceYAttenuation * ((float) Math.Pow(_servePowerFactor, 2) * 0.4f));
         
         _hitDirectionHoriz = null;
         _hitMethod = null;
