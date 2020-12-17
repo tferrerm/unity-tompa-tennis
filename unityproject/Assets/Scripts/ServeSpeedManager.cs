@@ -27,6 +27,8 @@ public class ServeSpeedManager : MonoBehaviour
             if (_powerFactor + (float)(Time.deltaTime * 1.5) > _factorUpperBound)
             {
                 _powerFactor = _factorUpperBound;
+                _factorGrowing = false;
+
             }
             else
             {
@@ -34,40 +36,34 @@ public class ServeSpeedManager : MonoBehaviour
             }
             print(_powerFactor);
             healthbar.SetHealth(GetPercentage(_powerFactor));
-            if (_powerFactor >= _factorUpperBound)
-            {
-                _factorGrowing = false;
-            }
         }
         else
         {
             if (_powerFactor - (float)(Time.deltaTime * 1.5) < _factorLowerBound)
             {
                 _powerFactor = _factorLowerBound;
+                _factorGrowing = true;
             }
             else
             {
                 _powerFactor -= (float)(Time.deltaTime * 1.5);
             }
-
             print(_powerFactor);
             healthbar.SetHealth(GetPercentage(_powerFactor));
-            if (_powerFactor <= _factorLowerBound)
-            {
-                _factorGrowing = true;
-            }
         }
     }
 
     public float StopPowerOscillation()
     { 
         _oscillating = false;
+        //GameObject.FindWithTag("ServePowerBar").SetActive(false);
         return _powerFactor;
     }
     
     public void StartPowerOscillation()
     {
         _oscillating = true;
+        //GameObject.FindWithTag("ServePowerBar").SetActive(true);
     }
     
     private float GetPercentage(float powerFactor)

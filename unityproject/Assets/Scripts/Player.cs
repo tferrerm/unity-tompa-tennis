@@ -231,9 +231,10 @@ public class Player : MonoBehaviour
             {
                 if (_servePowerOscillating)
                 {
+                    _servePowerOscillating  = false;
                     _servePowerFactor = _serveSpeedManager.StopPowerOscillation();
-                    StartService();
                     _movementBlocked = true;
+                    StartService();
                 }
                 else
                 {
