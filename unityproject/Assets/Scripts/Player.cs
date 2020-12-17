@@ -555,6 +555,7 @@ public class Player : MonoBehaviour
 
         if (ballHitInfo.Serve)
         {
+            SwitchBallType(true);
             _animator.SetTrigger(_serviceTriggerHash);
         }
         else if (ballHitInfo.Drive)
