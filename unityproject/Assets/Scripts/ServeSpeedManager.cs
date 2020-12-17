@@ -6,6 +6,8 @@ using UnityEngine;
 public class ServeSpeedManager : MonoBehaviour
 {
     public Healthbar healthbar;
+    private Player _player;
+    private GameObject _servePowerBar;
     private float _powerFactor = 1f;
     private readonly float _factorLowerBound = 1f;
     private readonly float _factorUpperBound = 1.5f;
@@ -15,7 +17,8 @@ public class ServeSpeedManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        _player = GetComponent<Player>();
+        _servePowerBar = GameObject.FindWithTag("ServePowerBar");
     }
 
     // Update is called once per frame
@@ -34,7 +37,7 @@ public class ServeSpeedManager : MonoBehaviour
             {
                 _powerFactor += (float)(Time.deltaTime * 1.5);
             }
-            print(_powerFactor);
+            // print(_powerFactor);
             healthbar.SetHealth(GetPercentage(_powerFactor));
         }
         else
@@ -48,7 +51,7 @@ public class ServeSpeedManager : MonoBehaviour
             {
                 _powerFactor -= (float)(Time.deltaTime * 1.5);
             }
-            print(_powerFactor);
+            // print(_powerFactor);
             healthbar.SetHealth(GetPercentage(_powerFactor));
         }
     }
@@ -56,18 +59,19 @@ public class ServeSpeedManager : MonoBehaviour
     public float StopPowerOscillation()
     { 
         _oscillating = false;
-        //GameObject.FindWithTag("ServePowerBar").SetActive(false);
+        _servePowerBar.SetActive(false);
         return _powerFactor;
     }
     
     public void StartPowerOscillation()
     {
         _oscillating = true;
-        //GameObject.FindWithTag("ServePowerBar").SetActive(true);
+        _player.StopMovementAnimation();
+        _servePowerBar.SetActive(true);
     }
     
     private float GetPercentage(float powerFactor)
     {
-        return (float)((powerFactor - _factorLowerBound) * 100 / (_factorUpperBound  - _factorLowerBound));
+        return (powerFactor - _factorLowerBound) * 100.0f / (_factorUpperBound  - _factorLowerBound);
     }
 }
