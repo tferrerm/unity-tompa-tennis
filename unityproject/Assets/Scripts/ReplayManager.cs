@@ -37,6 +37,8 @@ public class ReplayManager : MonoBehaviour
     private int _lastHitCheckpointId = -1;
     private bool _isAce = true;
     private const float FramePercentageToShowBeforeInitialCheckpoint = 0.4f;
+    private const float MinTimeScale = 0.75f;
+    private const float TimeScaleMultiplier = 0.975f;
     
     private int _cameraRotationEndId;
     private const float CameraRotationInitialSpeed = 0.05f;
@@ -123,12 +125,16 @@ public class ReplayManager : MonoBehaviour
         _scoreboard.SetActive(false);
         skipReplay.Enable();
         _cameraRotationSpeed = CameraRotationInitialSpeed;
-        //Time.timeScale = 0.8f;
     }
 
     private void PlayRecording()
     {
         var recordedInfo = recordedReplayInfo[0];
+
+        if (recordedInfo.id > _lastHitCheckpointId && Time.timeScale > MinTimeScale)
+        {
+            Time.timeScale *= TimeScaleMultiplier;
+        }
 
         MoveReplayCamera(recordedInfo.id, recordedInfo.ballPosition);
 
@@ -169,7 +175,7 @@ public class ReplayManager : MonoBehaviour
         recordedReplayInfo.Clear();
         _lastHitCheckpointId = -1;
         _isAce = true;
-        //Time.timeScale = 1f;
+        Time.timeScale = 1f;
     }
     
     public void SetPlayerDriveHit(int playerId, bool isFastHit)
