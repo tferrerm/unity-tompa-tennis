@@ -117,6 +117,7 @@ public class AIPlayer : MonoBehaviour
         _characterController.enabled = true;
         _animator.SetFloat(_strafeHash, 0);
         _animator.SetFloat(_forwardHash, 0);
+        ResetTargetMovementVariables();
     }
 
     void Update()

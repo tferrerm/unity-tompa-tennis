@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RecordedReplayInfo
 {
+    public int id;
     public Vector3 player1Position;
     public Quaternion player1Rotation;
     public BallHitReplayInfo player1BallHitInfo;
@@ -13,11 +14,12 @@ public class RecordedReplayInfo
     public Vector3 ballPosition;
     public Quaternion ballRotation;
 
-    public RecordedReplayInfo(
+    public RecordedReplayInfo(int id,
         Vector3 player1Position, Quaternion player1Rotation, BallHitReplayInfo player1BallHitInfo,
         Vector3 player2Position, Quaternion player2Rotation, BallHitReplayInfo player2BallHitInfo,
         Vector3 ballPosition, Quaternion ballRotation)
     {
+        this.id = id;
         this.player1Position = player1Position;
         this.player1Rotation = player1Rotation;
         this.player1BallHitInfo = new BallHitReplayInfo(player1BallHitInfo);

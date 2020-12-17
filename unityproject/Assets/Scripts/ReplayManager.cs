@@ -7,6 +7,7 @@ public class ReplayManager : MonoBehaviour
     public const float MaxRecordingTime = 10f;
     public bool isRecording;
     public bool isPlayingReplay;
+    private int _replayInfoCounter;
     
     public List<RecordedReplayInfo> recordedReplayInfo;
     private int _recordingLimit;
@@ -26,7 +27,12 @@ public class ReplayManager : MonoBehaviour
     private const int Right = 1;
     
     [HideInInspector] public Vector3 lastBallHitPosition;
-
+    
+    private int _cameraRotationEndId;
+    private const float CameraRotationInitialSpeed = 0.05f;
+    private float _cameraRotationSpeed;
+    private float _cameraRotationStopMultiplier = 0.95f;
+    
     private GameObject _scoreboard;
     
     // Start is called before the first frame update
@@ -44,12 +50,6 @@ public class ReplayManager : MonoBehaviour
 
         mainCamera = GameObject.FindWithTag("MainCamera");
         _scoreboard = GameObject.FindGameObjectWithTag("Scoreboard");
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
     
     private void FixedUpdate()
@@ -71,7 +71,7 @@ public class ReplayManager : MonoBehaviour
         var aiPlayerTransform = _aiPlayer.transform;
         var ballTransform = ball.transform;
         
-        recordedReplayInfo.Add(new RecordedReplayInfo(
+        recordedReplayInfo.Add(new RecordedReplayInfo(_replayInfoCounter,
                 playerTransform.position, playerTransform.rotation, player1BallHitInfo,
                 aiPlayerTransform.position, aiPlayerTransform.rotation, player2BallHitInfo,
                 ballTransform.position, ballTransform.rotation
@@ -81,6 +81,8 @@ public class ReplayManager : MonoBehaviour
         {
             recordedReplayInfo.RemoveAt(0);
         }
+        
+        _replayInfoCounter++;
     }
 
     public void InitializeReplay()
@@ -92,6 +94,7 @@ public class ReplayManager : MonoBehaviour
         _player.InitializeRecordingPlay();
         _aiPlayer.InitializeRecordingPlay();
         _scoreboard.SetActive(false);
+        _cameraRotationSpeed = CameraRotationInitialSpeed;
     }
 
     // TODO: fix animation when hitting ball. Store some hitting Ball variable in RecordedReplayInfo
@@ -99,8 +102,8 @@ public class ReplayManager : MonoBehaviour
     {
         var recordedInfo = recordedReplayInfo[0];
 
-        //MoveReplayCamera(recordedInfo.ballPosition);
-        
+        MoveReplayCamera(recordedInfo.id, recordedInfo.ballPosition);
+
         _player.ReplayMove(recordedInfo.player1Position, recordedInfo.player1Rotation, recordedInfo.player1BallHitInfo);
         _aiPlayer.ReplayMove(recordedInfo.player2Position, recordedInfo.player2Rotation, recordedInfo.player2BallHitInfo);
         ball.ReplayMove(recordedInfo.ballPosition, recordedInfo.ballRotation);
@@ -108,10 +111,18 @@ public class ReplayManager : MonoBehaviour
         recordedReplayInfo.RemoveAt(0);
     }
 
-    private void MoveReplayCamera(Vector3 ballPosition)
+    private void MoveReplayCamera(int replayInfoId, Vector3 ballPosition)
     {
-        var cameraPos = replayCamera.transform.position;
-        replayCamera.transform.position = new Vector3(cameraPos.x, cameraPos.y, ballPosition.z);
+        if (replayInfoId > _cameraRotationEndId)
+        {
+            // Camera starts to slow down after point has been won
+            _cameraRotationSpeed *= _cameraRotationStopMultiplier;
+        }
+
+        Vector3 targetDirection = ballPosition - replayCamera.transform.position;
+        float singleStep = _cameraRotationSpeed * Time.fixedDeltaTime;
+        Vector3 newDirection = Vector3.RotateTowards(replayCamera.transform.forward, targetDirection, singleStep, 0.0f);
+        replayCamera.transform.rotation = Quaternion.LookRotation(newDirection);
     }
 
     public void StopReplay()
@@ -181,6 +192,8 @@ public class ReplayManager : MonoBehaviour
 
     public void SetCameraPosition(int pointWinnerId)
     {
+        _cameraRotationEndId = _replayInfoCounter;
+            
         var ballPosition = ball.GetPosition();
 
         var parallelHit = lastBallHitPosition.z * ballPosition.z > 0;
