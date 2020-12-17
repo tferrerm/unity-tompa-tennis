@@ -545,7 +545,7 @@ public class Player : MonoBehaviour
             _soundManager.PlayGrunt(_audioSource);
     }
 
-    public void ReplayMove(Vector3 position, Quaternion rotation, BallHitReplayInfo ballHitInfo)
+    public void ReplayMove(Vector3 position, Quaternion rotation, BallHitReplayInfo ballHitInfo, bool triggerCelebration, bool wonPoint)
     {
         var distance = position - transform.position;
         _animator.SetFloat(_strafeHash, distance.z / Time.fixedDeltaTime);
@@ -572,6 +572,11 @@ public class Player : MonoBehaviour
         else if (ballHitInfo.FastBackhand)
         {
             _animator.SetTrigger(_fastBackhandHash);
+        }
+
+        if (triggerCelebration)
+        {
+            _animator.SetTrigger(wonPoint? _cheerHash : _defeatedHash);
         }
     }
 }

@@ -21,6 +21,9 @@ public class ReplayManager : MonoBehaviour
     
     private BallHitReplayInfo player1BallHitInfo;
     private BallHitReplayInfo player2BallHitInfo;
+    
+    private bool _playerWonPoint;
+    private int _celebrationTriggerId;
 
     private GameObject mainCamera;
     public GameObject replayCamera;
@@ -123,15 +126,16 @@ public class ReplayManager : MonoBehaviour
         //Time.timeScale = 0.8f;
     }
 
-    // TODO: fix animation when hitting ball. Store some hitting Ball variable in RecordedReplayInfo
     private void PlayRecording()
     {
         var recordedInfo = recordedReplayInfo[0];
 
         MoveReplayCamera(recordedInfo.id, recordedInfo.ballPosition);
 
-        _player.ReplayMove(recordedInfo.player1Position, recordedInfo.player1Rotation, recordedInfo.player1BallHitInfo);
-        _aiPlayer.ReplayMove(recordedInfo.player2Position, recordedInfo.player2Rotation, recordedInfo.player2BallHitInfo);
+        _player.ReplayMove(recordedInfo.player1Position, recordedInfo.player1Rotation, recordedInfo.player1BallHitInfo,
+            recordedInfo.id == _celebrationTriggerId, _playerWonPoint);
+        _aiPlayer.ReplayMove(recordedInfo.player2Position, recordedInfo.player2Rotation, recordedInfo.player2BallHitInfo,
+            recordedInfo.id == _celebrationTriggerId, !_playerWonPoint);
         ball.ReplayMove(recordedInfo.ballPosition, recordedInfo.ballRotation);
         
         recordedReplayInfo.RemoveAt(0);
@@ -239,33 +243,29 @@ public class ReplayManager : MonoBehaviour
         var useUpPOV = Random.Range(0, 2) == 0;
         replayCamera.transform.position = useUpPOV? upPOV.position : downPOV.position;
         replayCamera.transform.rotation = useUpPOV? upPOV.rotation : downPOV.rotation;
+
+        _playerWonPoint = pointWinnerId == _player.playerId;
+        _celebrationTriggerId = _replayInfoCounter;
     }
 
     public void SetHitCheckpoint()
     {
         if (_lastHitCheckpointId != -1)
         {
-            // Hit is not a serve...
+            // Hit is not a serve then...
             if (_isAce)
             {
                 _isAce = false;
             }
             else
             {
-                var removeIndex = _lastHitCheckpointId - recordedReplayInfo[0].id;/*0;
-                foreach (var replayInfo in recordedReplayInfo)
-                {
-                    if (replayInfo.id >= _lastHitCheckpointId)
-                        break;
-
-                    removeIndex++;
-                }*/
+                var removeIndex = _lastHitCheckpointId - recordedReplayInfo[0].id;
                 
                 // If two or more hits were recorded, start replay a short time before the penultimate
                 var framesToShowBeforeCheckpoint =
                     (int) ((_lastHitCheckpointId - recordedReplayInfo[0].id) * FramePercentageToShowBeforeInitialCheckpoint);
                 removeIndex -= framesToShowBeforeCheckpoint;
-                Debug.Log($"LENGTH: {recordedReplayInfo.Count}, REMOVE INDEX: {removeIndex}");
+                
                 recordedReplayInfo.RemoveRange(0, removeIndex);
             }
         }

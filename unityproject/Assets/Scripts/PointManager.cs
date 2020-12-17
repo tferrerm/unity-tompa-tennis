@@ -104,8 +104,9 @@ public class PointManager : MonoBehaviour
                 {
                     // Collide was anywhere else, receiver didn't reach the ball before second bounce
                     _pointState = PointState.WaitingFirstServe;
-                    _scoreManager.WinPoint(_scoreManager.GetServingPlayerId());
-                    _replayManager.SetCameraPosition(_scoreManager.GetServingPlayerId());
+                    var pointWinner = _scoreManager.GetServingPlayerId();
+                    _scoreManager.WinPoint(pointWinner);
+                    _replayManager.SetCameraPosition(pointWinner);
                     ResetPoint(PointState.FirstServe);
                 }
                 break;
@@ -122,8 +123,9 @@ public class PointManager : MonoBehaviour
                 {
                     // Receiver hit was out
                     _pointState = PointState.WaitingFirstServe;
-                    _scoreManager.WinPoint(_scoreManager.GetServingPlayerId());
-                    _replayManager.SetCameraPosition(_scoreManager.GetServingPlayerId());
+                    var pointWinner = _scoreManager.GetServingPlayerId();
+                    _scoreManager.WinPoint(pointWinner);
+                    _replayManager.SetCameraPosition(pointWinner);
                     ResetPoint(PointState.FirstServe);
                 }
                 break;
@@ -136,8 +138,9 @@ public class PointManager : MonoBehaviour
                 {
                     // Collide was anywhere else, server didn't reach the ball before second bounce
                     _pointState = PointState.WaitingFirstServe;
-                    _scoreManager.WinPoint(_scoreManager.GetReceivingPlayerId());
-                    _replayManager.SetCameraPosition(_scoreManager.GetReceivingPlayerId());
+                    var pointWinner = _scoreManager.GetServingPlayerId();
+                    _scoreManager.WinPoint(pointWinner);
+                    _replayManager.SetCameraPosition(pointWinner);
                     ResetPoint(PointState.FirstServe);
                 }
                 break;
@@ -154,8 +157,9 @@ public class PointManager : MonoBehaviour
                 {
                     // Server hit was out
                     _pointState = PointState.WaitingFirstServe;
-                    _scoreManager.WinPoint(_scoreManager.GetReceivingPlayerId());
-                    _replayManager.SetCameraPosition(_scoreManager.GetReceivingPlayerId());
+                    var pointWinner = _scoreManager.GetServingPlayerId();
+                    _scoreManager.WinPoint(pointWinner);
+                    _replayManager.SetCameraPosition(pointWinner);
                     ResetPoint(PointState.FirstServe);
                 }
                 break;

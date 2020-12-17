@@ -493,7 +493,7 @@ public class AIPlayer : MonoBehaviour
         set => _movingToCenter = value;
     }
     
-    public void ReplayMove(Vector3 position, Quaternion rotation, BallHitReplayInfo ballHitInfo)
+    public void ReplayMove(Vector3 position, Quaternion rotation, BallHitReplayInfo ballHitInfo, bool triggerCelebration, bool wonPoint)
     {
         var distance = position - transform.position;
         _animator.SetFloat(_strafeHash, distance.z / Time.fixedDeltaTime);
@@ -520,6 +520,11 @@ public class AIPlayer : MonoBehaviour
         else if (ballHitInfo.FastBackhand)
         {
             _animator.SetTrigger(_fastBackhandHash);
+        }
+        
+        if (triggerCelebration)
+        {
+            _animator.SetTrigger(wonPoint? _cheerHash : _defeatedHash);
         }
     }
 }
