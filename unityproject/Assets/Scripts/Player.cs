@@ -548,8 +548,10 @@ public class Player : MonoBehaviour
     public void ReplayMove(Vector3 position, Quaternion rotation, BallHitReplayInfo ballHitInfo, bool triggerCelebration, bool wonPoint)
     {
         var distance = position - transform.position;
-        _animator.SetFloat(_strafeHash, distance.z / Time.fixedDeltaTime);
-        _animator.SetFloat(_forwardHash, distance.x / Time.fixedDeltaTime);
+        var dz = RoundAnimatorMovementValue(distance.z / Time.fixedDeltaTime);
+        var dx = RoundAnimatorMovementValue(distance.x / Time.fixedDeltaTime);
+        _animator.SetFloat(_strafeHash, dz);
+        _animator.SetFloat(_forwardHash, dx);
         transform.position = position;
         transform.rotation = rotation;
 
@@ -579,5 +581,10 @@ public class Player : MonoBehaviour
         {
             _animator.SetTrigger(wonPoint? _cheerHash : _defeatedHash);
         }
+    }
+
+    private float RoundAnimatorMovementValue(float differential)
+    {
+        return Math.Abs(differential) < 1 ? differential : Math.Sign(differential);
     }
 }
