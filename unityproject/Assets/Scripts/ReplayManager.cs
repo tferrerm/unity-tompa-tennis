@@ -1,6 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using Random = UnityEngine.Random;
 
 public class ReplayManager : MonoBehaviour
 {
@@ -35,6 +38,9 @@ public class ReplayManager : MonoBehaviour
     
     private GameObject _scoreboard;
     
+    private PointManager _pointManager;
+    public InputAction skipReplay;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -44,6 +50,7 @@ public class ReplayManager : MonoBehaviour
         var gameManager = GetComponent<GameManager>();
         _player = gameManager.player;
         _aiPlayer = gameManager.aiPlayer;
+        _pointManager = gameManager.pointManager;
         
         player1BallHitInfo = new BallHitReplayInfo(_player.playerId);
         player2BallHitInfo = new BallHitReplayInfo(_aiPlayer.playerId);
@@ -52,6 +59,11 @@ public class ReplayManager : MonoBehaviour
         _scoreboard = GameObject.FindGameObjectWithTag("Scoreboard");
     }
     
+    private void OnDisable()
+    {
+        skipReplay.Disable();
+    }
+
     private void FixedUpdate()
     {
         if (isRecording)
@@ -60,8 +72,12 @@ public class ReplayManager : MonoBehaviour
             ResetBallHitInfo(); // TODO check if necessary
         }
         else if (isPlayingReplay && recordedReplayInfo.Count > 0)
-        {
+        { 
             PlayRecording();
+            if (skipReplay.triggered)
+            {
+                _pointManager.StopWaitForNextServe();
+            }
         }
     }
 
@@ -94,6 +110,7 @@ public class ReplayManager : MonoBehaviour
         _player.InitializeRecordingPlay();
         _aiPlayer.InitializeRecordingPlay();
         _scoreboard.SetActive(false);
+        skipReplay.Enable();
         _cameraRotationSpeed = CameraRotationInitialSpeed;
     }
 
@@ -127,6 +144,7 @@ public class ReplayManager : MonoBehaviour
 
     public void StopReplay()
     {
+        skipReplay.Disable();
         // isRecording is set to true when service takes place
         isPlayingReplay = false;
         mainCamera.SetActive(true);
@@ -134,6 +152,7 @@ public class ReplayManager : MonoBehaviour
         _player.StopRecordingPlay();
         _aiPlayer.StopRecordingPlay();
         _scoreboard.SetActive(true);
+        recordedReplayInfo.Clear();
     }
     
     public void SetPlayerDriveHit(int playerId, bool isFastHit)
