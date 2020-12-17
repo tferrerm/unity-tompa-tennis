@@ -64,6 +64,14 @@ public class ReplayManager : MonoBehaviour
         skipReplay.Disable();
     }
 
+    private void Update()
+    {
+        if (isPlayingReplay && skipReplay.triggered)
+        {
+            _pointManager.StopWaitForNextServe();
+        }
+    }
+
     private void FixedUpdate()
     {
         if (isRecording)
@@ -74,10 +82,6 @@ public class ReplayManager : MonoBehaviour
         else if (isPlayingReplay && recordedReplayInfo.Count > 0)
         { 
             PlayRecording();
-            if (skipReplay.triggered)
-            {
-                _pointManager.StopWaitForNextServe();
-            }
         }
     }
 
@@ -151,6 +155,7 @@ public class ReplayManager : MonoBehaviour
         replayCamera.SetActive(false);
         _player.StopRecordingPlay();
         _aiPlayer.StopRecordingPlay();
+        _aiPlayer.ResetTargetMovementVariables();
         _scoreboard.SetActive(true);
         recordedReplayInfo.Clear();
     }
