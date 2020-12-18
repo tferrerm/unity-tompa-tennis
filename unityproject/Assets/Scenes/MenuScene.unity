@@ -1080,7 +1080,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &82070776
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1121,6 +1121,7 @@ MonoBehaviour:
   mainMenu: {fileID: 894480569}
   playMenu: {fileID: 82070775}
   playerNameInput: {fileID: 1275038349}
+  difficultyDropdown: {fileID: 288675540}
 --- !u!1 &86725492
 GameObject:
   m_ObjectHideFlags: 0
@@ -3506,7 +3507,7 @@ GameObject:
   - component: {fileID: 288675541}
   - component: {fileID: 288675540}
   m_Layer: 5
-  m_Name: Dropdown
+  m_Name: DifficultyDropdown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3547,9 +3548,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_Mode: 4
+    m_SelectOnUp: {fileID: 42709069}
+    m_SelectOnDown: {fileID: 505991092}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
@@ -3589,7 +3590,19 @@ MonoBehaviour:
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 82070777}
+        m_TargetAssemblyTypeName: UI.PlayMenu, Assembly-CSharp
+        m_MethodName: DifficultySelection
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_AlphaFadeSpeed: 0.15
 --- !u!114 &288675541
 MonoBehaviour:
@@ -5526,7 +5539,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.0000075158, y: -0.00000095367}
+  m_AnchoredPosition: {x: 0, y: 0.00000023841858}
   m_SizeDelta: {x: 45.194977, y: 39.010765}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &455285126
@@ -11539,7 +11552,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &881105886
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11798,7 +11811,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &894480570
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17261,8 +17274,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -6}
-  m_SizeDelta: {x: 236.09026, y: 88.05516}
+  m_AnchoredPosition: {x: 0, y: 3.9638}
+  m_SizeDelta: {x: 236.09026, y: 68.12758}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1422065834
 MonoBehaviour:

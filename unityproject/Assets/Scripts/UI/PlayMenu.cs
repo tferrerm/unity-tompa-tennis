@@ -13,6 +13,7 @@ namespace UI
         public GameObject playMenu;
 
         public TMP_InputField playerNameInput;
+        public TMP_Dropdown difficultyDropdown;
     
         // Start is called before the first frame update
         void Start()
@@ -30,6 +31,11 @@ namespace UI
             playMenu.SetActive(false);
             title.SetActive(true);
             mainMenu.SetActive(true);
+        }
+
+        public void DifficultySelection()
+        {
+            PlayerPrefs.SetInt("Difficulty", difficultyDropdown.value);
         }
     
         public void PlayGame()
