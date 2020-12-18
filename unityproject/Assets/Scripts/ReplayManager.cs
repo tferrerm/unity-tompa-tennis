@@ -43,6 +43,8 @@ public class ReplayManager : MonoBehaviour
     private float _cameraRotationSpeed;
     private float _cameraRotationStopMultiplier = 0.95f;
 
+    private const float MaxBallPosDeltaTrail = 2f;
+
     private GameObject _scoreboard;
     
     private PointManager _pointManager;
@@ -144,7 +146,14 @@ public class ReplayManager : MonoBehaviour
             recordedInfo.id == _celebrationTriggerId, _playerWonPoint);
         _aiPlayer.ReplayMove(recordedInfo.player2Position, recordedInfo.player2Rotation, recordedInfo.player2BallHitInfo,
             recordedInfo.id == _celebrationTriggerId, !_playerWonPoint);
+        
+        var ballPos = ball.transform.position;
+        var currentBallPos = new Vector3(ballPos.x, ballPos.y, ballPos.z);
         ball.ReplayMove(recordedInfo.ballPosition, recordedInfo.ballRotation);
+        if (Vector3.Distance(currentBallPos, recordedInfo.ballPosition) > MaxBallPosDeltaTrail)
+        {
+            ball.trail.Clear();
+        }
         
         recordedReplayInfo.RemoveAt(0);
     }
@@ -277,5 +286,14 @@ public class ReplayManager : MonoBehaviour
     public float GetReplayTime()
     {
         return Time.fixedDeltaTime * recordedReplayInfo.Count;
+    }
+
+    public void ResetRecording()
+    {
+        isRecording = false;
+        recordedReplayInfo.Clear();
+        _replayInfoCounter = 0;
+        _lastHitCheckpointId = -1;
+        _checkpointCounter = 0;
     }
 }

@@ -84,6 +84,7 @@ public class PointManager : MonoBehaviour
                         _isServiceFault = true;
                         _pointState = PointState.WaitingSecondServe;
                         ResetPoint(PointState.SecondServe);
+                        _replayManager.ResetRecording();
                     }
                     else
                     {
@@ -92,6 +93,7 @@ public class PointManager : MonoBehaviour
                         _pointState = PointState.WaitingFirstServe;
                         _scoreManager.WinPoint(_scoreManager.GetReceivingPlayerId());
                         ResetPoint(PointState.FirstServe);
+                        _replayManager.ResetRecording();
                     }
                 }
                 break;
