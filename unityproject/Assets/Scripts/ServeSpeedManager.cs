@@ -59,8 +59,10 @@ public class ServeSpeedManager : MonoBehaviour
     public float StopPowerOscillation()
     { 
         _oscillating = false;
+        var retValue = _powerFactor ;
         _servePowerBar.SetActive(false);
-        return _powerFactor;
+        _powerFactor = 1f;
+        return retValue;
     }
     
     public void StartPowerOscillation()
