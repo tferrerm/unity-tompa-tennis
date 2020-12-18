@@ -497,7 +497,7 @@ public class AIPlayer : MonoBehaviour
     {
         var distance = position - transform.position;
         var dz = distance.z / Time.fixedDeltaTime;
-        var dx = distance.x / Time.fixedDeltaTime;
+        var dx = distance.x * -1 / Time.fixedDeltaTime;
         _animator.SetFloat(_strafeHash, RoundAnimatorMovementValue(dz));
         _animator.SetFloat(_forwardHash, RoundAnimatorMovementValue(dx));
         transform.position = position;

@@ -48,6 +48,9 @@ public class ReplayManager : MonoBehaviour
     private PointManager _pointManager;
     public InputAction skipReplay;
 
+    private SoundManager _soundManager;
+    private AudioSource _musicAudioSource;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -57,6 +60,8 @@ public class ReplayManager : MonoBehaviour
         _player = gameManager.player;
         _aiPlayer = gameManager.aiPlayer;
         _pointManager = gameManager.pointManager;
+        _soundManager = gameManager.soundManager;
+        _musicAudioSource = replayCamera.GetComponent<AudioSource>();
         
         player1BallHitInfo = new BallHitReplayInfo(_player.playerId);
         player2BallHitInfo = new BallHitReplayInfo(_aiPlayer.playerId);
@@ -121,6 +126,7 @@ public class ReplayManager : MonoBehaviour
         _replayInfoCounter = 0;
         ball.ReplayMove(recordedReplayInfo[0].ballPosition, recordedReplayInfo[0].ballRotation);
         ball.trail.Clear();
+        _soundManager.PlayReplayMusic();
     }
 
     private void PlayRecording()
@@ -172,6 +178,7 @@ public class ReplayManager : MonoBehaviour
         _lastHitCheckpointId = -1;
         _checkpointCounter = 0;
         Time.timeScale = 1f;
+        StartCoroutine(FadeOutAudioSource.StartFade(_musicAudioSource, 100f, 0));
     }
     
     public void SetPlayerDriveHit(int playerId, bool isFastHit)
