@@ -138,7 +138,7 @@ public class PointManager : MonoBehaviour
                 {
                     // Collide was anywhere else, server didn't reach the ball before second bounce
                     _pointState = PointState.WaitingFirstServe;
-                    var pointWinner = _scoreManager.GetServingPlayerId();
+                    var pointWinner = _scoreManager.GetReceivingPlayerId();
                     _scoreManager.WinPoint(pointWinner);
                     _replayManager.SetCameraPosition(pointWinner);
                     ResetPoint(PointState.FirstServe);
@@ -157,7 +157,7 @@ public class PointManager : MonoBehaviour
                 {
                     // Server hit was out
                     _pointState = PointState.WaitingFirstServe;
-                    var pointWinner = _scoreManager.GetServingPlayerId();
+                    var pointWinner = _scoreManager.GetReceivingPlayerId();
                     _scoreManager.WinPoint(pointWinner);
                     _replayManager.SetCameraPosition(pointWinner);
                     ResetPoint(PointState.FirstServe);
