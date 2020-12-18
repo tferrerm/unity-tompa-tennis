@@ -56,6 +56,8 @@ namespace UI
             var player1NameStrSplit = player1NameStr.Split(' ');
             _player1ScoreMessage = player1NameStrSplit[player1NameStrSplit.Length - 1] + " SCORES";
             _player2ScoreMessage = player2NameStr + " SCORES";
+
+            player1ServingBall.enabled = true;
         }
 
         public void SetPlayerNames(string player1, string player2)
@@ -64,12 +66,12 @@ namespace UI
             _player2NameText.text = player2;
         }
 
-        public void SetPlayerGameScore(List<Vector2Int> setsScores, Vector2Int gameScores, int setCount, bool player1Serving)
+        public void SetPlayerGameScore(List<Vector2Int> setsScores, Vector2Int gameScores, int setCount, bool player1Serving, bool matchFinished)
         {
             if (setCount > _setCount)
             {
                 _setCount++;
-                InstantiatePastSet(setsScores[setCount - 2]);
+                InstantiatePastSet(setsScores[setCount - 2], matchFinished);
                 ResetCurrentScores();
             }
             else
@@ -81,12 +83,21 @@ namespace UI
             player2ServingBall.enabled = !player1Serving;
         }
 
-        private void InstantiatePastSet(Vector2Int pastSetScore)
+        private void InstantiatePastSet(Vector2Int pastSetScore, bool matchFinished)
         {
             var pastSet = Instantiate(pastSetPrefab, currentSetContainer.position, Quaternion.identity, scoreContainer);
             pastSet.Find("Player 1/Player 1 Score").GetComponent<TMP_Text>().text = pastSetScore[0].ToString();
             pastSet.Find("Player 2/Player 2 Score").GetComponent<TMP_Text>().text = pastSetScore[1].ToString();
 
+            if (matchFinished)
+            {
+                currentGameContainer.gameObject.SetActive(false);
+                player1ServingBall.gameObject.SetActive(false);
+                player2ServingBall.gameObject.SetActive(false);
+                
+                return;
+            }
+            
             // Shift current game and set transform positions
             var currentSetPosition = currentSetContainer.position;
             currentSetContainer.position = new Vector3(currentSetPosition.x + _scoreSeparator + ((RectTransform) pastSet).rect.width,

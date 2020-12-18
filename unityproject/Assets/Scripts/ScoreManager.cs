@@ -66,7 +66,8 @@ public class ScoreManager : MonoBehaviour
         if (currentlyInTiebreak)
         {
             WinTiebreakPoint(playerId);
-            uiManager.SetPlayerGameScore(_sets, _currentGame, _currentSetIndex + 1, _servingPlayerId == player1Id);
+            uiManager.SetPlayerGameScore(_sets, _currentGame, _currentSetIndex + 1, _servingPlayerId == player1Id,
+                MatchFinished());
             return;
         }
         if (player1Id == playerId)
@@ -131,7 +132,8 @@ public class ScoreManager : MonoBehaviour
             _soundManager.PlayCrowdSounds();
         }
         
-        uiManager.SetPlayerGameScore(_sets, _currentGame, _currentSetIndex + 1, _servingPlayerId == player1Id);
+        uiManager.SetPlayerGameScore(_sets, _currentGame, _currentSetIndex + 1, _servingPlayerId == player1Id,
+            MatchFinished());
         
     }
 
@@ -235,13 +237,14 @@ public class ScoreManager : MonoBehaviour
             setWon = true;
         }
         
-        if (_player1SetsWon == _setsNeededToWin || _player2SetsWon == _setsNeededToWin)
+        if (MatchFinished())
         {
             currentServingSide = ServingSide.Even;
             _gameWon = false;
             var player1Won = _player1SetsWon == _setsNeededToWin;
-            IEnumerator coroutine = MatchFinishedCoroutine(player1Won);
-            StartCoroutine(coroutine);
+            uiManager.ShowEventMessage(player1Won ? UIManager.MessageType.Victory : UIManager.MessageType.Defeat);
+            //IEnumerator coroutine = MatchFinishedCoroutine(player1Won);
+            //StartCoroutine(coroutine);
         }
         else
         {
@@ -249,12 +252,12 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
-    private IEnumerator MatchFinishedCoroutine(bool player1Won)
+    /*private IEnumerator MatchFinishedCoroutine(bool player1Won)
     {
         uiManager.ShowEventMessage(player1Won ? UIManager.MessageType.Victory : UIManager.MessageType.Defeat);
         yield return new WaitForSeconds(5f);
         _gameManager.GameFinished();
-    }
+    }*/
 
     public ServingSide GetServingSide()
     {
@@ -324,5 +327,10 @@ public class ScoreManager : MonoBehaviour
             _player1.Defeated();
             _player2.Cheer();
         }
+    }
+
+    public bool MatchFinished()
+    {
+        return _player1SetsWon == _setsNeededToWin || _player2SetsWon == _setsNeededToWin;
     }
 }

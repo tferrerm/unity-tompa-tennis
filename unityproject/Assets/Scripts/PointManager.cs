@@ -10,6 +10,7 @@ public class PointManager : MonoBehaviour
     
     private const float NextPointWaitingTime = 3f; // Waiting time before point reset
 
+    private GameManager _gameManager;
     private CourtManager _courtManager;
     private ScoreManager _scoreManager;
     public CourtSectionMapper courtSectionMapper;
@@ -43,6 +44,7 @@ public class PointManager : MonoBehaviour
 
     private void Awake()
     {
+        _gameManager = GetComponent<GameManager>();
         _courtManager = GetComponent<CourtManager>();
         _scoreManager = GetComponent<ScoreManager>();
         courtSectionMapper = new CourtSectionMapper(_scoreManager);
@@ -198,10 +200,20 @@ public class PointManager : MonoBehaviour
             _replayManager.InitializeReplay();
             yield return new WaitForSeconds(_replayManager.GetReplayTime());
             _replayManager.StopReplay();
+            
+            if (_scoreManager.MatchFinished())
+            {
+                _gameManager.GameFinished(); // Return to main menu
+            }
         }
         else
         {
             _isServiceFault = false;
+            
+            if (_scoreManager.MatchFinished())
+            {
+                _gameManager.GameFinished(); // Return to main menu
+            }
         }
 
         _player1.StopMovementAnimation();
