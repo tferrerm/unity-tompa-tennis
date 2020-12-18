@@ -7,13 +7,11 @@ using Random = UnityEngine.Random;
 
 public class ReplayManager : MonoBehaviour
 {
-    public const float MaxRecordingTime = 10f;
     public bool isRecording;
     public bool isPlayingReplay;
     private int _replayInfoCounter;
     
     public List<RecordedReplayInfo> recordedReplayInfo;
-    private int _recordingLimit;
 
     private Player _player;
     private AIPlayer _aiPlayer;
@@ -35,7 +33,7 @@ public class ReplayManager : MonoBehaviour
     [HideInInspector] public Vector3 lastBallHitPosition;
 
     private int _lastHitCheckpointId = -1;
-    private bool _isAce = true;
+    private int _checkpointCounter;
     private const float FramePercentageToShowBeforeInitialCheckpoint = 0.4f;
     private const float MinTimeScale = 0.75f;
     private const float TimeScaleMultiplier = 0.975f;
@@ -53,8 +51,7 @@ public class ReplayManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _recordingLimit = (int) Mathf.Round(MaxRecordingTime * (1f / Time.fixedDeltaTime));
-        recordedReplayInfo = new List<RecordedReplayInfo>(_recordingLimit);
+        recordedReplayInfo = new List<RecordedReplayInfo>();
 
         var gameManager = GetComponent<GameManager>();
         _player = gameManager.player;
@@ -106,10 +103,6 @@ public class ReplayManager : MonoBehaviour
                 ballTransform.position, ballTransform.rotation
             ));
         
-        if (recordedReplayInfo.Count > _recordingLimit)
-        {
-            recordedReplayInfo.RemoveAt(0);
-        }
         
         _replayInfoCounter++;
     }
@@ -177,7 +170,7 @@ public class ReplayManager : MonoBehaviour
         _scoreboard.SetActive(true);
         recordedReplayInfo.Clear();
         _lastHitCheckpointId = -1;
-        _isAce = true;
+        _checkpointCounter = 0;
         Time.timeScale = 1f;
     }
     
@@ -259,26 +252,19 @@ public class ReplayManager : MonoBehaviour
 
     public void SetHitCheckpoint()
     {
-        if (_lastHitCheckpointId != -1)
+        if (_checkpointCounter > 2)
         {
-            // Hit is not a serve then...
-            if (_isAce)
-            {
-                _isAce = false;
-            }
-            else
-            {
-                var removeIndex = _lastHitCheckpointId - recordedReplayInfo[0].id;
-                
-                // If two or more hits were recorded, start replay a short time before the penultimate
-                var framesToShowBeforeCheckpoint =
-                    (int) ((_lastHitCheckpointId - recordedReplayInfo[0].id) * FramePercentageToShowBeforeInitialCheckpoint);
-                removeIndex -= framesToShowBeforeCheckpoint;
-                
-                recordedReplayInfo.RemoveRange(0, removeIndex);
-            }
+            var removeIndex = _lastHitCheckpointId - recordedReplayInfo[0].id;
+            
+            // If two or more hits were recorded, start replay a short time before the penultimate
+            var framesToShowBeforeCheckpoint =
+                (int) ((_lastHitCheckpointId - recordedReplayInfo[0].id) * FramePercentageToShowBeforeInitialCheckpoint);
+            removeIndex -= framesToShowBeforeCheckpoint;
+            
+            recordedReplayInfo.RemoveRange(0, removeIndex);
         }
         _lastHitCheckpointId = _replayInfoCounter;
+        _checkpointCounter++;
     }
 
     public float GetReplayTime()
