@@ -16,25 +16,38 @@ namespace UI
 
         public TMP_InputField playerNameInput;
         public TMP_Dropdown difficultyDropdown;
+
+        private bool _controllerPresent;
     
         // Start is called before the first frame update
         void Start()
         {
             playerNameInput.text = PlayerPrefs.GetString("PlayerName", playerNameInput.text);
-            bool controllerPresent = InputSystem.devices.Any(device =>
+            _controllerPresent = InputSystem.devices.Any(device =>
             {
                 var deviceClass = device.description.deviceClass;
                 return !deviceClass.Equals("Keyboard") && !deviceClass.Equals("Mouse");
             });
-            if (controllerPresent)
-            {
-                playerNameInput.DeactivateInputField();
-            }
+            SelectFirstElement();
         }
 
         private void OnEnable()
         {
-            EventSystem.current.SetSelectedGameObject(playerNameInput.gameObject);
+            SelectFirstElement();
+        }
+
+        private void SelectFirstElement()
+        {
+            if (_controllerPresent)
+            {
+                EventSystem.current.SetSelectedGameObject(difficultyDropdown.gameObject);
+                playerNameInput.interactable = false;
+                playerNameInput.enabled = false;
+            }
+            else
+            {
+                EventSystem.current.SetSelectedGameObject(playerNameInput.gameObject);
+            }
         }
 
         public void ReturnToMainMenu()

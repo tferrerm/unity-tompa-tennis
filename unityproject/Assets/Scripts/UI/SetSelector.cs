@@ -1,5 +1,6 @@
 ﻿using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace UI
@@ -16,7 +17,8 @@ namespace UI
         // Start is called before the first frame update
         void Start()
         {
-            _sets = PlayerPrefs.GetInt("SetNumber", 1);
+            _sets = 1;
+            PlayerPrefs.SetInt("SetNumber", _sets);
             setNumberText.text = _sets.ToString();
         }
 
@@ -33,8 +35,13 @@ namespace UI
             _sets += 2;
             if (_sets == MaxNumberSets)
                 incrementButton.interactable = false;
+
             if (!decrementButton.interactable)
+            {
                 decrementButton.interactable = true;
+                EventSystem.current.SetSelectedGameObject(decrementButton.gameObject);
+            }
+                
             PlayerPrefs.SetInt("SetNumber", _sets);
         }
     
@@ -45,8 +52,13 @@ namespace UI
             _sets -= 2;
             if (_sets == MinNumberSets)
                 decrementButton.interactable = false;
+            
             if (!incrementButton.interactable)
+            {
                 incrementButton.interactable = true;
+                EventSystem.current.SetSelectedGameObject(incrementButton.gameObject);
+            }
+            
             PlayerPrefs.SetInt("SetNumber", _sets);
         }
     }
