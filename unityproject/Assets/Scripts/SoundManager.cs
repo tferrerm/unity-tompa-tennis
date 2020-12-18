@@ -16,13 +16,16 @@ public class SoundManager : MonoBehaviour
     public AudioClip[] racquetSwishes;
     public AudioClip[] netHits;
     public AudioClip loudCrowd;
+    public AudioClip replayMusic;
     
     public AudioSource ballAudioSource;
     public AudioSource sceneAudioSource;
+    public AudioSource replayAudioSource;
 
     private void Start()
     {
         sceneAudioSource.volume = 0.3f;
+        replayAudioSource.volume = 0.3f;
     }
 
     public void PlayCrowdSounds()
@@ -75,6 +78,11 @@ public class SoundManager : MonoBehaviour
     {
         ballAudioSource.volume = 0.1f * ballVelocity.magnitude;
         ballAudioSource.PlayOneShot(ChooseRandom(netHits));
+    }
+
+    public void PlayReplayMusic()
+    {
+        replayAudioSource.PlayOneShot(replayMusic);
     }
 
     private static AudioClip ChooseRandom(IReadOnlyList<AudioClip> clips)
