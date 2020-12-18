@@ -14,6 +14,7 @@ public class ServeSpeedManager : MonoBehaviour
     private bool _factorGrowing = true;
     private bool _oscillating;
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -60,8 +61,7 @@ public class ServeSpeedManager : MonoBehaviour
     { 
         _oscillating = false;
         var retValue = _powerFactor ;
-        _servePowerBar.SetActive(false);
-        _powerFactor = 1f;
+        StartCoroutine(HoldBeforeRemovingBar());
         return retValue;
     }
     
@@ -76,4 +76,13 @@ public class ServeSpeedManager : MonoBehaviour
     {
         return (powerFactor - _factorLowerBound) * 100.0f / (_factorUpperBound  - _factorLowerBound);
     }
+
+    private IEnumerator HoldBeforeRemovingBar()
+    {
+        yield return new WaitForSeconds(2);
+        _servePowerBar.SetActive(false);
+        _powerFactor = 1f;
+    }
+
+
 }
