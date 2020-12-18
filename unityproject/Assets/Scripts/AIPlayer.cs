@@ -496,8 +496,8 @@ public class AIPlayer : MonoBehaviour
     public void ReplayMove(Vector3 position, Quaternion rotation, BallHitReplayInfo ballHitInfo, bool triggerCelebration, bool wonPoint)
     {
         var distance = position - transform.position;
-        var dz = distance.z / Time.fixedDeltaTime;
-        var dx = distance.x / Time.fixedDeltaTime;
+        var dz = (-1) * distance.z / Time.fixedDeltaTime;
+        var dx = (-1) * distance.x / Time.fixedDeltaTime;
         _animator.SetFloat(_strafeHash, RoundAnimatorMovementValue(dz));
         _animator.SetFloat(_forwardHash, RoundAnimatorMovementValue(dx));
         transform.position = position;
