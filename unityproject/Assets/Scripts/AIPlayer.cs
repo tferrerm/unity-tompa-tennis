@@ -496,8 +496,10 @@ public class AIPlayer : MonoBehaviour
     public void ReplayMove(Vector3 position, Quaternion rotation, BallHitReplayInfo ballHitInfo, bool triggerCelebration, bool wonPoint)
     {
         var distance = position - transform.position;
-        _animator.SetFloat(_strafeHash, distance.z / Time.fixedDeltaTime);
-        _animator.SetFloat(_forwardHash, distance.x / Time.fixedDeltaTime);
+        var dz = distance.z / Time.fixedDeltaTime;
+        var dx = distance.x / Time.fixedDeltaTime;
+        _animator.SetFloat(_strafeHash, RoundAnimatorMovementValue(dz));
+        _animator.SetFloat(_forwardHash, RoundAnimatorMovementValue(dx));
         transform.position = position;
         transform.rotation = rotation;
         
@@ -526,5 +528,10 @@ public class AIPlayer : MonoBehaviour
         {
             _animator.SetTrigger(wonPoint? _cheerHash : _defeatedHash);
         }
+    }
+    
+    private float RoundAnimatorMovementValue(float differential)
+    {
+        return Math.Abs(differential) < 1 ? differential : Math.Sign(differential);
     }
 }
