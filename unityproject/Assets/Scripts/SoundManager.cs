@@ -82,6 +82,7 @@ public class SoundManager : MonoBehaviour
 
     public void PlayReplayMusic()
     {
+        replayAudioSource.volume = 0.3f;
         replayAudioSource.PlayOneShot(replayMusic);
     }
 
