@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 namespace UI
@@ -19,6 +21,15 @@ namespace UI
         void Start()
         {
             playerNameInput.text = PlayerPrefs.GetString("PlayerName", playerNameInput.text);
+            bool controllerPresent = InputSystem.devices.Any(device =>
+            {
+                var deviceClass = device.description.deviceClass;
+                return !deviceClass.Equals("Keyboard") && !deviceClass.Equals("Mouse");
+            });
+            if (controllerPresent)
+            {
+                playerNameInput.DeactivateInputField();
+            }
         }
 
         private void OnEnable()
