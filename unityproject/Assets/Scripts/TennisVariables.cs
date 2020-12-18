@@ -32,5 +32,15 @@ public class TennisVariables : MonoBehaviour
     
     public float BallColliderFrontDelta = 2f;
 
-    [Range(0, 1)] public float AIVolleyModeProbability = 0.2f;
+    public float AISpeedEasy = 7.5f;
+    public float AISpeedNormal = 10f;
+    public float AISpeedHard = 12.5f;
+
+    [Range(0, 1)] public float AIVolleyModeProbabilityEasy = 0.15f;
+    [Range(0, 1)] public float AIVolleyModeProbabilityNormal = 0.20f;
+    [Range(0, 1)] public float AIVolleyModeProbabilityHard = 0.25f;
+    
+    public float MaxReactionTimeEasy = 1.15f;
+    public float MaxReactionTimeNormal = 1f;
+    public float MaxReactionTimeHard = 0.85f;
 }

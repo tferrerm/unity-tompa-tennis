@@ -50,7 +50,6 @@ public class AIPlayer : MonoBehaviour
     
     private bool _serveBallReleased;
     
-    private bool _sprinting = false;
     private bool _movementBlocked;
     
     private Vector3? _target;
@@ -61,20 +60,34 @@ public class AIPlayer : MonoBehaviour
     private const float LateralMovementLimit = 25f;
 
     private const float ServiceWaitTime = 1f; // Waiting time before serve after point reset
-    private const float MaxReactionTime = 1f; // Waiting time before AI starts moving
+    private float _maxReactionTime; // Waiting time before AI starts moving
     private float _reactionWaitTimer;
+
+    private float _speed;
 
     public PredictionBall predictionBall;
     private const float ReachedTargetEpsilon = 0.1f;
-    
+
+    private float _volleyModeProbability;
     private bool _volleyModeActivated;
     private readonly Vector3 _volleyCenterPos = new Vector3(5f, -3.067426f, 0f);
+
+    private const int HitTargetRandomPoolSize = 3;
+
+    private enum Difficulty
+    {
+        Easy = 0, Normal = 1, Hard = 2
+    }
+
+    private Difficulty _difficulty;
 
     void Awake()
     {
         _characterController = GetComponent<CharacterController>();
         _audioSource = GetComponent<AudioSource>();
         _animator = GetComponent<Animator>();
+
+        _difficulty = (Difficulty) PlayerPrefs.GetInt("Difficulty", 1);
     }
 
     void Start()
@@ -84,10 +97,31 @@ public class AIPlayer : MonoBehaviour
         _soundManager = gameManager.soundManager;
         _replayManager = gameManager.replayManager;
         _tv = gameManager.tennisVariables;
+
+        switch (_difficulty)
+        {
+            case Difficulty.Easy:
+                _maxReactionTime = _tv.MaxReactionTimeEasy;
+                _volleyModeProbability = _tv.AIVolleyModeProbabilityEasy;
+                _speed = _tv.AISpeedEasy;
+                break;
+            case Difficulty.Normal:
+                _maxReactionTime = _tv.MaxReactionTimeNormal;
+                _volleyModeProbability = _tv.AIVolleyModeProbabilityNormal;
+                _speed = _tv.AISpeedNormal;
+                break;
+            case Difficulty.Hard:
+                _maxReactionTime = _tv.MaxReactionTimeHard;
+                _volleyModeProbability = _tv.AIVolleyModeProbabilityHard;
+                _speed = _tv.AISpeedHard;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
         
         CalculateAnimatorHashes();
         
-        _reactionWaitTimer = Random.Range(0f, MaxReactionTime);
+        _reactionWaitTimer = Random.Range(0f, (_volleyModeActivated? 0.5f : 1) * _maxReactionTime);
         _backCenter = new Vector3(39.75f, -3.067426f, 0);
     }
 
@@ -181,7 +215,7 @@ public class AIPlayer : MonoBehaviour
         _target = null;
         _animator.SetFloat(_strafeHash, 0);
         _animator.SetFloat(_forwardHash, 0);
-        _reactionWaitTimer = Random.Range(0f, MaxReactionTime);
+        _reactionWaitTimer = Random.Range(0f, (_volleyModeActivated? 0.5f : 1) * _maxReactionTime);
     }
     
     private void Move()
@@ -190,8 +224,7 @@ public class AIPlayer : MonoBehaviour
         _target = new Vector3(_target.GetValueOrDefault().x, transform.position.y, _target.GetValueOrDefault().z);
         
         var pos = transform.position;
-        var speed = (_sprinting ? _tv.SprintSpeed : _tv.RunSpeed);
-        var step =  speed * Time.deltaTime;
+        var step =  _speed * Time.deltaTime;
         var frameTarget = Vector3.MoveTowards(pos, _target.Value, step);
 
         var move = frameTarget - pos;
@@ -236,11 +269,36 @@ public class AIPlayer : MonoBehaviour
             _hitMethod = HitMethod.Backhand;
         }
 
-        _hitDirectionHoriz = (HitDirectionHorizontal)Random.Range(0, 3);
-        _hitDirectionVert = (HitDirectionVertical)Random.Range(0, 2);
+        SelectHitTarget();
         _movementBlocked = true;
     }
-    
+
+    private void SelectHitTarget()
+    {
+        switch (_difficulty)
+        {
+            case Difficulty.Easy:
+                // Targets are chosen closer to the player
+                var closeTargets = _courtManager.SelectFromExtremeTargets(HitTargetRandomPoolSize, 
+                    gameManager.player.transform.position, false);
+                _hitDirectionHoriz = closeTargets.HitDirectionHorizontal;
+                _hitDirectionVert = closeTargets.HitDirectionVertical;
+                break;
+            case Difficulty.Normal:
+                // Targets are completely random
+                _hitDirectionHoriz = (HitDirectionHorizontal)Random.Range(0, 3);
+                _hitDirectionVert = (HitDirectionVertical)Random.Range(0, 2);
+                break;
+            case Difficulty.Hard:
+                // Targets are chosen far away from the player
+                var targets = _courtManager.SelectFromExtremeTargets(HitTargetRandomPoolSize, 
+                    gameManager.player.transform.position, true);
+                _hitDirectionHoriz = targets.HitDirectionHorizontal;
+                _hitDirectionVert = targets.HitDirectionVertical;
+                break;
+        }
+    }
+
     public void HitBall() // Called as animation event
     {
         _soundManager.PlayRacquetHit(_audioSource);
@@ -329,7 +387,7 @@ public class AIPlayer : MonoBehaviour
     {
         ResetTargetMovementVariables();
         
-        if (!_volleyModeActivated && Random.Range(0f, 1f) < _tv.AIVolleyModeProbability) // Active volley mode
+        if (!_volleyModeActivated && Random.Range(0f, 1f) < _volleyModeProbability) // Active volley mode
         {
             _volleyModeActivated = true;
         }
@@ -535,3 +593,4 @@ public class AIPlayer : MonoBehaviour
         return Math.Abs(differential) < 1 ? differential : Math.Sign(differential);
     }
 }
+

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class CourtManager : MonoBehaviour
 {
@@ -140,5 +141,81 @@ public class CourtManager : MonoBehaviour
                     (horiz == HitDirectionHorizontal.Left) ? player1ServiceLeftLeft.position : player1ServiceLeftRight.position;
             }
         }
+    }
+
+    public CourtTargetDirections SelectFromExtremeTargets(int randomPoolSize, Vector3 position, bool hardDifficulty)
+    {
+        var targetDistances = new List<TargetDistance>(6);
+        targetDistances.Add(new TargetDistance(player1BackLeftHit, Vector3.Distance(position, player1BackLeftHit.position)));
+        targetDistances.Add(new TargetDistance(player1BackCenterHit, Vector3.Distance(position, player1BackCenterHit.position)));
+        targetDistances.Add(new TargetDistance(player1BackRightHit, Vector3.Distance(position, player1BackRightHit.position)));
+        targetDistances.Add(new TargetDistance(player1FrontLeftHit, Vector3.Distance(position, player1FrontLeftHit.position)));
+        targetDistances.Add(new TargetDistance(player1FrontCenterHit, Vector3.Distance(position, player1FrontCenterHit.position)));
+        targetDistances.Add(new TargetDistance(player1FrontRightHit, Vector3.Distance(position, player1FrontRightHit.position)));
+        
+        targetDistances.Sort((x,y) => (hardDifficulty? -1 : 1) * x.Distance.CompareTo(y.Distance));
+
+        var chosenTarget = targetDistances[Random.Range(0, randomPoolSize)];
+        
+        var horizDirection =
+            (chosenTarget.Target.Equals(player1BackLeftHit) || chosenTarget.Target.Equals(player1FrontLeftHit)) ?
+                HitDirectionHorizontal.Left
+                : (chosenTarget.Target.Equals(player1BackCenterHit) || chosenTarget.Target.Equals(player1FrontCenterHit)) ? 
+                    HitDirectionHorizontal.Center
+                    : HitDirectionHorizontal.Right;
+        
+        var vertDirection =
+            (chosenTarget.Target.Equals(player1BackLeftHit) || chosenTarget.Target.Equals(player1BackCenterHit) || chosenTarget.Target.Equals(player1BackRightHit)) ?
+                HitDirectionVertical.Deep : HitDirectionVertical.Dropshot;
+        
+        return new CourtTargetDirections(horizDirection, vertDirection);
+    }
+    
+    private class TargetDistance
+    {
+        private Transform target;
+        private float distance;
+
+        public TargetDistance(Transform transf, float dist)
+        {
+            target = transf;
+            distance = dist;
+        }
+
+        public Transform Target
+        {
+            get => target;
+            set => target = value;
+        }
+
+        public float Distance
+        {
+            get => distance;
+            set => distance = value;
+        }
+    }
+}
+
+public class CourtTargetDirections
+{
+    private HitDirectionHorizontal _hitDirectionHorizontal;
+    private HitDirectionVertical _hitDirectionVertical;
+
+    public CourtTargetDirections(HitDirectionHorizontal horiz, HitDirectionVertical vert)
+    {
+        _hitDirectionHorizontal = horiz;
+        _hitDirectionVertical = vert;
+    }
+
+    public HitDirectionHorizontal HitDirectionHorizontal
+    {
+        get => _hitDirectionHorizontal;
+        set => _hitDirectionHorizontal = value;
+    }
+
+    public HitDirectionVertical HitDirectionVertical
+    {
+        get => _hitDirectionVertical;
+        set => _hitDirectionVertical = value;
     }
 }

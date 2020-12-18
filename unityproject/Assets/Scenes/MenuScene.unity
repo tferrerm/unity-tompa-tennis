@@ -3586,6 +3586,8 @@ MonoBehaviour:
     m_Options:
     - m_Text: Easy
       m_Image: {fileID: 0}
+    - m_Text: Normal
+      m_Image: {fileID: 0}
     - m_Text: Hard
       m_Image: {fileID: 0}
   m_OnValueChanged:

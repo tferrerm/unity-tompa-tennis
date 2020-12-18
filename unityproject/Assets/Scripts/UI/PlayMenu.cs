@@ -73,6 +73,8 @@ namespace UI
 
             PlayerPrefs.SetString("AIPlayerName", "AI Player");
             
+            PlayerPrefs.SetInt("Difficulty", difficultyDropdown.value);
+            
             PlayerPrefs.Save();
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
