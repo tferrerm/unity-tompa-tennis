@@ -13,39 +13,62 @@ namespace UI
         public GameObject pauseMenuButtons;
         public GameObject resumeButton;
         [HideInInspector] public bool canOpenPauseMenu = true;
+        [SerializeField] private bool isPaused = false;
 
-        public InputAction pauseAction;
+        [Header("Input Actions")]
+        public InputActionAsset inputActionsAsset;
+        private InputActionMap _pauseActionMap;
+        private InputAction _pauseAction;
+
+        private void Awake() {
+            if (inputActionsAsset != null) {
+                _pauseActionMap = inputActionsAsset.FindActionMap("UI");
+                _pauseAction = _pauseActionMap.FindAction("Pause");
+            }
+        }
 
         private void OnEnable()
         {
-            pauseAction.Enable();
+            _pauseAction.Enable();
+
+            _pauseAction.performed += Pause;
         }
 
         private void OnDisable()
         {
-            pauseAction.Disable();
+            _pauseAction.Disable();
         }
 
-        void Update()
+        private void Pause(InputAction.CallbackContext context)
         {
-            if (pauseAction.triggered && canOpenPauseMenu)
-            {
-                Time.timeScale = pauseMenu.activeSelf ? 1 : 0;
-                optionsMenu.SetActive(false);
-                pauseMenu.SetActive(!pauseMenu.activeSelf);
-                pauseMenuButtons.SetActive(true);
-                AudioListener.pause = pauseMenu.activeSelf;
-                if (pauseMenu.activeSelf)
-                    EventSystem.current.SetSelectedGameObject(resumeButton);
-            }
+            if (!canOpenPauseMenu) return;
 
+            isPaused = !isPaused;
+
+            if (isPaused)
+            {
+                Time.timeScale = 0;
+                AudioListener.pause = true;
+                pauseMenu.SetActive(true);
+                pauseMenuButtons.SetActive(true);
+                EventSystem.current.SetSelectedGameObject(resumeButton);
+            }
+            else if (!isPaused)
+            {
+                Time.timeScale = 1;
+                AudioListener.pause = false;
+                pauseMenu.SetActive(false);
+                pauseMenuButtons.SetActive(false);
+            }
         }
 
         public void PauseMenuResume()
         {
-            pauseMenu.SetActive(false);
             Time.timeScale = 1;
             AudioListener.pause = false;
+            pauseMenu.SetActive(false);
+            pauseMenuButtons.SetActive(false);
+            isPaused = false;
         }
 
         public void OpenOptionsMenu()

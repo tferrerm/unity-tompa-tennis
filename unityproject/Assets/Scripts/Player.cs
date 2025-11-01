@@ -83,8 +83,10 @@ public class Player : MonoBehaviour
     public Transform backhandVolleyHitBallSpawn;
 
     [Header("Input Actions")]
-    public InputAction wasd;
-    public InputAction hitBall;
+    public InputActionAsset inputActionsAsset;
+    private InputActionMap _playerActionMap;
+    private InputAction _moveAction;
+    private InputAction _hitBallAction;
     private ActionMapper _actionMapper;
 
     private void Awake()
@@ -93,20 +95,24 @@ public class Player : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
         _animator = GetComponent<Animator>();
         _serveSpeedManager = GetComponent<ServeSpeedManager>();
-        _actionMapper = new ActionMapper(wasd, hitBall);
         
+        if (inputActionsAsset != null)
+        {
+            _playerActionMap = inputActionsAsset.FindActionMap("Player");
+            _moveAction = _playerActionMap.FindAction("Move");
+            _hitBallAction = _playerActionMap.FindAction("HitBall");
+            _actionMapper = new ActionMapper(_moveAction, _hitBallAction);
+        }
     }
 
     private void OnEnable()
     {
-        wasd.Enable();
-        hitBall.Enable();
+        _playerActionMap?.Enable();
     }
 
     private void OnDisable()
     {
-        wasd.Disable();
-        hitBall.Disable();
+        _playerActionMap?.Disable();
     }
 
     void Start()
@@ -158,8 +164,7 @@ public class Player : MonoBehaviour
         _characterController.enabled = false;
         _animator.SetFloat(_strafeHash, 0);
         _animator.SetFloat(_forwardHash, 0);
-        wasd.Disable();
-        hitBall.Disable();
+        _playerActionMap?.Disable();
     }
 
     public void StopRecordingPlay()
@@ -168,8 +173,7 @@ public class Player : MonoBehaviour
         _animator.SetFloat(_strafeHash, 0);
         _animator.SetFloat(_forwardHash, 0);
         _animator.Rebind();
-        wasd.Enable();
-        hitBall.Enable();
+        _playerActionMap?.Enable();
     }
 
     private void Move()
